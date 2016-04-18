@@ -1,0 +1,6 @@
+dt=10
+finalTime=1000
+samplingFreq=1
+startSampling=0
+initialFile=values.dat
+outputFile=output.dat
