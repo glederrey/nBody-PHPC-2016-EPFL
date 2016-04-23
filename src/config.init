@@ -2,5 +2,6 @@ dt=10
 finalTime=1000
 samplingFreq=1
 startSampling=0
+size=10000
 initialFile=values.dat
-outputFile=output.dat
+outputFile=../results/output.dat
