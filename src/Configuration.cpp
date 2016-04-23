@@ -13,6 +13,7 @@ Configuration::Configuration(const std::string& fileName) {
   file.open(fileName.c_str());
   if(!file) {
     cerr << "[ConfigFile] Error in openening file " << fileName << endl;
+    exit(1);
   }
   try {
     string lineRead;
@@ -36,10 +37,12 @@ void Configuration::process(const string& lineRead) {
     size_t spacePosition=lineRead.find(' ',0);
   	if(spacePosition!=string::npos){
   	  cerr << "ConfigFile object do not support character ' ' at position " << spacePosition << " in line '" << lineRead << endl;
+      exit(1);
   	}
   	size_t equalPosition = lineRead.find('=',1);
   	if(equalPosition==string::npos){
   	  cerr << "Line without '=' " << lineRead << endl;
+      exit(1);
   	}else{
   	  string key=lineRead.substr(0,equalPosition);
   	  string value=lineRead.substr(equalPosition+1,lineRead.length());
@@ -61,18 +64,22 @@ template<typename T> T Configuration::get(const std::string& key) const{
      iss >> out;
    }else{
      cerr <<  "[ConfigFile] Key missing from file, key= " << key << endl;
+     exit(1);
    }
    return out;
  }
 
 void Configuration::prepareInitialValues(const string& fileName) {
-  cout << "Please wait while the mass, positions and velocity are loaded." << endl;
+  #ifdef VERBOSE
+    cout << "Please wait while the mass, positions and velocity are loaded." << endl;
+  #endif
 
   // Read the file with the initial values
   ifstream file;
   file.open(fileName.c_str());
   if(!file) {
     cerr << "[ConfigFile] Error in openening file " << fileName << endl;
+    exit(1);
   }
 
   vector<double> values(0);
@@ -92,18 +99,15 @@ void Configuration::prepareInitialValues(const string& fileName) {
     }
   }
 
-  for (int i=0; i<values.size(); i++) {
-    cout << values[i] << endl;
-  }
-
   file.close();
-
-  cout << "The file with the initial values has been loaded. The different vectors will now be created." << endl;
-
+  #ifdef VERBOSE
+    cout << "The file with the initial values has been loaded. The different vectors will now be created." << endl;
+  #endif
   nbrBodies = values.size() / 5;
 
   if (nbrBodies < 0) {
     cerr << "Wrong number of bodies." << endl;
+    exit(1);
   }
 
   for (int i=0; i<nbrBodies; i++) {
@@ -114,7 +118,9 @@ void Configuration::prepareInitialValues(const string& fileName) {
     initialVelocities.push_back(values[i*5+4]);
   }
 
-  cout << "Loading the initial values is finished." << endl;
+  #ifdef VERBOSE
+    cout << "Loading the initial values is finished." << endl;
+  #endif
  }
 
 int Configuration::getNbrBodies() {
