@@ -7,6 +7,10 @@
 
 #include "Configuration.cpp"
 
+#define UA 1.4960e11
+#define year 365*24*60*60
+#define G 6.674e-11
+
 #define DEBUG
 #define WRITE_OUTPUT
 #define WRITE_TIME
@@ -15,9 +19,6 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-
-  // Gravity constant
-  const double G = 6.674e-11;
 
   string fileName;
 
@@ -32,14 +33,16 @@ int main(int argc, char* argv[])
   double dt = conf.get<double>("dt");
   double finalTime = conf.get<double>("finalTime");
   double samplingFreq = conf.get<double>("samplingFreq");
-  double startSampling = conf.get<double>("startSampling");
   string initialFile = conf.get<string>("initialFile");
   string outputFileName = conf.get<string>("outputFile");
   double maxSize = conf.get<double>("size");
+  int iteration = 0;
 
   conf.prepareInitialValues(initialFile);
   // Get the masses, positions and velocities for each object.
   int nbrBodies = conf.getNbrBodies();
+  vector<double> radius = conf.getInitialRadius();
+  vector<double> density = conf.getInitialDensity();
   vector<double> mass = conf.getInitialMass();
   vector<double> positions = conf.getInitialPositions();
   vector<double> velocities = conf.getInitialVelocities();
@@ -48,19 +51,15 @@ int main(int argc, char* argv[])
 
   #ifdef DEBUG
     cout << "Number of bodies: " << nbrBodies << endl;
-
-    for (unsigned int i=0; i<velocities.size(); i++) {
-      cout << velocities[i] << endl;
-    }
   #endif
 
   #ifdef WRITE_OUTPUT
     ofstream outputFile;
     outputFile.open(outputFileName.c_str());
     outputFile.precision(12);
-    outputFile << "# Time, Mass, X position, Y position" << endl;
+    outputFile << "# Time, Mass, Radius, X position, Y position, X velocity, Y velocity" << endl;
     for (int i=0; i<nbrBodies; i++) {
-      outputFile << 0 << ", " << mass[i] << ", " << positions[2*i] << ", " << positions[2*i+1] << endl;
+      outputFile << 0 << ", " << mass[i] << ", " << radius[i] << ", " << positions[2*i]/UA << ", " << positions[2*i+1]/UA << ", " << velocities[2*i] << ", " << velocities[2*i+1] << endl;
     }
   #endif
 
@@ -79,16 +78,14 @@ int main(int argc, char* argv[])
       cout << "Start loops for time " << t+dt << endl;
     #endif
 
-    #ifdef WRITE_TIME
-      std::clock_t startTimeIteration = std::clock();
-    #endif
-
     // First, we check if the planet is outside of the maximum size. If it's the case, we remove it
     for(int i=0; i<nbrBodies; i++) {
-      if(abs(positions[2*i]) > maxSize || abs(positions[2*i+1]) > maxSize) {
+      if(fabs(positions[2*i])/UA > maxSize || fabs(positions[2*i+1])/UA > maxSize) {
         #ifdef DEBUG
           cout << "Planet " << i << " is outside of the square! (" << positions[2*i] << ", " << positions[2*i+1] << ")" << endl;
         #endif
+        radius.erase(radius.begin() + i);
+        density.erase(density.begin() + i);
         mass.erase(mass.begin() + i);
         positions.erase(positions.begin() + 2*i, positions.begin() + 2*i+2);
         velocities.erase(velocities.begin() + 2*i, velocities.begin() + 2*i+2);
@@ -100,15 +97,21 @@ int main(int argc, char* argv[])
     for(int i=0; i<mass.size(); i++) {
       for(int j=i+1; j<mass.size(); j++) {
         double distance = sqrt(pow(positions[2*j]-positions[2*i],2) + pow(positions[2*j+1]-positions[2*i+1],2));
-        if(distance < 1) {
+        if(distance < (radius[i] + radius[j])) {
           #ifdef DEBUG
-            cout << "Planet " << i << " and Planet " << j << " are collapsing!";
-            cout << "Position planet " << i << ": (" << positions[2*i] << ", " << positions[2*i+1] << ");";
-            cout << "Position planet " << j << ": (" << positions[2*j] << ", " << positions[2*j+1] << ") " << endl;
+            cout << "Planet " << i << " and Planet " << j << " are collapsing! Distance between them: " << distance << ", Sum of radius: " << radius[i] + radius[j] << endl;
+            cout << "   Position planet " << i << ": (" << positions[2*i]/UA << ", " << positions[2*i+1]/UA << ");" << endl;
+            cout << "   Position planet " << j << ": (" << positions[2*j]/UA << ", " << positions[2*j+1]/UA << ") " << endl;
           #endif
+           // Update the values. We decide that the density will be the mean between the two planets
+          density[i] = (density[i] + density[j])/2.0;
           velocities[2*i] = (mass[i]*velocities[2*i] + mass[j]*velocities[2*j])/(mass[i]+mass[j]);
           velocities[2*i+1] = (mass[i]*velocities[2*i+1] + mass[j]*velocities[2*j+1])/(mass[i]+mass[j]);
           mass[i] += mass[j];
+          radius[i] = pow(mass[i]/(M_PI*density[i]),1.0/3.0);
+
+          radius.erase(radius.begin() + j);
+          density.erase(density.begin() + j);
           mass.erase(mass.begin() + j);
           positions.erase(positions.begin() + 2*j, positions.begin() + 2*j+2);
           velocities.erase(velocities.begin() + 2*j, velocities.begin() + 2*j+2);
@@ -120,30 +123,40 @@ int main(int argc, char* argv[])
     // Fix the positions to update the speed and then the positions
     fixedPositions = positions;
 
+    #ifdef WRITE_TIME
+      std::clock_t startTimeIteration = std::clock();
+    #endif
+
     for(int i=0; i<nbrBodies; i++) {
       for(int j=0; j<nbrBodies; j++) {
         // Don't take into account the same planet
 
         if(i!=j) {
           double distance = sqrt(pow(fixedPositions[2*j]-positions[2*i],2) + pow(fixedPositions[2*j+1]-positions[2*i+1],2));
-          velocities[2*i] += dt * (fixedPositions[2*j] - positions[2*i]) * G*mass[j]/(distance*distance*distance);
-          velocities[2*i+1] += dt * (fixedPositions[2*j+1] - positions[2*i+1]) * G*mass[j]/(distance*distance*distance);
+          velocities[2*i] += year*dt * (fixedPositions[2*j] - positions[2*i]) * G*mass[j]/(distance*distance*distance);
+          velocities[2*i+1] += year*dt * (fixedPositions[2*j+1] - positions[2*i+1]) * G*mass[j]/(distance*distance*distance);
         }
       }
       // Now we update the position of the body i
-      positions[2*i] += dt * velocities[2*i];
-  	  positions[2*i+1] += dt * velocities[2*i+1];
+      positions[2*i] += year*dt * velocities[2*i];
+  	  positions[2*i+1] += year*dt * velocities[2*i+1];
     }
 
+    iteration++;
+
     #ifdef WRITE_TIME
-      double iterationTime = (std::clock() - startTimeIteration) / (double) CLOCKS_PER_SEC;
-      outputTimeFile << "Iteration " << t+dt << ", " << iterationTime << endl;
+      if(floor(iteration*samplingFreq) == iteration*samplingFreq) {
+        double iterationTime = (std::clock() - startTimeIteration) / (double) CLOCKS_PER_SEC;
+        outputTimeFile << "Iteration " << t+dt << ", " << iterationTime << endl;
+      }
     #endif
 
     #ifdef WRITE_OUTPUT
-    for (int k = 0; k < nbrBodies;k++) {
-      outputFile << t+dt << "," << mass[k] << ", " << positions[2*k] << "," <<  positions[2*k+1] << std::endl;
-    }
+      if(floor(iteration*samplingFreq) == iteration*samplingFreq) {
+        for (int k = 0; k < nbrBodies;k++) {
+          outputFile << t+dt << "," << mass[k] << ", " << radius[k] << ", " << positions[2*k]/UA << "," <<  positions[2*k+1]/UA << ", " << velocities[2*k] << "," <<  velocities[2*k+1] << std::endl;
+        }
+      }
     #endif
   }
 

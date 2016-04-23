@@ -1,7 +1,6 @@
 dt=10
-finalTime=1000
-samplingFreq=1
-startSampling=0
-size=10000
-initialFile=values.dat
-outputFile=../results/output.dat
+finalTime=50000
+samplingFreq=0.1
+size=100000
+initialFile=../init/values_2.dat
+outputFile=../results/output_2.dat

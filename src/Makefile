@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS+=-Wall -g #-Werror
+CFLAGS+=-Wall -g -O3 -ftree-vectorize#-Werror
 EXEC_NAME = brute-force
 OBJ_FILES=brute-force.o
 

@@ -103,7 +103,7 @@ void Configuration::prepareInitialValues(const string& fileName) {
   #ifdef VERBOSE
     cout << "The file with the initial values has been loaded. The different vectors will now be created." << endl;
   #endif
-  nbrBodies = values.size() / 5;
+  nbrBodies = values.size() / 7;
 
   if (nbrBodies < 0) {
     cerr << "Wrong number of bodies." << endl;
@@ -111,11 +111,13 @@ void Configuration::prepareInitialValues(const string& fileName) {
   }
 
   for (int i=0; i<nbrBodies; i++) {
-    initialMass.push_back(values[i*5]);
-    initialPositions.push_back(values[i*5+1]);
-    initialPositions.push_back(values[i*5+2]);
-    initialVelocities.push_back(values[i*5+3]);
-    initialVelocities.push_back(values[i*5+4]);
+    initialRadius.push_back(values[i*7]);
+    initialDensity.push_back(values[i*7+1]);
+    initialMass.push_back(values[i*7+2]);
+    initialPositions.push_back(values[i*7+3]);
+    initialPositions.push_back(values[i*7+4]);
+    initialVelocities.push_back(values[i*7+5]);
+    initialVelocities.push_back(values[i*7+6]);
   }
 
   #ifdef VERBOSE
@@ -125,6 +127,14 @@ void Configuration::prepareInitialValues(const string& fileName) {
 
 int Configuration::getNbrBodies() {
    return nbrBodies;
+}
+
+vector<double> Configuration::getInitialRadius() {
+  return initialRadius;
+}
+
+vector<double> Configuration::getInitialDensity() {
+  return initialDensity;
 }
 
 vector<double> Configuration::getInitialMass() {
