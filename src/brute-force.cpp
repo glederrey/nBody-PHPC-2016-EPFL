@@ -41,8 +41,6 @@ int main(int argc, char* argv[])
   conf.prepareInitialValues(initialFile);
   // Get the masses, positions and velocities for each object.
   int nbrBodies = conf.getNbrBodies();
-  vector<double> radius = conf.getInitialRadius();
-  vector<double> density = conf.getInitialDensity();
   vector<double> mass = conf.getInitialMass();
   vector<double> positions = conf.getInitialPositions();
   vector<double> velocities = conf.getInitialVelocities();
@@ -57,9 +55,9 @@ int main(int argc, char* argv[])
     ofstream outputFile;
     outputFile.open(outputFileName.c_str());
     outputFile.precision(12);
-    outputFile << "# Time, Mass, Radius, X position, Y position, X velocity, Y velocity" << endl;
+    outputFile << "# Time, Mass, X position, Y position, X velocity, Y velocity" << endl;
     for (int i=0; i<nbrBodies; i++) {
-      outputFile << 0 << ", " << mass[i] << ", " << radius[i] << ", " << positions[2*i]/UA << ", " << positions[2*i+1]/UA << ", " << velocities[2*i] << ", " << velocities[2*i+1] << endl;
+      outputFile << 0 << ", " << mass[i] << ", " << positions[2*i]/UA << ", " << positions[2*i+1]/UA << ", " << velocities[2*i] << ", " << velocities[2*i+1] << endl;
     }
   #endif
 
@@ -84,8 +82,7 @@ int main(int argc, char* argv[])
         #ifdef DEBUG
           cout << "Planet " << i << " is outside of the square! (" << positions[2*i] << ", " << positions[2*i+1] << ")" << endl;
         #endif
-        radius.erase(radius.begin() + i);
-        density.erase(density.begin() + i);
+
         mass.erase(mass.begin() + i);
         positions.erase(positions.begin() + 2*i, positions.begin() + 2*i+2);
         velocities.erase(velocities.begin() + 2*i, velocities.begin() + 2*i+2);
@@ -94,24 +91,20 @@ int main(int argc, char* argv[])
     }
 
     // Then, we check if two planets are too close and collapse them
-    for(int i=0; i<mass.size(); i++) {
-      for(int j=i+1; j<mass.size(); j++) {
+    for(unsigned int i=0; i<mass.size(); i++) {
+      for(unsigned int j=i+1; j<mass.size(); j++) {
         double distance = sqrt(pow(positions[2*j]-positions[2*i],2) + pow(positions[2*j+1]-positions[2*i+1],2));
-        if(distance < (radius[i] + radius[j])) {
+        if(distance < 100000) { // Arbitrary distance
           #ifdef DEBUG
-            cout << "Planet " << i << " and Planet " << j << " are collapsing! Distance between them: " << distance << ", Sum of radius: " << radius[i] + radius[j] << endl;
+            cout << "Planet " << i << " and Planet " << j << " are collapsing! Distance between them: " << distance << endl;
             cout << "   Position planet " << i << ": (" << positions[2*i]/UA << ", " << positions[2*i+1]/UA << ");" << endl;
             cout << "   Position planet " << j << ": (" << positions[2*j]/UA << ", " << positions[2*j+1]/UA << ") " << endl;
           #endif
            // Update the values. We decide that the density will be the mean between the two planets
-          density[i] = (density[i] + density[j])/2.0;
           velocities[2*i] = (mass[i]*velocities[2*i] + mass[j]*velocities[2*j])/(mass[i]+mass[j]);
           velocities[2*i+1] = (mass[i]*velocities[2*i+1] + mass[j]*velocities[2*j+1])/(mass[i]+mass[j]);
           mass[i] += mass[j];
-          radius[i] = pow(mass[i]/(M_PI*density[i]),1.0/3.0);
 
-          radius.erase(radius.begin() + j);
-          density.erase(density.begin() + j);
           mass.erase(mass.begin() + j);
           positions.erase(positions.begin() + 2*j, positions.begin() + 2*j+2);
           velocities.erase(velocities.begin() + 2*j, velocities.begin() + 2*j+2);
@@ -154,7 +147,7 @@ int main(int argc, char* argv[])
     #ifdef WRITE_OUTPUT
       if(floor(iteration*samplingFreq) == iteration*samplingFreq) {
         for (int k = 0; k < nbrBodies;k++) {
-          outputFile << t+dt << "," << mass[k] << ", " << radius[k] << ", " << positions[2*k]/UA << "," <<  positions[2*k+1]/UA << ", " << velocities[2*k] << "," <<  velocities[2*k+1] << std::endl;
+          outputFile << t+dt << "," << mass[k] << ", " << positions[2*k]/UA << "," <<  positions[2*k+1]/UA << ", " << velocities[2*k] << "," <<  velocities[2*k+1] << std::endl;
         }
       }
     #endif

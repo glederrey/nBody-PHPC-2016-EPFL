@@ -28,8 +28,6 @@ class Configuration
 
     // Get methods
     int getNbrBodies();
-    vector<double> getInitialRadius();
-    vector<double> getInitialDensity();
     vector<double> getInitialMass();
     vector<double> getInitialPositions();
     vector<double> getInitialVelocities();
@@ -38,8 +36,6 @@ class Configuration
 
     map<string, string> configMap;
     int nbrBodies;
-    vector<double> initialRadius;
-    vector<double> initialDensity;
     vector<double> initialMass;
     vector<double> initialPositions;
     vector<double> initialVelocities;
