@@ -55,8 +55,11 @@ def main(number, size, file):
     min_dist = min_dist*0.9
 
     for i in range(number):
-        perp_x = -y[i+1]/dist[i+1]
-        perp_y = x[i+1]/dist[i+1]
+        integer = random.randint(0,1)
+        if integer==0:
+            integer = -1
+        perp_x = integer*-y[i+1]/dist[i+1]
+        perp_y = integer*x[i+1]/dist[i+1]
         speed = math.sqrt(G*(mass[0]+mass[i+1])/dist[i+1])
         # Speed in m/s
         vx.append(speed*perp_x)

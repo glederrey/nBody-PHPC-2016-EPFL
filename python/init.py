@@ -8,28 +8,23 @@ UA = 1.4960e11
 
 def main(number, size, file):
 
-    if file == None or number == None:
-        raise ValueError('File or Number of Bodies were not set')
+    if file == None or number == None or size == None:
+        raise ValueError('File, Number and/or Size was not set')
 
     x = []
     y = []
     vx = []
     vy = []
     v = []
-    density = []
-    radius = []
     mass = []
 
     for i in range(number):
         # in m
         x.append(UA*0.9*(random.random()*2.0*size - size))
         y.append(UA*0.9*(random.random()*2.0*size - size))
-        # in kg/m^3
-        density.append(1000000*(random.random()*10 + 0.01))
-        # in m
-        radius.append(1000*(random.random()*1000000+1))
         # in kg
-        mass.append(density[i]*math.pi*radius[i]*radius[i]*radius[i])
+        power = random.random()*34;
+        mass.append(random.random()*math.pow(10,power))
 
     for i in range(number):
         # Speed in m/s
@@ -38,9 +33,9 @@ def main(number, size, file):
         v.append(math.sqrt(vx[i]*vx[i]+vy[i]*vy[i]))
 
     with open(file, 'w') as init_file:
-        init_file.write('# radius, density, mass, x, y, vx, vy,\n')
+        init_file.write('# mass, x, y, vx, vy,\n')
         for i in range(number):
-            init_file.write('%s, %s, %s, %s, %s, %s, %s,\n'%(radius[i], density[i], mass[i], x[i], y[i], vx[i], vy[i]))
+            init_file.write('%s, %s, %s, %s, %s,\n'%(mass[i], x[i], y[i], vx[i], vy[i]))
 
 
 if __name__ == "__main__":

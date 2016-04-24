@@ -5,7 +5,7 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 
-size = 1000
+size = 10000
 
 def main(result_file):
     if result_file == None:
@@ -19,6 +19,8 @@ def main(result_file):
     plt.xlim(-size, size)
     plt.ylim(-size, size)
     plt.axis('equal')
+    nbr_bodies_start = 0
+    nbr_bodies_end = 0
     while idx < len(data):
         mass = []
         x = []
@@ -26,19 +28,27 @@ def main(result_file):
         time = data[idx, 0]
         while data[idx,0] == time:
             mass.append(data[idx,1])
-            x.append(data[idx,3])
-            y.append(data[idx,4])
+            x.append(data[idx,2])
+            y.append(data[idx,3])
+            if time==0:
+                nbr_bodies_start = len(x)
             idx+=1
             if idx==len(data):
+                nbr_bodies_end = len(x)
                 break
-
+        print "LOOL"
+        
         plt.clf()
         plt.plot(x,y, 'bo')
+        plt.axis('equal')
         plt.xlim(-size, size)
         plt.ylim(-size, size)
         plt.title(time)
-        plt.axis('equal')
         plt.pause(0.001)
+
+    print "Number bodies at the beginning of the simulation: %s"%nbr_bodies_start
+    print "Number bodies at the end of the simulation: %s"%nbr_bodies_end
+    print "Percentage of bodies lost: %s %%"%((float(nbr_bodies_start)-float(nbr_bodies_end))/float(nbr_bodies_start)*100)
 
 if __name__ == "__main__":
     argParser = argparse.ArgumentParser()
