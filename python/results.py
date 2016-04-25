@@ -36,8 +36,7 @@ def main(result_file):
             if idx==len(data):
                 nbr_bodies_end = len(x)
                 break
-        print "LOOL"
-        
+
         plt.clf()
         plt.plot(x,y, 'bo')
         plt.axis('equal')
