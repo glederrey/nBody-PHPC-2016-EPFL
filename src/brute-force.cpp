@@ -12,7 +12,7 @@
 #define G 6.674e-11
 
 #define DEBUG
-#define WRITE_OUTPUT
+//#define WRITE_OUTPUT
 #define WRITE_TIME
 
 using namespace std;
