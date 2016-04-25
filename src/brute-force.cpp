@@ -11,6 +11,7 @@
 #define year 365*24*60*60
 #define G 6.674e-11
 
+// These variables {VAR} can be written in the makefile with -D{VAR}
 #define DEBUG
 #define WRITE_OUTPUT
 #define WRITE_TIME
@@ -39,6 +40,17 @@ int main(int argc, char* argv[])
   double dvx = 0.0;
   double dvy = 0.0;
   int iteration = 0;
+  clock_t startTotal;
+  clock_t startSimulation;
+
+  #ifdef WRITE_TIME
+    startTotal = std::clock();
+    ofstream outputTimeFile;
+    size_t pos = outputFileName.rfind(".");
+    string outputTimeFileName = outputFileName.substr(0,pos) + "_time" + outputFileName.substr(pos);
+    outputTimeFile.open(outputTimeFileName.c_str());
+    outputTimeFile << "# Info, Time [s]" << endl;
+  #endif
 
   conf.prepareInitialValues(initialFile);
   // Get the masses, positions and velocities for each object.
@@ -53,15 +65,6 @@ int main(int argc, char* argv[])
     cout << "Number of bodies: " << nbrBodies << endl;
   #endif
 
-  #ifdef WRITE_TIME
-    std::clock_t start = std::clock();
-    ofstream outputTimeFile;
-    size_t pos = outputFileName.rfind(".");
-    string outputTimeFileName = outputFileName.substr(0,pos) + "_time" + outputFileName.substr(pos);
-    outputTimeFile.open(outputTimeFileName.c_str());
-    outputTimeFile << "# Info, Time [s]" << endl;
-  #endif
-
   #ifdef WRITE_OUTPUT
     ofstream outputFile;
     outputFile.open(outputFileName.c_str());
@@ -70,6 +73,12 @@ int main(int argc, char* argv[])
     for (int i=0; i<nbrBodies; i++) {
       outputFile << 0 << ", " << mass[i] << ", " << positions[2*i]/UA << ", " << positions[2*i+1]/UA << ", " << velocities[2*i] << ", " << velocities[2*i+1] << endl;
     }
+  #endif
+
+  #ifdef WRITE_TIME
+    double loadingTime = (std::clock() - startTotal) / (double) CLOCKS_PER_SEC;
+    outputTimeFile << "Loading data, " << loadingTime  << std::endl;
+    startSimulation = std::clock();
   #endif
 
   for(double t=0; t<finalTime; t+=dt) {
@@ -167,8 +176,10 @@ int main(int argc, char* argv[])
   }
 
   #ifdef WRITE_TIME
-    double simulationTime = (std::clock() - start) / (double) CLOCKS_PER_SEC;
-    outputTimeFile << "Total time, " << simulationTime  << std::endl;
+    double simulationTime = (std::clock() - startSimulation) / (double) CLOCKS_PER_SEC;
+    double totalTime = (std::clock() - startTotal) / (double) CLOCKS_PER_SEC;
+    outputTimeFile << "Simulation time, " << simulationTime  << std::endl;
+    outputTimeFile << "Total time, " << totalTime  << std::endl;
     outputTimeFile.close();
   #endif
 
@@ -176,5 +187,6 @@ int main(int argc, char* argv[])
     outputFile.close();
   #endif
 
+  exit(0);
 
 }
