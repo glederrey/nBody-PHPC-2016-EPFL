@@ -8,7 +8,7 @@
 #include "Configuration.cpp"
 
 #define UA 1.4960e11
-#define year 365*24*60*60
+#define day 24*60*60
 #define G 6.674e-11
 
 // These variables {VAR} can be written in the makefile with -D{VAR}
@@ -142,8 +142,8 @@ int main(int argc, char* argv[])
               // Get out of the for loop
               break;
             } else {
-              dvx += year*dt * (fixedPositions[2*j] - positions[2*i]) * G*mass[j]/(distance*distance*distance);
-              dvy += year*dt * (fixedPositions[2*j+1] - positions[2*i+1]) * G*mass[j]/(distance*distance*distance);
+              dvx += day*dt * (fixedPositions[2*j] - positions[2*i]) * G*mass[j]/(distance*distance*distance);
+              dvy += day*dt * (fixedPositions[2*j+1] - positions[2*i+1]) * G*mass[j]/(distance*distance*distance);
             }
           }
         }
@@ -151,8 +151,8 @@ int main(int argc, char* argv[])
         // Now we update the position of the body i
         velocities[2*i] += dvx;
         velocities[2*i+1] += dvy;
-        positions[2*i] += year*dt * velocities[2*i];
-        positions[2*i+1] += year*dt * velocities[2*i+1];
+        positions[2*i] += day*dt * velocities[2*i];
+        positions[2*i+1] += day*dt * velocities[2*i+1];
 
       }
     }

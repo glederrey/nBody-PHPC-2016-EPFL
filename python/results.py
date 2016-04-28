@@ -5,7 +5,7 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 
-size = 10000
+size = 50
 
 def main(result_file):
     if result_file == None:

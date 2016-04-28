@@ -9,7 +9,7 @@
 #include "Configuration.cpp"
 
 #define UA 1.4960e11
-#define year 365*24*60*60
+#define day 24*60*60
 #define G 6.674e-11
 
 // These variables {VAR} can be written in the makefile with -D{VAR}
@@ -263,16 +263,16 @@ int main(int argc, char* argv[])
               // Get out of the for loop
               break;
             } else {
-              dvx += year*dt * (fixedPositions[2*j] - localPositions[2*i]) * G*fixedMass[j]/(distance*distance*distance);
-              dvy += year*dt * (fixedPositions[2*j+1] - localPositions[2*i+1]) * G*fixedMass[j]/(distance*distance*distance);
+              dvx += day*dt * (fixedPositions[2*j] - localPositions[2*i]) * G*fixedMass[j]/(distance*distance*distance);
+              dvy += day*dt * (fixedPositions[2*j+1] - localPositions[2*i+1]) * G*fixedMass[j]/(distance*distance*distance);
             }
           }
         }
 
         localVelocities[2*i] += dvx;
         localVelocities[2*i+1] += dvy;
-        localPositions[2*i] += year*dt * localVelocities[2*i];
-        localPositions[2*i+1] += year*dt * localVelocities[2*i+1];
+        localPositions[2*i] += day*dt * localVelocities[2*i];
+        localPositions[2*i+1] += day*dt * localVelocities[2*i+1];
 
       }
     }
