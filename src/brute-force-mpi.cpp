@@ -14,7 +14,7 @@
 
 // These variables {VAR} can be written in the makefile with -D{VAR}
 #define DEBUG
-//#define WRITE_OUTPUT
+#define WRITE_OUTPUT
 #define WRITE_TIME
 
 using namespace std;
@@ -101,11 +101,12 @@ int main(int argc, char* argv[])
 
     #ifdef WRITE_OUTPUT
       outputFile.open(outputFileName.c_str());
-      outputFile.precision(12);
+      outputFile.precision(5);
       outputFile << "# Time, Mass, X position, Y position, X velocity, Y velocity" << endl;
       for (int i=0; i<nbrBodies; i++) {
-        outputFile << 0 << ", " << mass[i] << ", " << fixedPositions[2*i]/UA << ", " << fixedPositions[2*i+1]/UA << ", " << fixedVelocities[2*i] << ", " << fixedVelocities[2*i+1] << endl;
+        outputFile << 0 << ", " << fixedMass[i] << ", " << fixedPositions[2*i]/UA << ", " << fixedPositions[2*i+1]/UA << ", " << fixedVelocities[2*i] << ", " << fixedVelocities[2*i+1] << endl;
       }
+      outputFile.close();
     #endif
 
   }
@@ -204,6 +205,7 @@ int main(int argc, char* argv[])
       #endif
     }
 
+
     for(int i=0; i<localNbrBodies[myRank]; i++) {
 
       int idx = i + startIndex[myRank]; // Index needs to be shifted in order to compare to j
@@ -236,10 +238,10 @@ int main(int argc, char* argv[])
             if(distance < 100000) { // Arbitrary distance
               #ifdef DEBUG
                 cout << "Planet " << i << " (in process " << myRank << ") and Planet " << j << " are collapsing! Distance between them: " << distance << endl;
-                cout << "   Position planet " << i << ": (" << localPositions[2*i]/UA << ", " << localPositions[2*i+1]/UA << ");" << endl;
-                cout << "   Position planet " << j << ": (" << fixedPositions[2*j]/UA << ", " << fixedPositions[2*j+1]/UA << ") " << endl;
+                cout << "   Position planet " << i << " (mass: " << localMass[i] << "): (" << localPositions[2*i]/UA << ", " << localPositions[2*i+1]/UA << ");" << endl;
+                cout << "   Position planet " << j << ": (mass: " << fixedMass[j] << "): (" << fixedPositions[2*j]/UA << ", " << fixedPositions[2*j+1]/UA << ") " << endl;
               #endif
-              exit(1);
+
                // Update the values. We decide that the mass will be the sume of the two planets
               localVelocities[2*i] = (localMass[i]*localVelocities[2*i] + fixedMass[j]*fixedVelocities[2*j])/(localMass[i]+fixedMass[j]);
               localVelocities[2*i+1] = (localMass[i]*localVelocities[2*i+1] + fixedMass[j]*fixedVelocities[2*j+1])/(localMass[i]+fixedMass[j]);
@@ -280,30 +282,73 @@ int main(int argc, char* argv[])
     // Now, we first send the number of remaining bodies
     int size = localPositions.size()/2;
     MPI_Send(&size, 1, MPI_INT, 0, 3, MPI_COMM_WORLD);
-    MPI_Send(&localMass, localMass.size(), MPI_INT, 0, 4, MPI_COMM_WORLD);
-    MPI_Send(&localPositions, localPositions.size(), MPI_INT, 0, 5, MPI_COMM_WORLD);
-    MPI_Send(&localVelocities, localVelocities.size(), MPI_INT, 0, 6, MPI_COMM_WORLD);
+    // Send the local mass, local positions and local velocities
+    MPI_Send(&localMass[0], localMass.size(), MPI_DOUBLE, 0, 4, MPI_COMM_WORLD);
+    MPI_Send(&localPositions[0], localPositions.size(), MPI_DOUBLE, 0, 5, MPI_COMM_WORLD);
+    MPI_Send(&localVelocities[0], localVelocities.size(), MPI_DOUBLE, 0, 6, MPI_COMM_WORLD);
 
     // Rank 0 will get them and update the vector localNbrBodies
     if(myRank == 0) {
+      // Update localNbrBodies and startIndex
+      nbrBodies = 0;
       for(int k=0; k<nbrProcs; k++) {
         MPI_Recv(&localNbrBodies[k], 1, MPI_INT, k, 3, MPI_COMM_WORLD, &status);
+        nbrBodies += localNbrBodies[k];
         if(k>0) {
           startIndex[k] = 2*localNbrBodies[k-1] + startIndex[k-1];
         }
-
       }
-
-      // TODO: Continue to implement the sending of all the local variables and then send back the rest with RANK 0
-
-      cout << "ABORT" << endl;
-      exit(1);
     }
 
+    // Resend the number of bodies
+    MPI_Bcast(&nbrBodies, 1, MPI_INT, 0, MPI_COMM_WORLD);
+    // Resend the local number of bodies and the startIndex
+    MPI_Bcast(&localNbrBodies[0], nbrProcs, MPI_INT, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&startIndex[0], nbrProcs, MPI_INT, 0, MPI_COMM_WORLD);
+
+    // Resize the different vectors for all the process
+    localMass.resize(2*localNbrBodies[myRank]);
+    localPositions.resize(2*localNbrBodies[myRank]);
+    localVelocities.resize(2*localNbrBodies[myRank]);
+
+    fixedMass.resize(nbrBodies);
+    fixedPositions.resize(2*nbrBodies);
+    fixedVelocities.resize(2*nbrBodies);
 
 
-    // Now we will send the localPositions to the rank 0
-    //MPI_Send(&localPositions[0], 2*localNbrBodies[i], MPI_DOUBLE, i, 0, MPI_COMM_WORLD);
+    if(myRank == 0) {
+
+      // Repopulate the vectors
+      for(int k=0; k<nbrProcs; k++) {
+        MPI_Recv(&fixedMass[startIndex[k]], localNbrBodies[k], MPI_DOUBLE, k, 4, MPI_COMM_WORLD, &status);
+        MPI_Recv(&fixedPositions[startIndex[k]], 2*localNbrBodies[k], MPI_DOUBLE, k, 5, MPI_COMM_WORLD, &status);
+        MPI_Recv(&fixedVelocities[startIndex[k]], 2*localNbrBodies[k], MPI_DOUBLE, k, 6, MPI_COMM_WORLD, &status);
+      };
+
+    }
+    // Resend them
+    MPI_Bcast(&fixedMass[0], nbrBodies, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&fixedPositions[0], 2*nbrBodies, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    MPI_Bcast(&fixedVelocities[0], 2*nbrBodies, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+
+    if(myRank == 0) {
+      for(int k=0; k<nbrProcs; k++) {
+        // Position sent with tag 7
+        MPI_Send(&fixedPositions[2*startIndex[k]], 2*localNbrBodies[k], MPI_DOUBLE, k, 7, MPI_COMM_WORLD);
+        // Velocity sent with tag 8
+        MPI_Send(&fixedVelocities[2*startIndex[k]], 2*localNbrBodies[k], MPI_DOUBLE, k, 8, MPI_COMM_WORLD);
+        // Mass sent with tag 9
+        MPI_Send(&fixedMass[startIndex[k]], localNbrBodies[k], MPI_DOUBLE, k, 9, MPI_COMM_WORLD);
+
+      }
+      /*if(iteration == 1) {
+        exit(1);
+      }*/
+    }
+
+    MPI_Recv(&localPositions[0], 2*localNbrBodies[myRank], MPI_DOUBLE, 0, 7, MPI_COMM_WORLD, &status);
+    MPI_Recv(&localVelocities[0], 2*localNbrBodies[myRank], MPI_DOUBLE, 0, 8, MPI_COMM_WORLD, &status);
+    MPI_Recv(&localMass[0], localNbrBodies[myRank], MPI_DOUBLE, 0, 9, MPI_COMM_WORLD, &status);
 
     iteration++;
 
@@ -314,7 +359,46 @@ int main(int argc, char* argv[])
           outputTimeFile << "Iteration " << t+dt << ", " << iterationTime << endl;
         }
       #endif
+
+      #ifdef WRITE_OUTPUT
+        if(floor(iteration*samplingFreq) == iteration*samplingFreq) {
+          outputFile.open(outputFileName.c_str(),fstream::app);
+          outputFile.precision(5);
+          for (int k = 0; k < fixedMass.size(); k++) {
+            outputFile << t+dt << ", " << fixedMass[k] << ", " << fixedPositions[2*k]/UA << ", " <<  fixedPositions[2*k+1]/UA << ", " << fixedVelocities[2*k] << ", " <<  fixedVelocities[2*k+1] << endl;
+          }
+          outputFile.close();
+        }
+
+        cout << "FINISHED WRITING" << endl;
+      #endif
     }
+
+    if(myRank == 0) {
+      #ifdef WRITE_OUTPUT
+          string name = "../results/debug_rank_0.txt";
+          ofstream out;
+          out.open(name.c_str());
+          out.precision(5);
+          for (int k = 0; k < localMass.size(); k++) {
+            out << t+dt << ", " << localMass[k] << ", " << localPositions[2*k]/UA << ", " <<  localPositions[2*k+1]/UA << ", " << localVelocities[2*k] << ", " <<  localVelocities[2*k+1] << endl;
+          }
+          out.close();
+      #endif
+    } else if(myRank == 1) {
+      #ifdef WRITE_OUTPUT
+          string name = "../results/debug_rank_1.txt";
+          ofstream out;
+          out.open(name.c_str());
+          out.precision(5);
+          for (int k = 0; k < localMass.size(); k++) {
+            out << t+dt << ", " << localMass[k] << ", " << localPositions[2*k]/UA << ", " <<  localPositions[2*k+1]/UA << ", " << localVelocities[2*k] << ", " <<  localVelocities[2*k+1] << endl;
+          }
+          out.close();
+      #endif
+    }
+
+    MPI_Bcast(&nbrBodies, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
   }
 
