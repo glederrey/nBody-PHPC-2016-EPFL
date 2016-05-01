@@ -1,0 +1,59 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                         %
+%              Plot the different objects in a single figure              %
+%                                                                         %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+filename = '../results/test_ss_parallel.dat';
+solar_system = true;
+delimiterIn = ',';
+headerlinesIn = 1;
+
+if solar_system
+sun =([247, 115, 12]./255);
+mercury([250, 248, 242]./255);
+venus([255, 255, 242]);
+earth([11, 92, 227]);
+mars([240, 198, 29]);
+jupiter([253, 199, 145]);
+saturn([224, 196, 34]);
+uranus([220, 241, 245]);
+neptune([57, 182, 247]);
+end
+
+data = importdata(filename,delimiterIn,headerlinesIn);
+data = data.data;
+
+length(data)
+
+figure()
+idx = 1;
+while idx < length(data)
+    mass = [];
+    x = [];
+    y = [];
+    time = data(idx, 1);
+    while data(idx, 1) == time
+       mass = [mass;  data(idx, 2)];
+       x = [x;  data(idx, 3)];
+       y = [y;  data(idx, 4)];
+       idx = idx +1;  
+    end
+    
+    if solar_system
+       scatter(x(10:end),y(10:end), 'k.'); 
+        
+    end
+    
+    x(1)
+    y(1)
+    
+    plot(x(1),y(1),'Color', sun, 'Marker','.','Markersize',40);
+    hold on;
+    
+    axis('equal');
+    
+    
+    
+    break;
+end
