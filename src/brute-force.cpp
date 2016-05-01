@@ -12,9 +12,9 @@
 #define G 6.674e-11
 
 // These variables {VAR} can be written in the makefile with -D{VAR}
-#define DEBUG
-#define WRITE_OUTPUT
-#define WRITE_TIME
+//#define DEBUG
+//#define WRITE_OUTPUT
+//#define WRITE_TIME
 
 using namespace std;
 
@@ -169,7 +169,7 @@ int main(int argc, char* argv[])
     #ifdef WRITE_OUTPUT
       if(floor(iteration*samplingFreq) == iteration*samplingFreq) {
         for (int k = 0; k < nbrBodies;k++) {
-          outputFile << t+dt << "," << mass[k] << ", " << positions[2*k]/UA << "," <<  positions[2*k+1]/UA << ", " << velocities[2*k] << "," <<  velocities[2*k+1] << std::endl;
+          outputFile << t+dt << ", " << mass[k] << ", " << positions[2*k]/UA << ", " <<  positions[2*k+1]/UA << ", " << velocities[2*k] << ", " <<  velocities[2*k+1] << std::endl;
         }
       }
     #endif

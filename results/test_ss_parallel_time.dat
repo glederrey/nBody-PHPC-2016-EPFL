@@ -1,0 +1,1005 @@
+# Info, Time [s]
+Loading data, 0.0464721
+Sending data, 0.00149798
+Iteration 10, 0.010792
+Iteration 10 Send time, 0.113453
+Iteration 20, 0.0104811
+Iteration 20 Send time, 0.0941219
+Iteration 30, 0.0104289
+Iteration 30 Send time, 0.094053
+Iteration 40, 0.010432
+Iteration 40 Send time, 0.0941269
+Iteration 50, 0.010438
+Iteration 50 Send time, 0.0941269
+Iteration 60, 0.0104382
+Iteration 60 Send time, 0.0940392
+Iteration 70, 0.0104489
+Iteration 70 Send time, 0.0940371
+Iteration 80, 0.0104361
+Iteration 80 Send time, 0.0942931
+Iteration 90, 0.0104239
+Iteration 90 Send time, 0.094506
+Iteration 100, 0.0104439
+Iteration 100 Send time, 0.094089
+Iteration 110, 0.010428
+Iteration 110 Send time, 0.0940371
+Iteration 120, 0.0104289
+Iteration 120 Send time, 0.0940211
+Iteration 130, 0.010428
+Iteration 130 Send time, 0.0940411
+Iteration 140, 0.010422
+Iteration 140 Send time, 0.0940211
+Iteration 150, 0.010422
+Iteration 150 Send time, 0.0940521
+Iteration 160, 0.0104229
+Iteration 160 Send time, 0.0940158
+Iteration 170, 0.0106099
+Iteration 170 Send time, 0.0942509
+Iteration 180, 0.010428
+Iteration 180 Send time, 0.094013
+Iteration 190, 0.010433
+Iteration 190 Send time, 0.0941691
+Iteration 200, 0.0104408
+Iteration 200 Send time, 0.0941858
+Iteration 210, 0.0104332
+Iteration 210 Send time, 0.094208
+Iteration 220, 0.0104442
+Iteration 220 Send time, 0.094203
+Iteration 230, 0.010442
+Iteration 230 Send time, 0.0941741
+Iteration 240, 0.010463
+Iteration 240 Send time, 0.094383
+Iteration 250, 0.0104351
+Iteration 250 Send time, 0.0941689
+Iteration 260, 0.0104291
+Iteration 260 Send time, 0.094223
+Iteration 270, 0.0104539
+Iteration 270 Send time, 0.09426
+Iteration 280, 0.0104451
+Iteration 280 Send time, 0.0942762
+Iteration 290, 0.0104549
+Iteration 290 Send time, 0.0942149
+Iteration 300, 0.010443
+Iteration 300 Send time, 0.094707
+Iteration 310, 0.010442
+Iteration 310 Send time, 0.094147
+Iteration 320, 0.010442
+Iteration 320 Send time, 0.0942409
+Iteration 330, 0.00536418
+Iteration 330 Send time, 0.0689802
+Iteration 340, 0.00594306
+Iteration 340 Send time, 0.048835
+Iteration 350, 0.00678706
+Iteration 350 Send time, 0.0613842
+Iteration 360, 0.0107729
+Iteration 360 Send time, 0.100835
+Iteration 370, 0.0111482
+Iteration 370 Send time, 0.0998211
+Iteration 380, 0.010468
+Iteration 380 Send time, 0.099396
+Iteration 390, 0.010483
+Iteration 390 Send time, 0.095083
+Iteration 400, 0.010489
+Iteration 400 Send time, 0.096149
+Iteration 410, 0.0104702
+Iteration 410 Send time, 0.0949421
+Iteration 420, 0.0104611
+Iteration 420 Send time, 0.0944979
+Iteration 430, 0.0104291
+Iteration 430 Send time, 0.0946331
+Iteration 440, 0.0104649
+Iteration 440 Send time, 0.0945451
+Iteration 450, 0.0104699
+Iteration 450 Send time, 0.0953801
+Iteration 460, 0.010416
+Iteration 460 Send time, 0.100521
+Iteration 470, 0.0104179
+Iteration 470 Send time, 0.0944359
+Iteration 480, 0.010402
+Iteration 480 Send time, 0.0938759
+Iteration 490, 0.0104051
+Iteration 490 Send time, 0.094445
+Iteration 500, 0.010396
+Iteration 500 Send time, 0.0938389
+Iteration 510, 0.0103941
+Iteration 510 Send time, 0.0937731
+Iteration 520, 0.0104139
+Iteration 520 Send time, 0.0938179
+Iteration 530, 0.010392
+Iteration 530 Send time, 0.093749
+Iteration 540, 0.0103951
+Iteration 540 Send time, 0.0937719
+Iteration 550, 0.01039
+Iteration 550 Send time, 0.0937879
+Iteration 560, 0.0104308
+Iteration 560 Send time, 0.0937991
+Iteration 570, 0.0104039
+Iteration 570 Send time, 0.093904
+Iteration 580, 0.0104411
+Iteration 580 Send time, 0.0928869
+Iteration 590, 0.0104501
+Iteration 590 Send time, 0.0942471
+Iteration 600, 0.010438
+Iteration 600 Send time, 0.0942931
+Iteration 610, 0.010432
+Iteration 610 Send time, 0.094249
+Iteration 620, 0.0104511
+Iteration 620 Send time, 0.094229
+Iteration 630, 0.010432
+Iteration 630 Send time, 0.0942659
+Iteration 640, 0.0104399
+Iteration 640 Send time, 0.0942159
+Iteration 650, 0.010443
+Iteration 650 Send time, 0.0942879
+Iteration 660, 0.0104411
+Iteration 660 Send time, 0.094255
+Iteration 670, 0.010442
+Iteration 670 Send time, 0.0942299
+Iteration 680, 0.0104511
+Iteration 680 Send time, 0.09431
+Iteration 690, 0.0104899
+Iteration 690 Send time, 0.0943339
+Iteration 700, 0.010457
+Iteration 700 Send time, 0.0943861
+Iteration 710, 0.0104539
+Iteration 710 Send time, 0.094316
+Iteration 720, 0.0104361
+Iteration 720 Send time, 0.0944021
+Iteration 730, 0.0104442
+Iteration 730 Send time, 0.0942771
+Iteration 740, 0.010453
+Iteration 740 Send time, 0.0943429
+Iteration 750, 0.0104671
+Iteration 750 Send time, 0.0943041
+Iteration 760, 0.0053978
+Iteration 760 Send time, 0.063875
+Iteration 770, 0.00541782
+Iteration 770 Send time, 0.0491028
+Iteration 780, 0.00556493
+Iteration 780 Send time, 0.0496209
+Iteration 790, 0.00537014
+Iteration 790 Send time, 0.048902
+Iteration 800, 0.00605607
+Iteration 800 Send time, 0.0504222
+Iteration 810, 0.0053401
+Iteration 810 Send time, 0.0490611
+Iteration 820, 0.00532198
+Iteration 820 Send time, 0.0496821
+Iteration 830, 0.00540304
+Iteration 830 Send time, 0.04983
+Iteration 840, 0.00530601
+Iteration 840 Send time, 0.049932
+Iteration 850, 0.00547814
+Iteration 850 Send time, 0.0493381
+Iteration 860, 0.00529289
+Iteration 860 Send time, 0.0502369
+Iteration 870, 0.0054388
+Iteration 870 Send time, 0.049577
+Iteration 880, 0.00532293
+Iteration 880 Send time, 0.0490291
+Iteration 890, 0.00542688
+Iteration 890 Send time, 0.0524409
+Iteration 900, 0.00533295
+Iteration 900 Send time, 0.04866
+Iteration 910, 0.00528407
+Iteration 910 Send time, 0.04848
+Iteration 920, 0.00527883
+Iteration 920 Send time, 0.0483968
+Iteration 930, 0.00547791
+Iteration 930 Send time, 0.0493081
+Iteration 940, 0.0054841
+Iteration 940 Send time, 0.048878
+Iteration 950, 0.00529099
+Iteration 950 Send time, 0.050216
+Iteration 960, 0.00543499
+Iteration 960 Send time, 0.049989
+Iteration 970, 0.00529099
+Iteration 970 Send time, 0.0492809
+Iteration 980, 0.00532508
+Iteration 980 Send time, 0.049408
+Iteration 990, 0.00532198
+Iteration 990 Send time, 0.0495322
+Iteration 1000, 0.00552702
+Iteration 1000 Send time, 0.0499039
+Iteration 1010, 0.00562501
+Iteration 1010 Send time, 0.052587
+Iteration 1020, 0.00528407
+Iteration 1020 Send time, 0.0489531
+Iteration 1030, 0.00529218
+Iteration 1030 Send time, 0.0489872
+Iteration 1040, 0.00609207
+Iteration 1040 Send time, 0.051116
+Iteration 1050, 0.00528789
+Iteration 1050 Send time, 0.0487909
+Iteration 1060, 0.00531697
+Iteration 1060 Send time, 0.0493691
+Iteration 1070, 0.00529313
+Iteration 1070 Send time, 0.0490291
+Iteration 1080, 0.00529003
+Iteration 1080 Send time, 0.0490351
+Iteration 1090, 0.00530314
+Iteration 1090 Send time, 0.0488241
+Iteration 1100, 0.0052979
+Iteration 1100 Send time, 0.0492358
+Iteration 1110, 0.00549507
+Iteration 1110 Send time, 0.0496562
+Iteration 1120, 0.00574303
+Iteration 1120 Send time, 0.0491509
+Iteration 1130, 0.00529313
+Iteration 1130 Send time, 0.0500572
+Iteration 1140, 0.00527906
+Iteration 1140 Send time, 0.0490971
+Iteration 1150, 0.00529003
+Iteration 1150 Send time, 0.048743
+Iteration 1160, 0.0104241
+Iteration 1160 Send time, 0.0941892
+Iteration 1170, 0.010428
+Iteration 1170 Send time, 0.094125
+Iteration 1180, 0.0104139
+Iteration 1180 Send time, 0.0941238
+Iteration 1190, 0.0103951
+Iteration 1190 Send time, 0.0940521
+Iteration 1200, 0.0103922
+Iteration 1200 Send time, 0.0938761
+Iteration 1210, 0.0104008
+Iteration 1210 Send time, 0.0939
+Iteration 1220, 0.0104058
+Iteration 1220 Send time, 0.0939779
+Iteration 1230, 0.010401
+Iteration 1230 Send time, 0.0938449
+Iteration 1240, 0.010406
+Iteration 1240 Send time, 0.09389
+Iteration 1250, 0.010396
+Iteration 1250 Send time, 0.0939028
+Iteration 1260, 0.0104439
+Iteration 1260 Send time, 0.093894
+Iteration 1270, 0.0103931
+Iteration 1270 Send time, 0.094362
+Iteration 1280, 0.0103929
+Iteration 1280 Send time, 0.0938179
+Iteration 1290, 0.0104001
+Iteration 1290 Send time, 0.0938752
+Iteration 1300, 0.0104198
+Iteration 1300 Send time, 0.0938859
+Iteration 1310, 0.010392
+Iteration 1310 Send time, 0.0938389
+Iteration 1320, 0.0103951
+Iteration 1320 Send time, 0.093894
+Iteration 1330, 0.010402
+Iteration 1330 Send time, 0.0938659
+Iteration 1340, 0.0104191
+Iteration 1340 Send time, 0.0939291
+Iteration 1350, 0.00529885
+Iteration 1350 Send time, 0.055625
+Iteration 1360, 0.00534701
+Iteration 1360 Send time, 0.048677
+Iteration 1370, 0.0053339
+Iteration 1370 Send time, 0.050509
+Iteration 1380, 0.00543308
+Iteration 1380 Send time, 0.0494411
+Iteration 1390, 0.00541091
+Iteration 1390 Send time, 0.0488098
+Iteration 1400, 0.00528693
+Iteration 1400 Send time, 0.0488939
+Iteration 1410, 0.00526595
+Iteration 1410 Send time, 0.048629
+Iteration 1420, 0.00608182
+Iteration 1420 Send time, 0.0498738
+Iteration 1430, 0.00528097
+Iteration 1430 Send time, 0.049268
+Iteration 1440, 0.0053339
+Iteration 1440 Send time, 0.0530639
+Iteration 1450, 0.00552702
+Iteration 1450 Send time, 0.048466
+Iteration 1460, 0.00527096
+Iteration 1460 Send time, 0.0489161
+Iteration 1470, 0.00527
+Iteration 1470 Send time, 0.048826
+Iteration 1480, 0.00531316
+Iteration 1480 Send time, 0.0485661
+Iteration 1490, 0.00528312
+Iteration 1490 Send time, 0.048667
+Iteration 1500, 0.00546217
+Iteration 1500 Send time, 0.0487731
+Iteration 1510, 0.00540304
+Iteration 1510 Send time, 0.0482011
+Iteration 1520, 0.00527501
+Iteration 1520 Send time, 0.048738
+Iteration 1530, 0.00531602
+Iteration 1530 Send time, 0.051194
+Iteration 1540, 0.00531292
+Iteration 1540 Send time, 0.048471
+Iteration 1550, 0.00537395
+Iteration 1550 Send time, 0.04883
+Iteration 1560, 0.00531912
+Iteration 1560 Send time, 0.0487649
+Iteration 1570, 0.00536823
+Iteration 1570 Send time, 0.05023
+Iteration 1580, 0.00539899
+Iteration 1580 Send time, 0.049283
+Iteration 1590, 0.00534201
+Iteration 1590 Send time, 0.0491838
+Iteration 1600, 0.00527596
+Iteration 1600 Send time, 0.0490792
+Iteration 1610, 0.00528407
+Iteration 1610 Send time, 0.0493
+Iteration 1620, 0.00541997
+Iteration 1620 Send time, 0.048924
+Iteration 1630, 0.00529408
+Iteration 1630 Send time, 0.049067
+Iteration 1640, 0.00538921
+Iteration 1640 Send time, 0.0491402
+Iteration 1650, 0.00555587
+Iteration 1650 Send time, 0.049149
+Iteration 1660, 0.010417
+Iteration 1660 Send time, 0.0940559
+Iteration 1670, 0.0104091
+Iteration 1670 Send time, 0.0943542
+Iteration 1680, 0.010412
+Iteration 1680 Send time, 0.0939322
+Iteration 1690, 0.010412
+Iteration 1690 Send time, 0.0939541
+Iteration 1700, 0.010406
+Iteration 1700 Send time, 0.0939541
+Iteration 1710, 0.0104101
+Iteration 1710 Send time, 0.0939691
+Iteration 1720, 0.010474
+Iteration 1720 Send time, 0.094398
+Iteration 1730, 0.0104282
+Iteration 1730 Send time, 0.094372
+Iteration 1740, 0.0104132
+Iteration 1740 Send time, 0.095072
+Iteration 1750, 0.0104091
+Iteration 1750 Send time, 0.094002
+Iteration 1760, 0.0104151
+Iteration 1760 Send time, 0.093956
+Iteration 1770, 0.0104151
+Iteration 1770 Send time, 0.0940671
+Iteration 1780, 0.010411
+Iteration 1780 Send time, 0.094017
+Iteration 1790, 0.0104241
+Iteration 1790 Send time, 0.0943961
+Iteration 1800, 0.00532198
+Iteration 1800 Send time, 0.053067
+Iteration 1810, 0.00563216
+Iteration 1810 Send time, 0.051162
+Iteration 1820, 0.00529099
+Iteration 1820 Send time, 0.0522008
+Iteration 1830, 0.00565386
+Iteration 1830 Send time, 0.0502849
+Iteration 1840, 0.00582218
+Iteration 1840 Send time, 0.0498731
+Iteration 1850, 0.00557804
+Iteration 1850 Send time, 0.05161
+Iteration 1860, 0.00535107
+Iteration 1860 Send time, 0.050627
+Iteration 1870, 0.0053091
+Iteration 1870 Send time, 0.050173
+Iteration 1880, 0.00528908
+Iteration 1880 Send time, 0.0497222
+Iteration 1890, 0.0054698
+Iteration 1890 Send time, 0.049778
+Iteration 1900, 0.00666213
+Iteration 1900 Send time, 0.052933
+Iteration 1910, 0.0108309
+Iteration 1910 Send time, 0.0830698
+Iteration 1920, 0.0104151
+Iteration 1920 Send time, 0.0970681
+Iteration 1930, 0.0104151
+Iteration 1930 Send time, 0.0939622
+Iteration 1940, 0.0104179
+Iteration 1940 Send time, 0.0944169
+Iteration 1950, 0.0104139
+Iteration 1950 Send time, 0.0939579
+Iteration 1960, 0.0104139
+Iteration 1960 Send time, 0.093956
+Iteration 1970, 0.010519
+Iteration 1970 Send time, 0.0942969
+Iteration 1980, 0.010709
+Iteration 1980 Send time, 0.098083
+Iteration 1990, 0.010932
+Iteration 1990 Send time, 0.102599
+Iteration 2000, 0.0113192
+Iteration 2000 Send time, 0.097167
+Iteration 2010, 0.010411
+Iteration 2010 Send time, 0.09707
+Iteration 2020, 0.0104129
+Iteration 2020 Send time, 0.095458
+Iteration 2030, 0.0105529
+Iteration 2030 Send time, 0.097759
+Iteration 2040, 0.0104029
+Iteration 2040 Send time, 0.095433
+Iteration 2050, 0.0104108
+Iteration 2050 Send time, 0.0943868
+Iteration 2060, 0.010417
+Iteration 2060 Send time, 0.094836
+Iteration 2070, 0.010407
+Iteration 2070 Send time, 0.0952761
+Iteration 2080, 0.0104241
+Iteration 2080 Send time, 0.0943992
+Iteration 2090, 0.0104139
+Iteration 2090 Send time, 0.0958579
+Iteration 2100, 0.0104351
+Iteration 2100 Send time, 0.0971839
+Iteration 2110, 0.0104311
+Iteration 2110 Send time, 0.0941041
+Iteration 2120, 0.0104058
+Iteration 2120 Send time, 0.0943918
+Iteration 2130, 0.010402
+Iteration 2130 Send time, 0.094384
+Iteration 2140, 0.0104039
+Iteration 2140 Send time, 0.0943551
+Iteration 2150, 0.0104098
+Iteration 2150 Send time, 0.0939908
+Iteration 2160, 0.0104558
+Iteration 2160 Send time, 0.0944779
+Iteration 2170, 0.0104079
+Iteration 2170 Send time, 0.0939889
+Iteration 2180, 0.010416
+Iteration 2180 Send time, 0.094147
+Iteration 2190, 0.010407
+Iteration 2190 Send time, 0.0939729
+Iteration 2200, 0.010411
+Iteration 2200 Send time, 0.0943558
+Iteration 2210, 0.0104191
+Iteration 2210 Send time, 0.094378
+Iteration 2220, 0.010402
+Iteration 2220 Send time, 0.0939929
+Iteration 2230, 0.0104351
+Iteration 2230 Send time, 0.093997
+Iteration 2240, 0.0103998
+Iteration 2240 Send time, 0.0943968
+Iteration 2250, 0.0104051
+Iteration 2250 Send time, 0.094635
+Iteration 2260, 0.0104039
+Iteration 2260 Send time, 0.094877
+Iteration 2270, 0.010406
+Iteration 2270 Send time, 0.0939939
+Iteration 2280, 0.010402
+Iteration 2280 Send time, 0.093926
+Iteration 2290, 0.0104048
+Iteration 2290 Send time, 0.094337
+Iteration 2300, 0.010741
+Iteration 2300 Send time, 0.0944021
+Iteration 2310, 0.010402
+Iteration 2310 Send time, 0.0943561
+Iteration 2320, 0.00532794
+Iteration 2320 Send time, 0.049356
+Iteration 2330, 0.00541687
+Iteration 2330 Send time, 0.0497999
+Iteration 2340, 0.0103559
+Iteration 2340 Send time, 0.0937099
+Iteration 2350, 0.0103559
+Iteration 2350 Send time, 0.0934811
+Iteration 2360, 0.0103481
+Iteration 2360 Send time, 0.093467
+Iteration 2370, 0.0103531
+Iteration 2370 Send time, 0.0939071
+Iteration 2380, 0.010349
+Iteration 2380 Send time, 0.0935099
+Iteration 2390, 0.0103509
+Iteration 2390 Send time, 0.0934381
+Iteration 2400, 0.0103481
+Iteration 2400 Send time, 0.093389
+Iteration 2410, 0.010349
+Iteration 2410 Send time, 0.0933831
+Iteration 2420, 0.0103559
+Iteration 2420 Send time, 0.0934179
+Iteration 2430, 0.0103509
+Iteration 2430 Send time, 0.0934198
+Iteration 2440, 0.00535488
+Iteration 2440 Send time, 0.0486791
+Iteration 2450, 0.00559306
+Iteration 2450 Send time, 0.0500982
+Iteration 2460, 0.00544095
+Iteration 2460 Send time, 0.049582
+Iteration 2470, 0.00543904
+Iteration 2470 Send time, 0.049252
+Iteration 2480, 0.00526905
+Iteration 2480 Send time, 0.049736
+Iteration 2490, 0.00526905
+Iteration 2490 Send time, 0.0494661
+Iteration 2500, 0.00537491
+Iteration 2500 Send time, 0.050283
+Iteration 2510, 0.0103469
+Iteration 2510 Send time, 0.0934319
+Iteration 2520, 0.0103528
+Iteration 2520 Send time, 0.0934238
+Iteration 2530, 0.00548506
+Iteration 2530 Send time, 0.0497949
+Iteration 2540, 0.00551391
+Iteration 2540 Send time, 0.048949
+Iteration 2550, 0.00550199
+Iteration 2550 Send time, 0.0527971
+Iteration 2560, 0.00528407
+Iteration 2560 Send time, 0.0496061
+Iteration 2570, 0.00532103
+Iteration 2570 Send time, 0.0492921
+Iteration 2580, 0.00580406
+Iteration 2580 Send time, 0.0503728
+Iteration 2590, 0.0107331
+Iteration 2590 Send time, 0.0950611
+Iteration 2600, 0.0104189
+Iteration 2600 Send time, 0.0941031
+Iteration 2610, 0.0104189
+Iteration 2610 Send time, 0.094192
+Iteration 2620, 0.0104349
+Iteration 2620 Send time, 0.0940928
+Iteration 2630, 0.0104251
+Iteration 2630 Send time, 0.09496
+Iteration 2640, 0.0104201
+Iteration 2640 Send time, 0.0940652
+Iteration 2650, 0.0107548
+Iteration 2650 Send time, 0.0944428
+Iteration 2660, 0.0104342
+Iteration 2660 Send time, 0.0941012
+Iteration 2670, 0.0104299
+Iteration 2670 Send time, 0.0942039
+Iteration 2680, 0.010432
+Iteration 2680 Send time, 0.094506
+Iteration 2690, 0.0104241
+Iteration 2690 Send time, 0.09413
+Iteration 2700, 0.010427
+Iteration 2700 Send time, 0.094629
+Iteration 2710, 0.010437
+Iteration 2710 Send time, 0.0941219
+Iteration 2720, 0.010426
+Iteration 2720 Send time, 0.0945051
+Iteration 2730, 0.005445
+Iteration 2730 Send time, 0.0489981
+Iteration 2740, 0.00533295
+Iteration 2740 Send time, 0.0487549
+Iteration 2750, 0.00528812
+Iteration 2750 Send time, 0.0492661
+Iteration 2760, 0.0054791
+Iteration 2760 Send time, 0.0490971
+Iteration 2770, 0.00537801
+Iteration 2770 Send time, 0.050885
+Iteration 2780, 0.00555992
+Iteration 2780 Send time, 0.0506909
+Iteration 2790, 0.00546217
+Iteration 2790 Send time, 0.049499
+Iteration 2800, 0.00526595
+Iteration 2800 Send time, 0.0490658
+Iteration 2810, 0.00544906
+Iteration 2810 Send time, 0.0502331
+Iteration 2820, 0.00529695
+Iteration 2820 Send time, 0.049711
+Iteration 2830, 0.00546193
+Iteration 2830 Send time, 0.0488501
+Iteration 2840, 0.00528193
+Iteration 2840 Send time, 0.0507839
+Iteration 2850, 0.00538301
+Iteration 2850 Send time, 0.050945
+Iteration 2860, 0.00552487
+Iteration 2860 Send time, 0.0498509
+Iteration 2870, 0.00536299
+Iteration 2870 Send time, 0.048943
+Iteration 2880, 0.00563693
+Iteration 2880 Send time, 0.0518811
+Iteration 2890, 0.00584412
+Iteration 2890 Send time, 0.0567582
+Iteration 2900, 0.0057559
+Iteration 2900 Send time, 0.056958
+Iteration 2910, 0.00616789
+Iteration 2910 Send time, 0.0590289
+Iteration 2920, 0.00573111
+Iteration 2920 Send time, 0.05461
+Iteration 2930, 0.00565815
+Iteration 2930 Send time, 0.0532751
+Iteration 2940, 0.00582099
+Iteration 2940 Send time, 0.0514631
+Iteration 2950, 0.00630593
+Iteration 2950 Send time, 0.0530949
+Iteration 2960, 0.00589299
+Iteration 2960 Send time, 0.0562561
+Iteration 2970, 0.00590515
+Iteration 2970 Send time, 0.053813
+Iteration 2980, 0.00624895
+Iteration 2980 Send time, 0.0554559
+Iteration 2990, 0.00562596
+Iteration 2990 Send time, 0.0515609
+Iteration 3000, 0.00594401
+Iteration 3000 Send time, 0.054451
+Iteration 3010, 0.00586319
+Iteration 3010 Send time, 0.0540891
+Iteration 3020, 0.00579095
+Iteration 3020 Send time, 0.053916
+Iteration 3030, 0.00545788
+Iteration 3030 Send time, 0.053349
+Iteration 3040, 0.00654817
+Iteration 3040 Send time, 0.0623391
+Iteration 3050, 0.00665092
+Iteration 3050 Send time, 0.0617719
+Iteration 3060, 0.00844407
+Iteration 3060 Send time, 0.061795
+Iteration 3070, 0.011605
+Iteration 3070 Send time, 0.101366
+Iteration 3080, 0.0108421
+Iteration 3080 Send time, 0.100294
+Iteration 3090, 0.0110331
+Iteration 3090 Send time, 0.104134
+Iteration 3100, 0.0122881
+Iteration 3100 Send time, 0.100484
+Iteration 3110, 0.011569
+Iteration 3110 Send time, 0.107535
+Iteration 3120, 0.0106909
+Iteration 3120 Send time, 0.0966599
+Iteration 3130, 0.0107031
+Iteration 3130 Send time, 0.0961289
+Iteration 3140, 0.0105128
+Iteration 3140 Send time, 0.097121
+Iteration 3150, 0.0108371
+Iteration 3150 Send time, 0.0962729
+Iteration 3160, 0.0109661
+Iteration 3160 Send time, 0.0980699
+Iteration 3170, 0.0107059
+Iteration 3170 Send time, 0.101302
+Iteration 3180, 0.0103688
+Iteration 3180 Send time, 0.0967739
+Iteration 3190, 0.0107
+Iteration 3190 Send time, 0.095468
+Iteration 3200, 0.01037
+Iteration 3200 Send time, 0.0952969
+Iteration 3210, 0.011091
+Iteration 3210 Send time, 0.097199
+Iteration 3220, 0.0108411
+Iteration 3220 Send time, 0.0970092
+Iteration 3230, 0.00561213
+Iteration 3230 Send time, 0.0518441
+Iteration 3240, 0.00713396
+Iteration 3240 Send time, 0.0620759
+Iteration 3250, 0.00596499
+Iteration 3250 Send time, 0.0603909
+Iteration 3260, 0.0109322
+Iteration 3260 Send time, 0.0611682
+Iteration 3270, 0.0113661
+Iteration 3270 Send time, 0.0996411
+Iteration 3280, 0.0110099
+Iteration 3280 Send time, 0.0963421
+Iteration 3290, 0.0103171
+Iteration 3290 Send time, 0.0962181
+Iteration 3300, 0.010323
+Iteration 3300 Send time, 0.0984468
+Iteration 3310, 0.010324
+Iteration 3310 Send time, 0.0951741
+Iteration 3320, 0.0107059
+Iteration 3320 Send time, 0.095412
+Iteration 3330, 0.0108449
+Iteration 3330 Send time, 0.0976379
+Iteration 3340, 0.010896
+Iteration 3340 Send time, 0.0972569
+Iteration 3350, 0.0108972
+Iteration 3350 Send time, 0.0997372
+Iteration 3360, 0.0109599
+Iteration 3360 Send time, 0.101169
+Iteration 3370, 0.010715
+Iteration 3370 Send time, 0.0980752
+Iteration 3380, 0.0112119
+Iteration 3380 Send time, 0.105179
+Iteration 3390, 0.0104759
+Iteration 3390 Send time, 0.0983279
+Iteration 3400, 0.0105259
+Iteration 3400 Send time, 0.0967929
+Iteration 3410, 0.0105519
+Iteration 3410 Send time, 0.096442
+Iteration 3420, 0.010324
+Iteration 3420 Send time, 0.0966139
+Iteration 3430, 0.0104182
+Iteration 3430 Send time, 0.100529
+Iteration 3440, 0.010828
+Iteration 3440 Send time, 0.096257
+Iteration 3450, 0.011353
+Iteration 3450 Send time, 0.100409
+Iteration 3460, 0.011416
+Iteration 3460 Send time, 0.098963
+Iteration 3470, 0.010617
+Iteration 3470 Send time, 0.100425
+Iteration 3480, 0.011369
+Iteration 3480 Send time, 0.1044
+Iteration 3490, 0.010653
+Iteration 3490 Send time, 0.0987101
+Iteration 3500, 0.010639
+Iteration 3500 Send time, 0.100052
+Iteration 3510, 0.0108979
+Iteration 3510 Send time, 0.097368
+Iteration 3520, 0.011775
+Iteration 3520 Send time, 0.101966
+Iteration 3530, 0.0108178
+Iteration 3530 Send time, 0.0984268
+Iteration 3540, 0.0109949
+Iteration 3540 Send time, 0.098732
+Iteration 3550, 0.0107059
+Iteration 3550 Send time, 0.0979891
+Iteration 3560, 0.012588
+Iteration 3560 Send time, 0.102434
+Iteration 3570, 0.010721
+Iteration 3570 Send time, 0.0985761
+Iteration 3580, 0.010622
+Iteration 3580 Send time, 0.0975511
+Iteration 3590, 0.010895
+Iteration 3590 Send time, 0.100874
+Iteration 3600, 0.010989
+Iteration 3600 Send time, 0.096894
+Iteration 3610, 0.0111699
+Iteration 3610 Send time, 0.100335
+Iteration 3620, 0.0103929
+Iteration 3620 Send time, 0.0981281
+Iteration 3630, 0.0107491
+Iteration 3630 Send time, 0.0973401
+Iteration 3640, 0.0109551
+Iteration 3640 Send time, 0.0981879
+Iteration 3650, 0.010371
+Iteration 3650 Send time, 0.0971541
+Iteration 3660, 0.010483
+Iteration 3660 Send time, 0.098501
+Iteration 3670, 0.0101812
+Iteration 3670 Send time, 0.093745
+Iteration 3680, 0.01036
+Iteration 3680 Send time, 0.0951011
+Iteration 3690, 0.0103419
+Iteration 3690 Send time, 0.0981951
+Iteration 3700, 0.0102599
+Iteration 3700 Send time, 0.094182
+Iteration 3710, 0.0104249
+Iteration 3710 Send time, 0.094707
+Iteration 3720, 0.0102241
+Iteration 3720 Send time, 0.093847
+Iteration 3730, 0.010355
+Iteration 3730 Send time, 0.098238
+Iteration 3740, 0.01036
+Iteration 3740 Send time, 0.0938392
+Iteration 3750, 0.010215
+Iteration 3750 Send time, 0.097616
+Iteration 3760, 0.0103512
+Iteration 3760 Send time, 0.0947962
+Iteration 3770, 0.0104029
+Iteration 3770 Send time, 0.093946
+Iteration 3780, 0.0103729
+Iteration 3780 Send time, 0.0940869
+Iteration 3790, 0.0100589
+Iteration 3790 Send time, 0.093375
+Iteration 3800, 0.0100479
+Iteration 3800 Send time, 0.0938718
+Iteration 3810, 0.0102918
+Iteration 3810 Send time, 0.0949399
+Iteration 3820, 0.0102482
+Iteration 3820 Send time, 0.0943031
+Iteration 3830, 0.010304
+Iteration 3830 Send time, 0.094023
+Iteration 3840, 0.0103719
+Iteration 3840 Send time, 0.092315
+Iteration 3850, 0.0103762
+Iteration 3850 Send time, 0.0948911
+Iteration 3860, 0.010159
+Iteration 3860 Send time, 0.0918179
+Iteration 3870, 0.0104489
+Iteration 3870 Send time, 0.093966
+Iteration 3880, 0.0102661
+Iteration 3880 Send time, 0.0933299
+Iteration 3890, 0.010237
+Iteration 3890 Send time, 0.0939741
+Iteration 3900, 0.0104671
+Iteration 3900 Send time, 0.0946629
+Iteration 3910, 0.00992203
+Iteration 3910 Send time, 0.0930781
+Iteration 3920, 0.010319
+Iteration 3920 Send time, 0.094183
+Iteration 3930, 0.0103629
+Iteration 3930 Send time, 0.093827
+Iteration 3940, 0.0104139
+Iteration 3940 Send time, 0.093668
+Iteration 3950, 0.0103691
+Iteration 3950 Send time, 0.0927041
+Iteration 3960, 0.0103691
+Iteration 3960 Send time, 0.0946572
+Iteration 3970, 0.0103469
+Iteration 3970 Send time, 0.09377
+Iteration 3980, 0.0101252
+Iteration 3980 Send time, 0.093966
+Iteration 3990, 0.0106969
+Iteration 3990 Send time, 0.094533
+Iteration 4000, 0.0104659
+Iteration 4000 Send time, 0.0949168
+Iteration 4010, 0.0103691
+Iteration 4010 Send time, 0.0952969
+Iteration 4020, 0.010375
+Iteration 4020 Send time, 0.0942249
+Iteration 4030, 0.010402
+Iteration 4030 Send time, 0.0936341
+Iteration 4040, 0.0102699
+Iteration 4040 Send time, 0.0936439
+Iteration 4050, 0.0100348
+Iteration 4050 Send time, 0.093298
+Iteration 4060, 0.0104501
+Iteration 4060 Send time, 0.0936852
+Iteration 4070, 0.010314
+Iteration 4070 Send time, 0.0942221
+Iteration 4080, 0.0106211
+Iteration 4080 Send time, 0.0938561
+Iteration 4090, 0.0104129
+Iteration 4090 Send time, 0.0940289
+Iteration 4100, 0.0102129
+Iteration 4100 Send time, 0.097851
+Iteration 4110, 0.00987601
+Iteration 4110 Send time, 0.092741
+Iteration 4120, 0.0103271
+Iteration 4120 Send time, 0.093905
+Iteration 4130, 0.01072
+Iteration 4130 Send time, 0.0943849
+Iteration 4140, 0.010323
+Iteration 4140 Send time, 0.0938339
+Iteration 4150, 0.010401
+Iteration 4150 Send time, 0.0941961
+Iteration 4160, 0.0103791
+Iteration 4160 Send time, 0.0934782
+Iteration 4170, 0.0104501
+Iteration 4170 Send time, 0.0942621
+Iteration 4180, 0.0102751
+Iteration 4180 Send time, 0.097398
+Iteration 4190, 0.0102959
+Iteration 4190 Send time, 0.0939999
+Iteration 4200, 0.0100472
+Iteration 4200 Send time, 0.0930221
+Iteration 4210, 0.010077
+Iteration 4210 Send time, 0.0933282
+Iteration 4220, 0.0101979
+Iteration 4220 Send time, 0.0928481
+Iteration 4230, 0.0101371
+Iteration 4230 Send time, 0.0931849
+Iteration 4240, 0.0102901
+Iteration 4240 Send time, 0.0974901
+Iteration 4250, 0.0106561
+Iteration 4250 Send time, 0.0952032
+Iteration 4260, 0.010329
+Iteration 4260 Send time, 0.0949459
+Iteration 4270, 0.010112
+Iteration 4270 Send time, 0.0930519
+Iteration 4280, 0.010143
+Iteration 4280 Send time, 0.0938051
+Iteration 4290, 0.0102799
+Iteration 4290 Send time, 0.09342
+Iteration 4300, 0.0107849
+Iteration 4300 Send time, 0.0940149
+Iteration 4310, 0.010144
+Iteration 4310 Send time, 0.0934329
+Iteration 4320, 0.010751
+Iteration 4320 Send time, 0.0946209
+Iteration 4330, 0.010335
+Iteration 4330 Send time, 0.093595
+Iteration 4340, 0.0107691
+Iteration 4340 Send time, 0.093812
+Iteration 4350, 0.0103459
+Iteration 4350 Send time, 0.0939898
+Iteration 4360, 0.0103788
+Iteration 4360 Send time, 0.095006
+Iteration 4370, 0.0100451
+Iteration 4370 Send time, 0.093245
+Iteration 4380, 0.010247
+Iteration 4380 Send time, 0.0929031
+Iteration 4390, 0.0102198
+Iteration 4390 Send time, 0.0940259
+Iteration 4400, 0.00995398
+Iteration 4400 Send time, 0.0917401
+Iteration 4410, 0.0103199
+Iteration 4410 Send time, 0.0946109
+Iteration 4420, 0.0104589
+Iteration 4420 Send time, 0.093719
+Iteration 4430, 0.0106139
+Iteration 4430 Send time, 0.0967641
+Iteration 4440, 0.0106211
+Iteration 4440 Send time, 0.099004
+Iteration 4450, 0.010222
+Iteration 4450 Send time, 0.0924149
+Iteration 4460, 0.010206
+Iteration 4460 Send time, 0.09411
+Iteration 4470, 0.010205
+Iteration 4470 Send time, 0.0941079
+Iteration 4480, 0.0103281
+Iteration 4480 Send time, 0.0929639
+Iteration 4490, 0.00989604
+Iteration 4490 Send time, 0.092865
+Iteration 4500, 0.010309
+Iteration 4500 Send time, 0.093637
+Iteration 4510, 0.0104079
+Iteration 4510 Send time, 0.0938499
+Iteration 4520, 0.010757
+Iteration 4520 Send time, 0.0951419
+Iteration 4530, 0.01035
+Iteration 4530 Send time, 0.0947258
+Iteration 4540, 0.0103428
+Iteration 4540 Send time, 0.095371
+Iteration 4550, 0.010226
+Iteration 4550 Send time, 0.0945079
+Iteration 4560, 0.0103462
+Iteration 4560 Send time, 0.0981851
+Iteration 4570, 0.010303
+Iteration 4570 Send time, 0.0971529
+Iteration 4580, 0.0101981
+Iteration 4580 Send time, 0.0937021
+Iteration 4590, 0.00994897
+Iteration 4590 Send time, 0.0947971
+Iteration 4600, 0.00995994
+Iteration 4600 Send time, 0.093322
+Iteration 4610, 0.00995612
+Iteration 4610 Send time, 0.0923259
+Iteration 4620, 0.0103421
+Iteration 4620 Send time, 0.094645
+Iteration 4630, 0.0103869
+Iteration 4630 Send time, 0.093982
+Iteration 4640, 0.0103271
+Iteration 4640 Send time, 0.0937991
+Iteration 4650, 0.0102382
+Iteration 4650 Send time, 0.0933571
+Iteration 4660, 0.0107708
+Iteration 4660 Send time, 0.0926609
+Iteration 4670, 0.0102558
+Iteration 4670 Send time, 0.092303
+Iteration 4680, 0.010355
+Iteration 4680 Send time, 0.0942309
+Iteration 4690, 0.010381
+Iteration 4690 Send time, 0.0938051
+Iteration 4700, 0.0104122
+Iteration 4700 Send time, 0.09447
+Iteration 4710, 0.0104418
+Iteration 4710 Send time, 0.0944099
+Iteration 4720, 0.00996995
+Iteration 4720 Send time, 0.0928171
+Iteration 4730, 0.0104308
+Iteration 4730 Send time, 0.0940199
+Iteration 4740, 0.0103409
+Iteration 4740 Send time, 0.0946538
+Iteration 4750, 0.0104711
+Iteration 4750 Send time, 0.0951231
+Iteration 4760, 0.0101929
+Iteration 4760 Send time, 0.0925078
+Iteration 4770, 0.010299
+Iteration 4770 Send time, 0.094553
+Iteration 4780, 0.010272
+Iteration 4780 Send time, 0.0967479
+Iteration 4790, 0.0103011
+Iteration 4790 Send time, 0.0934391
+Iteration 4800, 0.0107231
+Iteration 4800 Send time, 0.0942452
+Iteration 4810, 0.0104339
+Iteration 4810 Send time, 0.0944719
+Iteration 4820, 0.0101628
+Iteration 4820 Send time, 0.0937259
+Iteration 4830, 0.010272
+Iteration 4830 Send time, 0.0936739
+Iteration 4840, 0.0102329
+Iteration 4840 Send time, 0.0930429
+Iteration 4850, 0.0107598
+Iteration 4850 Send time, 0.094754
+Iteration 4860, 0.0103779
+Iteration 4860 Send time, 0.0942578
+Iteration 4870, 0.0106909
+Iteration 4870 Send time, 0.0942678
+Iteration 4880, 0.0105219
+Iteration 4880 Send time, 0.0951879
+Iteration 4890, 0.0107691
+Iteration 4890 Send time, 0.0970271
+Iteration 4900, 0.010859
+Iteration 4900 Send time, 0.0953131
+Iteration 4910, 0.010654
+Iteration 4910 Send time, 0.0984051
+Iteration 4920, 0.0105889
+Iteration 4920 Send time, 0.0947499
+Iteration 4930, 0.0106058
+Iteration 4930 Send time, 0.0949118
+Iteration 4940, 0.0104229
+Iteration 4940 Send time, 0.0965178
+Iteration 4950, 0.010648
+Iteration 4950 Send time, 0.096241
+Iteration 4960, 0.0105779
+Iteration 4960 Send time, 0.096158
+Iteration 4970, 0.0103252
+Iteration 4970 Send time, 0.094774
+Iteration 4980, 0.0105121
+Iteration 4980 Send time, 0.104777
+Iteration 4990, 0.010833
+Iteration 4990 Send time, 0.0959411
+Iteration 5000, 0.010654
+Iteration 5000 Send time, 0.0950029
+Simulation time, 51.8372
+Total time, 51.8852

@@ -1,10 +1,10 @@
 CC = g++
 MPI = mpic++
-CFLAGS+=-Wall -g
+CFLAGS+=-Wall -g -DDEBUG -DWRITE_TIME -DWRITE_OUTPUT
 OPT+=$(CFLAGS) -O3 -ftree-vectorize
 LIBS+=-lm
-OBJ=Configuration.o Configuration-opt.o Configuration-mpi.o brute-force.o brute-force-opt.o brute-force-mpi.o
-EXEC=brute-force brute-force-opt brute-force-mpi
+OBJ=Configuration.o Configuration-opt.o brute-force.o brute-force-opt.o brute-force-mpi.o brute-force-mpi-opt.o
+EXEC=brute-force brute-force-opt brute-force-mpi brute-force-mpi-opt
 OUT=../exec/
 
 all: $(OBJ) $(EXEC)
@@ -15,9 +15,6 @@ Configuration.o: Configuration.cpp
 
 Configuration-opt.o: Configuration.cpp
 	$(CC) $(OPT) -o $(OUT)$@ -c $<
-
-Configuration-mpi.o: Configuration.cpp
-	$(MPI) $(CFLAGS) -o $(OUT)$@ -c $<
 
 # Compile brute-force unoptimized
 brute-force.o: brute-force.cpp
@@ -37,7 +34,14 @@ brute-force-opt.o: brute-force.cpp
 brute-force-mpi.o: brute-force-mpi.cpp
 	$(MPI) $(CFLAGS) -o $(OUT)$@ -c $<
 
-brute-force-mpi: brute-force-mpi.o Configuration-mpi.o
+brute-force-mpi: brute-force-mpi.o Configuration.o
+	$(MPI) -o $(OUT)$@ $(OUT)$< $(LIBS)
+
+# Compile brute-force with mpi and optimization
+brute-force-mpi-opt.o: brute-force-mpi.cpp
+	$(MPI) $(OPT) -o $(OUT)$@ -c $<
+
+brute-force-mpi-opt: brute-force-mpi-opt.o Configuration-opt.o
 	$(MPI) -o $(OUT)$@ $(OUT)$< $(LIBS)
 
 clean :
