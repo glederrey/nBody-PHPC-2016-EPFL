@@ -11,7 +11,7 @@ close all;
 filename = '../results/test_ss_parallel.dat';
 solar_system = true;
 movie = true;
-size = 5;
+size = 3;
 
 delimiterIn = ',';
 headerlinesIn = 1;
@@ -45,7 +45,8 @@ if movie == true
     open(mov);
 end
 
-while iterations < 100
+%while idx < length
+while iterations < 200
     mass = [];
     x = [];
     y = [];

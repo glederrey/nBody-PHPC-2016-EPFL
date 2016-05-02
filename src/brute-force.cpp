@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
 
   double dt = conf.get<double>("dt");
   double finalTime = conf.get<double>("finalTime");
-  double samplingFreq = conf.get<double>("samplingFreq");
+  int samplingFreq = conf.get<int>("samplingFreq");
   string initialFile = conf.get<string>("initialFile");
   string outputFileName = conf.get<string>("outputFile");
   double maxSize = conf.get<double>("size");
@@ -160,14 +160,14 @@ int main(int argc, char* argv[])
     iteration++;
 
     #ifdef WRITE_TIME
-      if(floor(iteration*samplingFreq) == iteration*samplingFreq) {
+      if(iteration%samplingFreq == 0) {
         double iterationTime = (std::clock() - startTimeIteration) / (double) CLOCKS_PER_SEC;
         outputTimeFile << "Iteration " << t+dt << ", " << iterationTime << endl;
       }
     #endif
 
     #ifdef WRITE_OUTPUT
-      if(floor(iteration*samplingFreq) == iteration*samplingFreq) {
+      if(iteration%samplingFreq == 0) {
         for (int k = 0; k < nbrBodies;k++) {
           outputFile << t+dt << ", " << mass[k] << ", " << positions[2*k]/UA << ", " <<  positions[2*k+1]/UA << ", " << velocities[2*k] << ", " <<  velocities[2*k+1] << std::endl;
         }

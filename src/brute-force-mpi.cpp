@@ -38,7 +38,7 @@ int main(int argc, char* argv[])
   string fileName;
   double dt;
   double finalTime;
-  double samplingFreq = 0.0;
+  int samplingFreq = 0;
   string initialFile;
   string outputFileName;
   double maxSize;
@@ -75,7 +75,8 @@ int main(int argc, char* argv[])
 
     dt = conf.get<double>("dt");
     finalTime = conf.get<double>("finalTime");
-    samplingFreq = conf.get<double>("samplingFreq");
+    samplingFreq = conf.get<int>("samplingFreq");
+    cout << samplingFreq << endl;
     initialFile = conf.get<string>("initialFile");
     outputFileName = conf.get<string>("outputFile");
     maxSize = conf.get<double>("size");
@@ -129,7 +130,7 @@ int main(int argc, char* argv[])
 
     startIndex[i] = nbrBodiesGiven;
 
-    if(rest>0)
+    if(rest>0 && i>0) // Don't want to give a supplementary one to the MASTER
     {
       localNbrBodies[i] = (meanLocalNbrBodies + 1);
       rest--;
@@ -147,11 +148,6 @@ int main(int argc, char* argv[])
     fixedMass.resize(nbrBodies);
   }
 
-  // Define the local vectors
-  vector<double> localVelocities(2*localNbrBodies[myRank]);
-  vector<double> localPositions(2*localNbrBodies[myRank]);
-  vector<double> localMass(localNbrBodies[myRank]);
-
   if(myRank == 0) {
     #ifdef DEBUG
       cout << "Loading the data is finished" << endl;
@@ -163,28 +159,19 @@ int main(int argc, char* argv[])
     #endif
   }
 
-  cout << "rank " << myRank << ": local nbr bodies = " << localNbrBodies[myRank] << "; size localPositions = " << localPositions.size() << endl;
-
   // Now we send the data to all the process
   MPI_Bcast(&fixedMass[0], nbrBodies, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   MPI_Bcast(&fixedPositions[0], 2*nbrBodies, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   MPI_Bcast(&fixedVelocities[0], 2*nbrBodies, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
-  if(myRank == 0) {
-    for(int i=0; i<nbrProcs; i++) {
-      // Position sent with tag 0
-      MPI_Send(&fixedPositions[2*startIndex[i]], 2*localNbrBodies[i], MPI_DOUBLE, i, 0, MPI_COMM_WORLD);
-      // Velocity sent with tag 1
-      MPI_Send(&fixedVelocities[2*startIndex[i]], 2*localNbrBodies[i], MPI_DOUBLE, i, 1, MPI_COMM_WORLD);
-      // Mass sent with tag 2
-      MPI_Send(&fixedMass[startIndex[i]], localNbrBodies[i], MPI_DOUBLE, i, 2, MPI_COMM_WORLD);
+  // Define the local vectors
+  vector<double> localMass(&fixedMass[startIndex[myRank]], &fixedMass[startIndex[myRank]+localNbrBodies[myRank]]);
+  vector<double> localPositions(&fixedPositions[2*startIndex[myRank]], &fixedPositions[2*(startIndex[myRank]+localNbrBodies[myRank])]);
+  vector<double> localVelocities(&fixedVelocities[2*startIndex[myRank]], &fixedVelocities[2*(startIndex[myRank]+localNbrBodies[myRank])]);
 
-    }
-  }
-
-  MPI_Recv(&localPositions[0], 2*localNbrBodies[myRank], MPI_DOUBLE, 0, 0, MPI_COMM_WORLD, &status);
-  MPI_Recv(&localVelocities[0], 2*localNbrBodies[myRank], MPI_DOUBLE, 0, 1, MPI_COMM_WORLD, &status);
-  MPI_Recv(&localMass[0], localNbrBodies[myRank], MPI_DOUBLE, 0, 2, MPI_COMM_WORLD, &status);
+  #ifdef DEBUG
+    cout << "rank " << myRank << ": local nbr bodies = " << localNbrBodies[myRank] << "; localMass.size() = " << localMass.size() << endl;
+  #endif
 
   if(myRank == 0) {
     #ifdef WRITE_TIME
@@ -279,6 +266,13 @@ int main(int argc, char* argv[])
       }
     }
 
+    if(myRank == 0) {
+      #ifdef WRITE_TIME
+        if((iteration+1)%samplingFreq == 0) {
+          startSend = MPI_Wtime();
+        }
+      #endif
+    }
 
     // Now, we first send the number of remaining bodies
     int size = localMass.size();
@@ -296,34 +290,18 @@ int main(int argc, char* argv[])
       }
     }
 
-    #ifdef WRITE_TIME
-      if(floor(iteration*samplingFreq) == iteration*samplingFreq) {
-        startSend = MPI_Wtime();
-      }
-    #endif
-
     // Resend the number of bodies
     MPI_Bcast(&nbrBodies, 1, MPI_INT, 0, MPI_COMM_WORLD);
-    // Resend the local number of bodies and the startIndex
-    MPI_Bcast(&localNbrBodies[0], nbrProcs, MPI_INT, 0, MPI_COMM_WORLD);
-    MPI_Bcast(&startIndex[0], nbrProcs, MPI_INT, 0, MPI_COMM_WORLD);
-
 
     // Send the local mass, local positions and local velocities
     MPI_Send(&localMass[0], localMass.size(), MPI_DOUBLE, 0, 4, MPI_COMM_WORLD);
     MPI_Send(&localPositions[0], localPositions.size(), MPI_DOUBLE, 0, 5, MPI_COMM_WORLD);
-    MPI_Send(&localVelocities[0], localVelocities.size(), MPI_DOUBLE, 0, 123, MPI_COMM_WORLD);
-
+    MPI_Send(&localVelocities[0], localVelocities.size(), MPI_DOUBLE, 0, 6, MPI_COMM_WORLD);
 
     // Resize the different vectors for all the process
-    localMass.resize(localNbrBodies[myRank]);
-    localPositions.resize(2*localNbrBodies[myRank]);
-    localVelocities.resize(2*localNbrBodies[myRank]);
-
     fixedMass.resize(nbrBodies);
     fixedPositions.resize(2*nbrBodies);
     fixedVelocities.resize(2*nbrBodies);
-
 
     if(myRank == 0) {
 
@@ -331,7 +309,7 @@ int main(int argc, char* argv[])
       for(int k=0; k<nbrProcs; k++) {
         MPI_Recv(&fixedMass[startIndex[k]], localNbrBodies[k], MPI_DOUBLE, k, 4, MPI_COMM_WORLD, &status);
         MPI_Recv(&fixedPositions[2*startIndex[k]], 2*localNbrBodies[k], MPI_DOUBLE, k, 5, MPI_COMM_WORLD, &status);
-        MPI_Recv(&fixedVelocities[2*startIndex[k]], 2*localNbrBodies[k], MPI_DOUBLE, k, 123, MPI_COMM_WORLD, &status);
+        MPI_Recv(&fixedVelocities[2*startIndex[k]], 2*localNbrBodies[k], MPI_DOUBLE, k, 6, MPI_COMM_WORLD, &status);
       };
 
     }
@@ -340,28 +318,41 @@ int main(int argc, char* argv[])
     MPI_Bcast(&fixedPositions[0], 2*nbrBodies, MPI_DOUBLE, 0, MPI_COMM_WORLD);
     MPI_Bcast(&fixedVelocities[0], 2*nbrBodies, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
+    // Now, we need to equalize the number of localBodies
+    int rest = nbrBodies%nbrProcs;
+    int meanLocalNbrBodies = (nbrBodies-rest)/nbrProcs;
 
+    int nbrBodiesGiven = 0;
 
-    if(myRank == 0) {
-      for(int k=0; k<nbrProcs; k++) {
-        // Position sent with tag 7
-        MPI_Send(&fixedPositions[2*startIndex[k]], 2*localNbrBodies[k], MPI_DOUBLE, k, 7, MPI_COMM_WORLD);
-        // Velocity sent with tag 8
-        MPI_Send(&fixedVelocities[2*startIndex[k]], 2*localNbrBodies[k], MPI_DOUBLE, k, 8, MPI_COMM_WORLD);
-        // Mass sent with tag 9
-        MPI_Send(&fixedMass[startIndex[k]], localNbrBodies[k], MPI_DOUBLE, k, 9, MPI_COMM_WORLD);
+    for (int i=0; i<nbrProcs; i++) {
+
+      startIndex[i] = nbrBodiesGiven;
+
+      if(rest>0 && i>0) // Don't want to give a supplementary one to the MASTER
+      {
+        localNbrBodies[i] = (meanLocalNbrBodies + 1);
+        rest--;
+        nbrBodiesGiven += meanLocalNbrBodies + 1;
+      } else {
+        localNbrBodies[i] = meanLocalNbrBodies;
+        nbrBodiesGiven += meanLocalNbrBodies;
       }
     }
 
-    MPI_Recv(&localPositions[0], 2*localNbrBodies[myRank], MPI_DOUBLE, 0, 7, MPI_COMM_WORLD, &status);
-    MPI_Recv(&localVelocities[0], 2*localNbrBodies[myRank], MPI_DOUBLE, 0, 8, MPI_COMM_WORLD, &status);
-    MPI_Recv(&localMass[0], localNbrBodies[myRank], MPI_DOUBLE, 0, 9, MPI_COMM_WORLD, &status);
+    // Reallocate the local Variables
+    localMass.resize(localNbrBodies[myRank]);
+    localPositions.resize(2*localNbrBodies[myRank]);;
+    localVelocities.resize(2*localNbrBodies[myRank]);;
+
+    localMass.assign(fixedMass.begin()+startIndex[myRank], fixedMass.begin()+startIndex[myRank]+localNbrBodies[myRank]);
+    localPositions.assign(fixedPositions.begin()+2*startIndex[myRank], fixedPositions.begin()+2*(startIndex[myRank]+localNbrBodies[myRank]));
+    localVelocities.assign(fixedVelocities.begin()+2*startIndex[myRank], fixedVelocities.begin()+2*(startIndex[myRank]+localNbrBodies[myRank]));
 
     iteration++;
 
     if(myRank==0) {
       #ifdef WRITE_TIME
-        if(floor(iteration*samplingFreq) == iteration*samplingFreq) {
+        if(iteration%samplingFreq == 0) {
           double iterationTime = (MPI_Wtime() - startTimeIteration);
           double sendTime = (MPI_Wtime() - startSend);
           outputTimeFile << "Iteration " << t+dt << ", " << iterationTime << endl;
@@ -370,7 +361,7 @@ int main(int argc, char* argv[])
       #endif
 
       #ifdef WRITE_OUTPUT
-        if(floor(iteration*samplingFreq) == iteration*samplingFreq) {
+        if(iteration%samplingFreq == 0) {
           outputFile.open(outputFileName.c_str(),fstream::app);
           outputFile.precision(12);
           for (unsigned int k = 0; k < fixedMass.size(); k++) {

@@ -1,6 +1,6 @@
 dt=1
-finalTime=100
-samplingFreq=1
+finalTime=5000
+samplingFreq=5
 size=100
-initialFile=../init/test_ss_10000.dat
+initialFile=../init/test_ss.dat
 outputFile=../results/test_ss.dat
