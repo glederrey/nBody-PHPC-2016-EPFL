@@ -1,7 +1,7 @@
 CC = g++
 MPI = mpic++
-CFLAGS+=-Wall -g -DDEBUG -DWRITE_TIME -DWRITE_OUTPUT
-OPT+=$(CFLAGS) -O3 -ftree-vectorize
+CFLAGS+=-Wall -g -DDEBUG -DWRITE_OUTPUT -DWRITE_TIME
+OPT+=$(CFLAGS) -Ofast -ftree-vectorize
 LIBS+=-lm
 OBJ=Configuration.o Configuration-opt.o brute-force.o brute-force-opt.o brute-force-mpi.o brute-force-mpi-opt.o
 EXEC=brute-force brute-force-opt brute-force-mpi brute-force-mpi-opt
@@ -24,11 +24,11 @@ brute-force: brute-force.o Configuration.o
 	$(CC) -o $(OUT)$@ $(OUT)$< $(LIBS)
 
 # Compile brute-force optimized
-brute-force-opt: brute-force-opt.o Configuration-opt.o
-	$(CC) -o $(OUT)$@ $(OUT)$< $(LIBS)
-
 brute-force-opt.o: brute-force.cpp
 	$(CC) $(OPT) -o $(OUT)$@ -c $<
+
+brute-force-opt: brute-force-opt.o Configuration-opt.o
+	$(CC) -o $(OUT)$@ $(OUT)$< $(LIBS)
 
 # Compile brute-force with mpi
 brute-force-mpi.o: brute-force-mpi.cpp

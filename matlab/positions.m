@@ -9,32 +9,36 @@ clear all;
 close all;
 
 filename = '../results/test_ss_parallel.dat';
-solar_system = true;
-movie = true;
-size = 3;
+solarSystem = true;
+movie = false;
+fullScreen = false;
+size = 30;
 
-delimiterIn = ',';
-headerlinesIn = 1;
-
-if solar_system
-    sun = [247, 115, 12]./255;
-    mercury = [250, 248, 242]./255;
-    venus = [255, 255, 242]./255;
+if solarSystem
+    sun = [198, 81, 4]./255;
+    mercury = [200, 208, 202]./255;
+    venus = [164, 92, 23]./255;
     earth = [11, 92, 227]./255;
-    mars = [240, 198, 29]./255;
-    jupiter = [253, 199, 145]./255;
-    saturn = [224, 196, 34]./255;
-    uranus = [220, 241, 245]./255;
-    neptune = [57, 182, 247]./255;
+    mars = [172, 138, 97]./255;
+    jupiter = [171, 165, 165]./255;
+    saturn = [176, 150, 110]./255;
+    uranus = [169, 205, 210]./255;
+    neptune = [56, 83, 202]./255;
 end
 
 gray = [100, 100, 100]./255;
 
+delimiterIn = ',';
+headerlinesIn = 1;
 data = importdata(filename,delimiterIn,headerlinesIn);
 data = data.data;
 
-scrsz = get(0,'ScreenSize');
-f = figure('units','pixels','Position',[1 scrsz(4) scrsz(3) scrsz(4)]);
+if fullScreen == true
+    scrsz = get(0,'ScreenSize');
+    f = figure('units','pixels','Position',[1 scrsz(4) scrsz(3) scrsz(4)]);
+else
+    f = figure();
+end
 hold all;
 idx = 1;
 length = length(data);
@@ -45,8 +49,8 @@ if movie == true
     open(mov);
 end
 
-%while idx < length
-while iterations < 200
+while idx < length
+%while iterations < 200
     mass = [];
     x = [];
     y = [];
@@ -69,7 +73,7 @@ while iterations < 200
     subplot(1,1,1,'replace');
     hold all;
     
-    if solar_system
+    if solarSystem
        scatter(x(10:end),y(10:end), 3, gray, 'filled'); 
        
        plot(x(1),y(1),'Color', sun, 'Marker','.','Markersize',40);
@@ -77,10 +81,10 @@ while iterations < 200
        plot(x(3),y(3),'Color', venus, 'Marker','.','Markersize',20);
        plot(x(4),y(4),'Color', earth, 'Marker','.','Markersize',20);
        plot(x(5),y(5),'Color', mars, 'Marker','.','Markersize',20);
-       plot(x(6),y(6),'Color', jupiter, 'Marker','.','Markersize',10);
-       plot(x(7),y(7),'Color', saturn, 'Marker','.','Markersize',10);
-       plot(x(8),y(8),'Color', uranus, 'Marker','.','Markersize',10);
-       plot(x(9),y(9),'Color', neptune, 'Marker','.','Markersize',10);       
+       plot(x(6),y(6),'Color', jupiter, 'Marker','.','Markersize',20);
+       plot(x(7),y(7),'Color', saturn, 'Marker','.','Markersize',20);
+       plot(x(8),y(8),'Color', uranus, 'Marker','.','Markersize',20);
+       plot(x(9),y(9),'Color', neptune, 'Marker','.','Markersize',20);       
         
     end
     

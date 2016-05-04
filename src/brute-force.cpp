@@ -33,15 +33,19 @@ int main(int argc, char* argv[])
 
   double dt = conf.get<double>("dt");
   double finalTime = conf.get<double>("finalTime");
-  int samplingFreq = conf.get<int>("samplingFreq");
+  #ifdef WRITE_OUTPUT
+    int samplingFreq = conf.get<int>("samplingFreq");
+  #endif
   string initialFile = conf.get<string>("initialFile");
   string outputFileName = conf.get<string>("outputFile");
   double maxSize = conf.get<double>("size");
   double dvx = 0.0;
   double dvy = 0.0;
   int iteration = 0;
-  clock_t startTotal;
-  clock_t startSimulation;
+  #ifdef WRITE_TIME
+    clock_t startTotal;
+    clock_t startSimulation;
+  #endif
 
   #ifdef WRITE_TIME
     startTotal = std::clock();

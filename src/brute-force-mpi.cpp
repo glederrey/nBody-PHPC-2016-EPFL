@@ -52,11 +52,13 @@ int main(int argc, char* argv[])
   vector<double> fixedVelocities;
   vector<double> fixedMass;
 
-  // Time variables
-  double startTotal = 0.0;
-  double startSimulation = 0.0;
-  double startSend = 0.0;
-  double startTimeIteration = 0.0;
+  #ifdef WRITE_TIME
+    // Time variables
+    double startTotal = MPI_Wtime();
+    double startSimulation = 0.0;
+    double startSend = 0.0;
+    double startTimeIteration = 0.0;
+  #endif
 
   // Streams
   ofstream outputTimeFile;
@@ -82,7 +84,6 @@ int main(int argc, char* argv[])
     maxSize = conf.get<double>("size");
 
     #ifdef WRITE_TIME
-      startTotal = MPI_Wtime();
       size_t pos = outputFileName.rfind(".");
       string outputTimeFileName = outputFileName.substr(0,pos) + "_time" + outputFileName.substr(pos);
       outputTimeFile.open(outputTimeFileName.c_str());
@@ -371,8 +372,6 @@ int main(int argc, char* argv[])
         }
       #endif
     }
-
-    MPI_Bcast(&nbrBodies, 1, MPI_INT, 0, MPI_COMM_WORLD);
   }
 
   #ifdef WRITE_TIME
