@@ -10,7 +10,7 @@ Node::Node()
 // Constructor with position and size
 Node::Node(double x, double y, double w, double h)
 :xCenter(x), yCenter(y), width(w), height(h),
-mass(0.0), xPos(0.0), yPos(0.0), xVel(0.0), yVel(0.0),
+mass(0.0), xPos(0.0), yPos(0.0),
 nbrBodies(0), containsBody(false),
 isLeaf(true), depth(0)
 {};
@@ -18,7 +18,7 @@ isLeaf(true), depth(0)
 // Constructor with parent, position and size
 Node::Node(Node *ptr, double x, double y, double w, double h)
 :xCenter(x), yCenter(y), width(w), height(h),
-mass(0.0), xPos(0.0), yPos(0.0), xVel(0.0), yVel(0.0),
+mass(0.0), xPos(0.0), yPos(0.0),
 nbrBodies(0), containsBody(false),
 parent(ptr), isLeaf(true), depth(ptr->depth+1)
 {};
@@ -85,10 +85,10 @@ std::ostream& operator<< (std::ostream & out, Node const& node)
 
   // Print the leafs
   if(!node.isLeaf) {
-    out << *node.northEast << endl;
-    out << *node.northWest << endl;
-    out << *node.southEast << endl;
-    out << *node.southWest << endl;
+    out << "North-East: " << *node.northEast << endl;
+    out << "North-West: " << *node.northWest << endl;
+    out << "South-East: " << *node.southEast << endl;
+    out << "South-West: " << *node.southWest << endl;
   }
 
   return out;

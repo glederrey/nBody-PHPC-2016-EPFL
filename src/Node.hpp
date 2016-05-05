@@ -34,8 +34,6 @@ public:
   double mass;        // Total mass inside the node
   double xPos;        // X position of the center of mass
   double yPos;        // Y position of the center of mass
-  double xVel;        // X velocitiy of the center of mass
-  double yVel;        // Y velocity of the center of mass
   int nbrBodies;      // Number of bodies inside the node
   bool containsBody;  // Say if the Node contains a body
   // Variables for the Quadtree

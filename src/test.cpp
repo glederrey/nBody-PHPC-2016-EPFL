@@ -2,19 +2,23 @@
 
 #include "Body.cpp"
 #include "Node.cpp"
+#include "Quadtree.cpp"
 
 using namespace std;
 
 int main(int argc, char* argv[])
 {
 
-  Body body(100, 12.2, 14.4, 102, 10.3);
+  Body body1(1, 33, 14.4, 102, 10.3);
 
-  cout << body << endl;
+  Body body2(24.5, 35, 14, 102, 10.3);
 
-  Node node(1, 2, 3.3, 4.4);
+  Quadtree qtree(0,0, 100, 100, 0.5);
 
-  cout << node << endl;
+  qtree.insertBody(body1, qtree.root);
+  qtree.insertBody(body2, qtree.root);
+
+  cout << qtree << endl;
 
   //exit(0);
 }
