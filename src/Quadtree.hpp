@@ -30,6 +30,9 @@ public:
   // Update the size of the root
   void updateRootSize(double w, double h);
 
+  // Printing function for debug
+  void print(std::ostream & os);  
+
   // Variables
   double dt;        // Time step
   double theta;     // Precision parameter

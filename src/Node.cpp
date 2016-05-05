@@ -74,21 +74,46 @@ void Node::insertBodyAndUpdateNode(Body &body) {
   nbrBodies++;
 }
 
+// Printing function for debug
+void Node::print(ostream &os) {
+  os << "Node: Position = (" << this->xCenter << ", " << this->yCenter << "), ";
+  os << "Height = " << this->height << ", Width = " << this->width << ", ";
+  os << "Mass = " << this->mass << ", nbrBodies = " << this->nbrBodies << ", ";
+  os << "isLeaf = " << this->isLeaf << ", containsBody = " << this->containsBody << ", ";
+  os << "Depth = " << this->depth << endl;
+
+  // Print the leafs
+  if(!this->isLeaf) {
+    os << "North-East: ";
+    northEast->print(os);
+    os << endl;
+    os << "North-West: ";
+    northWest->print(os);
+    os << endl;
+    os << "South-East: ";
+    southEast->print(os);
+    os << endl;
+    os << "South-West: ";
+    southWest->print(os);
+    os << endl;
+  }
+}
+
 // Overloading the << operator
-std::ostream& operator<< (std::ostream & out, Node const& node)
+ostream& operator<< (ostream &out, Node const& node)
 {
-  out << "Node: Position = (" << node.xCenter << ", " << node.yCenter << "), ";
-  out << "Height = " << node.height << ", Width = " << node.width << ", ";
-  out << "Mass = " << node.mass << ", nbrBodies = " << node.nbrBodies << ", ";
-  out << "isLeaf = " << node.isLeaf << ", containsBody = " << node.containsBody << ", ";
-  out << "Depth = " << node.depth << endl;
+  out << node.xCenter << ", " << node.yCenter << ", " << node.width << ", " << node.height;
 
   // Print the leafs
   if(!node.isLeaf) {
-    out << "North-East: " << *node.northEast << endl;
-    out << "North-West: " << *node.northWest << endl;
-    out << "South-East: " << *node.southEast << endl;
-    out << "South-West: " << *node.southWest << endl;
+    out << ", ";
+    out << *node.northEast;
+    out << ", ";
+    out << *node.northWest;
+    out << ", ";
+    out << *node.southEast;
+    out << ", ";
+    out << *node.southWest;
   }
 
   return out;

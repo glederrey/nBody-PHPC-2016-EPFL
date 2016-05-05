@@ -11,8 +11,8 @@ public:
   // Destructor
   ~Body();
 
-  // Printing function
-  void printBody(std::ostream & os);
+  // Printing function for debug
+  void print(std::ostream & os);
 
   // Variables
   double mass;  // Mass of the body
@@ -25,7 +25,7 @@ public:
   int process; // Process in which the object is
 };
 
-// Overloading the << operator
+// Overloading the << operator (Used to print in file)
 std::ostream& operator<< (std::ostream & out, Body const& body);
 
 #endif /* BODY_H */

@@ -97,15 +97,15 @@ void Quadtree::createLeaves(Node &node) {
   node.southWest = new Node(&node, node.xCenter - 0.25*node.width, node.yCenter - 0.25*node.height, 0.5*node.width, 0.5*node.height);
 }
 
+// Printing function for debug
+void Quadtree::print(ostream &os) {
+  os << "Printing Quadtree: Root: ";
+  this->root.print(os);
+}
+
 // Overloading the << operator
 std::ostream& operator<< (std::ostream & out, Quadtree const& qtree)
 {
-  out << "Printing Quadtree: Root: " << qtree.root << endl;
-/*  if(!qtree.root.isLeaf) {
-    out << "North-East: " << *qtree.root.northEast << endl;
-    out << "North-West: " << *qtree.root.northWest << endl;
-    out << "South-East: " << *qtree.root.southEast << endl;
-    out << "South-West: " << *qtree.root.southWest << endl;
-  }*/
+  out << qtree.root << endl;
   return out;
 };

@@ -24,6 +24,9 @@ public:
   // Update the node when another body is inserted
   void insertBodyAndUpdateNode(Body &body);
 
+  // Printing function for debug
+  void print(std::ostream & os);
+
   // Variables for the node
   double xCenter;     // X position of the center of the node
   double yCenter;     // Y position of the center of the node

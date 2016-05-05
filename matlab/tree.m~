@@ -1,0 +1,20 @@
+clear all;
+close all;
+clc;
+
+filename = './test.dat';
+
+delimiterIn = ',';
+headerlinesIn = 0;
+data = importdata(filename,delimiterIn,headerlinesIn);
+
+figure()
+hold all;
+
+for i=0:length(data)/4-1
+    x = data(2*i+1)
+    y = data(2*i+2)
+    w = data(2*i+13)
+    plot(data(2*i+1), data(2*i+2), 'k*');
+    line([]);
+end
