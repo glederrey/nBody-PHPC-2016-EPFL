@@ -24,8 +24,18 @@ public:
   // Update the node when another body is inserted
   void insertBodyAndUpdateNode(Body &body);
 
-  // Printing function for debug
+  // Printing function
   void print(std::ostream & os);
+
+  // Printing function with a scaling
+  void print(std::ostream & os, double scale);
+
+  // Printing function with a scaling
+  // Don't print if 0.5*(height+width) < size
+  void print(std::ostream & os, double scale, double size);
+
+  // Test if the size is big enough for printing
+  bool testSize(double size);   
 
   // Variables for the node
   double xCenter;     // X position of the center of the node

@@ -10,24 +10,35 @@ Body::Body()
 // Contructor with mass, positions and velocities
 Body::Body(double m, double x, double y, double vx, double vy)
 : mass(m), xPos(x), yPos(y), xVel(vx), yVel(vy),
-xAcc(0.0), yAcc(0.0), process(0)
+xAcc(0.0), yAcc(0.0), process(0), id(0)
+{};
+
+// Contructor with mass, positions, velocities and id
+Body::Body(double m, double x, double y, double vx, double vy, int idBody)
+: mass(m), xPos(x), yPos(y), xVel(vx), yVel(vy),
+xAcc(0.0), yAcc(0.0), process(0), id(idBody)
 {};
 
 // Destructor
 Body::~Body()
 {};
 
-// Print the body (DEBUG)
+// Print the body
 void Body::print(ostream &os) {
-  os << "Body: Mass = " << this->mass << ", ";
-  os << "Positions = (" <<  this->xPos << ", " <<  this->yPos << "), ";
-  os << "Velocities = (" <<  this->xVel << ", " <<  this->yVel << "), ";
-  os << "Acceleration = (" <<  this->xAcc << ", " <<  this->yAcc << ")" << endl;
+  os << this->mass << ", " << this->xPos << ", " << this->yPos;
+}
+
+// Print the body
+void Body::print(ostream &os, double scale) {
+  os << this->mass << ", " << this->xPos/scale << ", " << this->yPos/scale;
 }
 
 // Overloading the << operator
 ostream& operator<< (ostream & out, Body const& body)
 {
-  out << body.mass << ", " << body.xPos << ", " << body.yPos;
+  out << "Body: Mass = " << body.mass << ", ";
+  out << "Positions = (" <<  body.xPos << ", " <<  body.yPos << "), ";
+  out << "Velocities = (" <<  body.xVel << ", " <<  body.yVel << "), ";
+  out << "Acceleration = (" <<  body.xAcc << ", " <<  body.yAcc << ")" << endl;
   return out;
 };

@@ -47,8 +47,8 @@ void Node::deleteNodes() {
       southWest->deleteNodes();
     }
   } else {
-    // If this node is a leaf, we delete it
-    if(depth!=0) {
+    // If this node is a leaf, we delete it (Except the first one in the tree)
+    if(depth>0) {
       delete this;
     }
   }
@@ -74,46 +74,83 @@ void Node::insertBodyAndUpdateNode(Body &body) {
   nbrBodies++;
 }
 
-// Printing function for debug
+// Printing function
 void Node::print(ostream &os) {
-  os << "Node: Position = (" << this->xCenter << ", " << this->yCenter << "), ";
-  os << "Height = " << this->height << ", Width = " << this->width << ", ";
-  os << "Mass = " << this->mass << ", nbrBodies = " << this->nbrBodies << ", ";
-  os << "isLeaf = " << this->isLeaf << ", containsBody = " << this->containsBody << ", ";
-  os << "Depth = " << this->depth << endl;
+
+  os << this->xCenter << ", " << this->yCenter << ", " << this->width << ", " << this->height;
 
   // Print the leafs
   if(!this->isLeaf) {
-    os << "North-East: ";
-    northEast->print(os);
-    os << endl;
-    os << "North-West: ";
-    northWest->print(os);
-    os << endl;
-    os << "South-East: ";
-    southEast->print(os);
-    os << endl;
-    os << "South-West: ";
-    southWest->print(os);
-    os << endl;
+    os << ", ";
+    this->northEast->print(os);
+    os << ", ";
+    this->northWest->print(os);
+    os << ", ";
+    this->southEast->print(os);
+    os << ", ";
+    this->southWest->print(os);
+  }
+}
+
+// Printing function
+void Node::print(ostream &os, double scale) {
+
+  os << this->xCenter/scale << ", " << this->yCenter/scale << ", " << this->width/scale << ", " << this->height/scale;
+
+  if(!this->isLeaf) {
+    os << ", ";
+    this->northEast->print(os, scale);
+    os << ", ";
+    this->northWest->print(os, scale);
+    os << ", ";
+    this->southEast->print(os, scale);
+    os << ", ";
+    this->southWest->print(os, scale);
+  }
+}
+
+// Printing function
+void Node::print(ostream &os, double scale, double size) {
+
+  os << this->xCenter/scale << ", " << this->yCenter/scale << ", " << this->width/scale << ", " << this->height/scale;
+
+  // Print the leafs
+  if(!this->isLeaf && this->northEast->testSize(size)) {
+    os << ", ";
+    this->northEast->print(os, scale, size);
+    os << ", ";
+    this->northWest->print(os, scale, size);
+    os << ", ";
+    this->southEast->print(os, scale, size);
+    os << ", ";
+    this->southWest->print(os, scale, size);
+  }
+}
+
+// Test if the size is big enough for printing
+bool Node::testSize(double size) {
+  if (0.5*(this->height + this->width) >= size) {
+    return true;
+  } else {
+    return false;
   }
 }
 
 // Overloading the << operator
 ostream& operator<< (ostream &out, Node const& node)
 {
-  out << node.xCenter << ", " << node.yCenter << ", " << node.width << ", " << node.height;
+  out << "Node: Position = (" << node.xCenter << ", " << node.yCenter << "), ";
+  out << "Height = " << node.height << ", Width = " << node.width << ", ";
+  out << "Mass = " << node.mass << ", nbrBodies = " << node.nbrBodies << ", ";
+  out << "isLeaf = " << node.isLeaf << ", containsBody = " << node.containsBody << ", ";
+  out << "Depth = " << node.depth << endl;
 
   // Print the leafs
   if(!node.isLeaf) {
-    out << ", ";
-    out << *node.northEast;
-    out << ", ";
-    out << *node.northWest;
-    out << ", ";
-    out << *node.southEast;
-    out << ", ";
-    out << *node.southWest;
+    out << "North-East: " << *node.northEast;
+    out << "North-West: " << *node.northWest;
+    out << "South-East: " << *node.southEast;
+    out << "South-West: " << *node.southWest;
   }
 
   return out;

@@ -4,12 +4,14 @@
 #include "Body.hpp"
 #include "Node.hpp"
 
+#define G 6.674e-11
+
 class Quadtree {
 public:
   // Empty Constructor
   Quadtree();
   // Constructor with position, size and time step
-  Quadtree(double x, double y, double w, double h, double timeStep);
+  Quadtree(double x, double y, double w, double h, double timeStep, double precision);
   // Constructor with position, size, time step, number of process and precision (theta)
   Quadtree(double x, double y, double w, double h, double timeStep, int numberProcs, double precision);
   // Destructor
@@ -30,8 +32,38 @@ public:
   // Update the size of the root
   void updateRootSize(double w, double h);
 
-  // Printing function for debug
-  void print(std::ostream & os);  
+  // Distance between a body and a node
+  double distance(Body &body, Node &node);
+
+  // Distance between two bodies
+  double distance(Body &body1, Body &body2);
+
+  // Acceleration induced by a node on a body
+  void acceleration(Body &body, Node &node);
+
+  // Acceleration induced by a body on another body
+  void acceleration(Body &body1, Body &body2);
+
+  // Update positions, velocity and acceleration of the bodies
+  void updateBodies(Node &node);
+
+  // Calculate all the accelerations between a body and a node and all of his children
+  void calculateAllAccelerations(Body &body, Node &node);
+
+  // Calculate all the accelerations starting from a node
+  void calculateAllAccelerationsFromNode(Node &node);
+
+  // Collect all the bodies in the tree (After updating their positions & velocities)
+  void collect(std::vector<double> data, Node &node);
+
+  // Printing function
+  void print(std::ostream & os);
+
+  // Printing function
+  void print(std::ostream & os, double scale);
+
+  // Printing function
+  void print(std::ostream & os, double scale, double size);
 
   // Variables
   double dt;        // Time step

@@ -8,11 +8,16 @@ public:
   Body();
   // Contructor with mass, positions and velocities
   Body(double m, double x, double y, double vx, double vy);
+  // Contructor with mass, positions, velocities and id
+  Body(double m, double x, double y, double vx, double vy, int idBody);
   // Destructor
   ~Body();
 
-  // Printing function for debug
+  // Printing function to get the information (Used to print in file)
   void print(std::ostream & os);
+
+  // Printing function to get the information (Used to print in file)
+  void print(std::ostream & os, double scale);
 
   // Variables
   double mass;  // Mass of the body
@@ -22,7 +27,8 @@ public:
   double yVel;  // Y Velocity of the body
   double xAcc;  // X Acceleration of the body
   double yAcc;  // Y Acceleration of the body
-  int process; // Process in which the object is
+  int process;  // Process in which the object is
+  int id;       // ID of the body (Useful when we try to distinguish two bodies)
 };
 
 // Overloading the << operator (Used to print in file)

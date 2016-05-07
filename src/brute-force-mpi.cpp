@@ -8,7 +8,7 @@
 
 #include "Configuration.cpp"
 
-#define UA 1.4960e11
+#define AU 1.4960e11
 #define day 24*60*60
 #define G 6.674e-11
 
@@ -104,9 +104,9 @@ int main(int argc, char* argv[])
     #ifdef WRITE_OUTPUT
       outputFile.open(outputFileName.c_str());
       outputFile.precision(12);
-      outputFile << "# Time, Mass, X position, Y position, X velocity, Y velocity" << endl;
+      outputFile << "# Time, Mass, X position, Y position" << endl;
       for (int i=0; i<nbrBodies; i++) {
-        outputFile << 0 << ", " << fixedMass[i] << ", " << fixedPositions[2*i]/UA << ", " << fixedPositions[2*i+1]/UA << ", " << fixedVelocities[2*i] << ", " << fixedVelocities[2*i+1] << endl;
+        outputFile << 0 << ", " << fixedMass[i] << ", " << fixedPositions[2*i]/AU << ", " << fixedPositions[2*i+1]/AU << endl;
       }
       outputFile.close();
     #endif
@@ -198,10 +198,10 @@ int main(int argc, char* argv[])
       int idx = i + startIndex[myRank]; // Index needs to be shifted in order to compare to j
 
       // Check if the planet is outside of the square and remove it if it's the case
-      if(fabs(localPositions[2*i])/UA > maxSize || fabs(localPositions[2*i+1])/UA > maxSize) {
+      if(fabs(localPositions[2*i])/AU > maxSize || fabs(localPositions[2*i+1])/AU > maxSize) {
         #ifdef DEBUG
           cout << "Process " << myRank << endl;
-          cout << "Planet " << i << " in process " << myRank << " is outside of the square! (" << localPositions[2*i]/UA << ", " << localPositions[2*i+1]/UA << ")" << endl;
+          cout << "Planet " << i << " in process " << myRank << " is outside of the square! (" << localPositions[2*i]/AU << ", " << localPositions[2*i+1]/AU << ")" << endl;
         #endif
 
         fixedMass.erase(fixedMass.begin() + idx);
@@ -226,8 +226,8 @@ int main(int argc, char* argv[])
               #ifdef DEBUG
                 cout << "Process " << myRank << endl;
                 cout << "Planet " << i << " (in process " << myRank << ") and Planet " << j << " are collapsing! Distance between them: " << distance << endl;
-                cout << "   Position planet " << i << " (mass: " << localMass[i] << "): (" << localPositions[2*i]/UA << ", " << localPositions[2*i+1]/UA << ");" << endl;
-                cout << "   Position planet " << j << ": (mass: " << fixedMass[j] << "): (" << fixedPositions[2*j]/UA << ", " << fixedPositions[2*j+1]/UA << ") " << endl;
+                cout << "   Position planet " << i << " (mass: " << localMass[i] << "): (" << localPositions[2*i]/AU << ", " << localPositions[2*i+1]/AU << ");" << endl;
+                cout << "   Position planet " << j << ": (mass: " << fixedMass[j] << "): (" << fixedPositions[2*j]/AU << ", " << fixedPositions[2*j+1]/AU << ") " << endl;
               #endif
 
                // Update the values. We decide that the mass will be the sume of the two planets
@@ -366,7 +366,7 @@ int main(int argc, char* argv[])
           outputFile.open(outputFileName.c_str(),fstream::app);
           outputFile.precision(12);
           for (unsigned int k = 0; k < fixedMass.size(); k++) {
-            outputFile << t+dt << ", " << fixedMass[k] << ", " << fixedPositions[2*k]/UA << ", " <<  fixedPositions[2*k+1]/UA << ", " << fixedVelocities[2*k] << ", " <<  fixedVelocities[2*k+1] << endl;
+            outputFile << t+dt << ", " << fixedMass[k] << ", " << fixedPositions[2*k]/AU << ", " <<  fixedPositions[2*k+1]/AU << endl;
           }
           outputFile.close();
         }

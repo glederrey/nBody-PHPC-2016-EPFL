@@ -1,10 +1,10 @@
 CC = g++
 MPI = mpic++
-CFLAGS+=-Wall -g -DDEBUG -DWRITE_OUTPUT -DWRITE_TIME
+CFLAGS+=-Wall -g -DDEBUG -DWRITE_OUTPUT -DWRITE_TIME -DWRITE_QUADTREE
 OPT+=$(CFLAGS) -Ofast -ftree-vectorize
 LIBS+=-lm
-OBJ=Configuration.o Configuration-opt.o brute-force.o brute-force-opt.o brute-force-mpi.o brute-force-mpi-opt.o Body.o Node.o test.o Quadtree.o
-EXEC=brute-force brute-force-opt brute-force-mpi brute-force-mpi-opt test
+OBJ=Configuration.o Configuration-opt.o brute-force.o brute-force-opt.o brute-force-mpi.o brute-force-mpi-opt.o Body.o Node.o Quadtree.o barnes-hut.o
+EXEC=brute-force brute-force-opt brute-force-mpi brute-force-mpi-opt barnes-hut
 OUT=../exec/
 
 all: $(OBJ) $(EXEC)
@@ -56,12 +56,13 @@ Node.o: Node.cpp
 Quadtree.o: Quadtree.cpp
 	$(CC) $(CFLAGS) -o $(OUT)$@ -c $<
 
-# Test class
-test.o: test.cpp
+# Compile barnes-hut unoptimized
+barnes-hut.o: barnes-hut.cpp
 	$(CC) $(CFLAGS) -o $(OUT)$@ -c $<
 
-test: test.o Body.o Node.o
+barnes-hut: barnes-hut.o Configuration.o Body.o Node.o Quadtree.o
 	$(CC) -o $(OUT)$@ $(OUT)$< $(LIBS)
+
 
 clean :
 	cd $(OUT) && rm -f $(OBJ) $(EXEC)
