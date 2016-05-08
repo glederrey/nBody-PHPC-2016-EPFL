@@ -6,6 +6,8 @@ LIBS+=-lm
 OBJ=Configuration.o Configuration-opt.o brute-force.o brute-force-opt.o brute-force-mpi.o brute-force-mpi-opt.o Body.o Node.o Quadtree.o Body-opt.o Node-opt.o Quadtree-opt.o barnes-hut.o barnes-hut-opt.o
 EXEC=brute-force brute-force-opt brute-force-mpi brute-force-mpi-opt barnes-hut barnes-hut-opt
 OUT=../exec/
+create_exec := $(shell mkdir -p $(OUT))
+create_results := $(shell mkdir -p ../results)
 
 all: $(OBJ) $(EXEC)
 
