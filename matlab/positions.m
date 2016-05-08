@@ -8,11 +8,11 @@ clc;
 clear all;
 close all;
 
-filename = '../results/test_ss_parallel.dat';
+filename = '../results/test_bh.dat';
 solarSystem = true;
 movie = false;
 fullScreen = false;
-size = 30;
+size = 3;
 
 if solarSystem
     sun = [198, 81, 4]./255;
@@ -51,6 +51,7 @@ end
 
 while idx < length
 %while iterations < 200
+    id = [];
     mass = [];
     x = [];
     y = [];
@@ -73,8 +74,13 @@ while idx < length
     subplot(1,1,1,'replace');
     hold all;
     
+    numel(mass)
+    
     if solarSystem
-       scatter(x(10:end),y(10:end), 3, gray, 'filled'); 
+       scatter(x(10:end),y(10:end), 3, gray, 'filled');
+       
+       % Uncomment this to check the distance Eart-Sun (should be around 1)
+       sqrt((x(4)-x(1))^2 + (y(4)-y(1))^2)
        
        plot(x(1),y(1),'Color', sun, 'Marker','.','Markersize',40);
        plot(x(2),y(2),'Color', mercury, 'Marker','.','Markersize',20);

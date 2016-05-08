@@ -1,7 +1,0 @@
-dt=1
-finalTime=3
-samplingFreq=5
-size=100
-theta=0
-initialFile=../init/test_quadtree.dat
-outputFile=../results/test_ss.dat

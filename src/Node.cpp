@@ -1,4 +1,5 @@
 #include <iostream>
+#include <math.h>
 #include "Node.hpp"
 
 using namespace std;
@@ -10,7 +11,7 @@ Node::Node()
 // Constructor with position and size
 Node::Node(double x, double y, double w, double h)
 :xCenter(x), yCenter(y), width(w), height(h),
-mass(0.0), xPos(0.0), yPos(0.0),
+mass(0.0), xPosCM(0.0), yPosCM(0.0),
 nbrBodies(0), containsBody(false),
 isLeaf(true), depth(0)
 {};
@@ -18,7 +19,7 @@ isLeaf(true), depth(0)
 // Constructor with parent, position and size
 Node::Node(Node *ptr, double x, double y, double w, double h)
 :xCenter(x), yCenter(y), width(w), height(h),
-mass(0.0), xPos(0.0), yPos(0.0),
+mass(0.0), xPosCM(0.0), yPosCM(0.0),
 nbrBodies(0), containsBody(false),
 parent(ptr), isLeaf(true), depth(ptr->depth+1)
 {};
@@ -29,28 +30,21 @@ Node::~Node()
 
 // Delete the nodes
 void Node::deleteNodes() {
+
   if(!isLeaf) {
-    if(northEast->isLeaf) {
-      // If this node is not a leaf but the one under is a leaf, we can just
-      // delete the pointers of this node.
-      delete northEast;
-      delete northWest;
-      delete southEast;
-      delete southWest;
-      isLeaf=true;
-    } else {
-      // If this node isn't a leaf and the one under either, then we have to
-      // tell the node under to delete their Node too.
-      northEast->deleteNodes();
-      northWest->deleteNodes();
-      southEast->deleteNodes();
-      southWest->deleteNodes();
-    }
-  } else {
-    // If this node is a leaf, we delete it (Except the first one in the tree)
-    if(depth>0) {
-      delete this;
-    }
+    northEast->deleteNodes();
+    northWest->deleteNodes();
+    southEast->deleteNodes();
+    southWest->deleteNodes();
+    this->isLeaf = true;
+    northEast = NULL;
+    northWest = NULL;
+    southEast = NULL;
+    southWest = NULL;
+  }
+
+  if(depth>0) {
+    delete this;
   }
 }
 
@@ -58,8 +52,8 @@ void Node::deleteNodes() {
 void Node::addFirstBody(Body &body) {
   // Just copy the stuff from the body
   localBody = body;
-  xPos = body.xPos;
-  yPos = body.yPos;
+  xPosCM = body.xPos;
+  yPosCM = body.yPos;
   mass = body.mass;
   containsBody = true;
   nbrBodies = 1;
@@ -68,10 +62,26 @@ void Node::addFirstBody(Body &body) {
 // Update the node when another body is inserted
 void Node::insertBodyAndUpdateNode(Body &body) {
   // Update the position
-  xPos = xPos * mass/(mass+body.mass) + body.xPos * body.mass/(mass+body.mass);
-  yPos = yPos * mass/(mass+body.mass) + body.yPos * body.mass/(mass+body.mass);
-  mass = (mass * (double)nbrBodies + body.mass)/(double)(nbrBodies+1);
+  xPosCM = (xPosCM * mass + body.xPos * body.mass)/(mass+body.mass);
+  yPosCM = (yPosCM * mass + body.yPos * body.mass)/(mass+body.mass);
+  mass += body.mass;//(mass * (double)nbrBodies + body.mass)/(double)(nbrBodies+1);
   nbrBodies++;
+}
+
+// Distance between this body and the one in the parameter
+double Node::distance(Body &body) {
+  return sqrt(pow(body.xPos - this->xPosCM, 2.0) + pow(body.yPos - this->yPosCM, 2.0));
+}
+
+// Function that will apply "its" forces to the body in parameter
+void Node::applyForcesOnBody(Body &body) {
+
+  double dist = this->distance(body);
+
+  double cste = this->mass/pow(dist,3.0);
+
+  body.xAcc += G*(this->xPosCM - body.xPos)*cste;
+  body.yAcc += G*(this->yPosCM - body.yPos)*cste;
 }
 
 // Printing function
@@ -93,7 +103,7 @@ void Node::print(ostream &os) {
 }
 
 // Printing function
-void Node::print(ostream &os, double scale) {
+void Node::print(ostream &os, double const& scale) {
 
   os << this->xCenter/scale << ", " << this->yCenter/scale << ", " << this->width/scale << ", " << this->height/scale;
 
@@ -110,7 +120,7 @@ void Node::print(ostream &os, double scale) {
 }
 
 // Printing function
-void Node::print(ostream &os, double scale, double size) {
+void Node::print(ostream &os, double const& scale, double const& size) {
 
   os << this->xCenter/scale << ", " << this->yCenter/scale << ", " << this->width/scale << ", " << this->height/scale;
 

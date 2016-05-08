@@ -32,18 +32,6 @@ public:
   // Update the size of the root
   void updateRootSize(double w, double h);
 
-  // Distance between a body and a node
-  double distance(Body &body, Node &node);
-
-  // Distance between two bodies
-  double distance(Body &body1, Body &body2);
-
-  // Acceleration induced by a node on a body
-  void acceleration(Body &body, Node &node);
-
-  // Acceleration induced by a body on another body
-  void acceleration(Body &body1, Body &body2);
-
   // Update positions, velocity and acceleration of the bodies
   void updateBodies(Node &node);
 
@@ -54,16 +42,16 @@ public:
   void calculateAllAccelerationsFromNode(Node &node);
 
   // Collect all the bodies in the tree (After updating their positions & velocities)
-  void collect(std::vector<double> data, Node &node);
+  void collect(std::vector<double> &data, Node &node);
 
   // Printing function
   void print(std::ostream & os);
 
   // Printing function
-  void print(std::ostream & os, double scale);
+  void print(std::ostream & os, double const& scale);
 
   // Printing function
-  void print(std::ostream & os, double scale, double size);
+  void print(std::ostream & os, double const& scale, double const& size);
 
   // Variables
   double dt;        // Time step

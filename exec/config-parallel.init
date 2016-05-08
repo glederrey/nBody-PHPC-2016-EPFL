@@ -1,6 +1,0 @@
-dt=1
-finalTime=5000
-samplingFreq=5
-size=100
-initialFile=../init/test_ss.dat
-outputFile=../results/test_ss_parallel.dat

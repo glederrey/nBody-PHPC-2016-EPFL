@@ -84,7 +84,7 @@ int main(int argc, char* argv[])
   #endif
 
   // Create the Quadtree
-  Quadtree qtree(0.0, 0.0, 2.0*maxSize*AU, 2.0*maxSize*AU, dt, theta);
+  Quadtree qtree(0.0, 0.0, 2.0*maxSize*AU, 2.0*maxSize*AU, day*dt, theta);
   for(int i=0; i<nbrBodies; i++) {
     Body body(mass[i], positions[2*i], positions[2*i+1], velocities[2*i], velocities[2*i+1], i);
     qtree.insertBody(body, qtree.root);
@@ -113,6 +113,7 @@ int main(int argc, char* argv[])
   #ifdef WRITE_QUADTREE
     outputQTFile << 0 << ", ";
     qtree.print(outputQTFile, AU, 0.1*AU);
+    outputQTFile << endl;
     outputQTFile.flush();
   #endif
 
@@ -145,11 +146,8 @@ int main(int argc, char* argv[])
     #endif
 
     // Create the Quadtree
-    for(int i=0; i<nbrBodies; i++) {
-      cout << i << endl;
-      Body body(data[5*i], data[5*i+1], data[5*i+2], data[5*i+3], data[5*i+4], i);
-      cout << qtree.root.depth << endl;
-      cout << "PROUT" << endl;
+    for(int i=0; i<data.size()/6; i++) {
+      Body body(data[6*i], data[6*i+1], data[6*i+2], data[6*i+3], data[6*i+4], data[6*i+5]);
       qtree.insertBody(body, qtree.root);
     }
 
@@ -159,8 +157,6 @@ int main(int argc, char* argv[])
         outputTimeFile << "Iteration " << t+dt << " Building Tree, " << buildingTime << endl;
       }
     #endif
-
-    data.clear();
 
     iteration++;
 
@@ -172,13 +168,36 @@ int main(int argc, char* argv[])
     #endif
 
     #ifdef WRITE_OUTPUT
-    if(iteration%samplingFreq == 0) {
-      for (int k = 0; k < nbrBodies;k++) {
-        outputFile << t+dt << ", " << data[5*k] << ", " << data[5*k+1]/AU << ", " <<  data[5*k+2]/AU << std::endl;
+      if(iteration%samplingFreq == 0) {
+        mass.resize(nbrBodies);
+        positions.resize(2*nbrBodies);
+        velocities.resize(2*nbrBodies);
+
+        for(int j=0; j<nbrBodies; j++) {
+          mass[data[6*j+5]] = data[6*j];
+          positions[2*data[6*j+5]] = data[6*j+1];
+          positions[2*data[6*j+5]+1] = data[6*j+2];
+          velocities[2*data[6*j+5]] = data[6*j+3];
+          velocities[2*data[6*j+5]+1] = data[6*j+4];
+        }
+        for (int k = 0; k < nbrBodies;k++) {
+          outputFile << t+dt << ", " << mass[k] << ", " << positions[2*k]/AU << ", " <<  positions[2*k+1]/AU << std::endl;
+        }
+        outputFile.flush();
       }
-      outputFile.flush();
-    }
     #endif
+
+    #ifdef WRITE_QUADTREE
+      if(iteration%samplingFreq == 0) {
+        outputQTFile << t+dt << ", ";
+        qtree.print(outputQTFile, AU, 0.1*AU);
+        outputQTFile << endl;
+        outputQTFile.flush();
+      }
+    #endif
+
+    data.clear();
+
   }
 
   #ifdef WRITE_TIME
@@ -191,6 +210,10 @@ int main(int argc, char* argv[])
 
   #ifdef WRITE_OUTPUT
     outputFile.close();
+  #endif
+
+  #ifdef WRITE_QUADTREE
+    outputQTFile.close();
   #endif
 
 
