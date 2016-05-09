@@ -168,6 +168,16 @@ void Quadtree::collect(vector<double>& data, Node &node) {
   }
 }
 
+// Check if the body is lost in the space
+bool Quadtree::checkIfBodyIsLost(Body &body) {
+  // A body is lost if it's outside of the root node.
+  if(fabs(body.xPos) > this->root.xCenter + this->root.width/2.0 || fabs(body.yPos) > this->root.yCenter + this->root.height/2.0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 // Printing function
 void Quadtree::print(ostream &os) {
   this->root.print(os);

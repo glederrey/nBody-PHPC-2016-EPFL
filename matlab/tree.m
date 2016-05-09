@@ -2,14 +2,16 @@ clear all;
 close all;
 clc;
 
-filename = '../results/test_bh_quadtree.dat';
+filename = '../results/bh_quadtree.dat';
 
 delimiterIn = ',';
 headerlinesIn = 0;
 %data = importdata(filename,delimiterIn,headerlinesIn);
 
 size = 100;
-percentage = 1;
+percentage = 0;
+
+disp('Loading the data');
 
 fid = fopen(filename);
 textLine = fgets(fid); % Read first line.
@@ -32,6 +34,8 @@ while ischar(textLine)
 	lineCounter = lineCounter + 1;
 end
 fclose(fid);
+
+disp('Finished loading the data');
 
 f = figure();
 
@@ -69,4 +73,5 @@ for j=1:length(data(:,1))
     end
     drawnow;
     toc
+    break;
 end

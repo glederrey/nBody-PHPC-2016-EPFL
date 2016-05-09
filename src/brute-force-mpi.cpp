@@ -70,7 +70,7 @@ int main(int argc, char* argv[])
     if(argc > 1) {
       fileName.append(argv[1]);
     } else {
-      fileName = "config.init";
+      fileName = "config_parallel.init";
     }
 
     Configuration conf(fileName);

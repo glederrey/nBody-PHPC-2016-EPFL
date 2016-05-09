@@ -44,6 +44,9 @@ public:
   // Collect all the bodies in the tree (After updating their positions & velocities)
   void collect(std::vector<double> &data, Node &node);
 
+  // Check if the body is lost in the space
+  bool checkIfBodyIsLost(Body &body);
+
   // Printing function
   void print(std::ostream & os);
 

@@ -148,8 +148,16 @@ int main(int argc, char* argv[])
     // Create the Quadtree
     for(int i=0; i<data.size()/6; i++) {
       Body body(data[6*i], data[6*i+1], data[6*i+2], data[6*i+3], data[6*i+4], data[6*i+5]);
-      qtree.insertBody(body, qtree.root);
+      if (qtree.checkIfBodyIsLost(body)) {
+        #ifdef DEBUG
+        cout << "Body " << i << " is lost in the space! (" << data[6*i+1]/AU << ", " << data[6*i+2]/AU << ")" << endl;
+        #endif
+      } else {
+        qtree.insertBody(body, qtree.root);
+      }
     }
+
+    iteration++;
 
     #ifdef WRITE_TIME
       if(iteration%samplingFreq == 0) {
@@ -157,8 +165,6 @@ int main(int argc, char* argv[])
         outputTimeFile << "Iteration " << t+dt << " Building Tree, " << buildingTime << endl;
       }
     #endif
-
-    iteration++;
 
     #ifdef WRITE_TIME
       if(iteration%samplingFreq == 0) {
@@ -199,6 +205,8 @@ int main(int argc, char* argv[])
     data.clear();
 
   }
+
+  qtree.cleanQuadtree();
 
   #ifdef WRITE_TIME
     double simulationTime = (clock() - startSimulation) / (double) CLOCKS_PER_SEC;
