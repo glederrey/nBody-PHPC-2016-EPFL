@@ -24,6 +24,9 @@ public:
   // Update the Body with the acceleration and dt
   void update(double &dt);
 
+  // Collide the body in the parameter into this body
+  void collide(Body &body);
+
   // Printing function to get the information (Used to print in file)
   void print(std::ostream & os);
 

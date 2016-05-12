@@ -13,7 +13,7 @@ Node::Node(double x, double y, double w, double h)
 :xCenter(x), yCenter(y), width(w), height(h),
 mass(0.0), xPosCM(0.0), yPosCM(0.0),
 nbrBodies(0), containsBody(false),
-isLeaf(true), depth(0)
+isLeaf(true), depth(0), root(true)
 {};
 
 // Constructor with parent, position and size
@@ -21,7 +21,7 @@ Node::Node(Node *ptr, double x, double y, double w, double h)
 :xCenter(x), yCenter(y), width(w), height(h),
 mass(0.0), xPosCM(0.0), yPosCM(0.0),
 nbrBodies(0), containsBody(false),
-parent(ptr), isLeaf(true), depth(ptr->depth+1)
+parent(ptr), isLeaf(true), depth(ptr->depth+1), root(false)
 {};
 
 // Destructor
@@ -82,6 +82,14 @@ void Node::applyForcesOnBody(Body &body) {
 
   body.xAcc += G*(this->xPosCM - body.xPos)*cste;
   body.yAcc += G*(this->yPosCM - body.yPos)*cste;
+}
+
+// Remove 1 body from the number of body recursively
+void Node::removeBody() {
+  nbrBodies--;
+  if(!this->root) {
+    this->parent->removeBody();
+  }
 }
 
 // Printing function

@@ -5,7 +5,6 @@
 #include <vector>
 
 using namespace std;
-#define VERBOSE
 
 class Configuration
 {

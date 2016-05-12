@@ -10,17 +10,11 @@ Quadtree::Quadtree()
 {};
 
 // Constructor with position, size and time step
-Quadtree::Quadtree(double x, double y, double w, double h, double timeStep, double precision)
-: dt(timeStep), theta(precision)
+Quadtree::Quadtree(double x, double y, double max, double min, double timeStep, double precision)
+: dt(timeStep), theta(precision), minSize(min)
 {
-  root = Node(x, y, w, h);
-}
-
-// Constructor with position, size, time step, number of process and precision (theta)
-Quadtree::Quadtree(double x, double y, double w, double h, double timeStep, int numberProcs, double precision)
-: dt(timeStep), theta(precision), nbrProcs(numberProcs)
-{
-  root = Node(x, y, w, h);
+  // We need to put 2 times the size because we want to go from -size to +size
+  root = Node(x, y, 2.0*max, 2.0*max);
 }
 
 // Destructor
@@ -68,14 +62,34 @@ void Quadtree::insertBody(Body &body, Node &node) {
   // If the node is a leaf and contains a body. 4 leaves will be created and the
   // two bodies will be replaced
   if(node.isLeaf && node.containsBody) {
-    // First we create the leaves for this node
-    createLeaves(node);
-    // Find where the body in the actual node will go
-    findQuadrant(node.localBody, node);
-    // Add the body to this node
-    node.insertBodyAndUpdateNode(body);
-    // Find where this body needs to go
-    findQuadrant(body, node);
+    // Test if the node is still big enough
+    if(0.5*(node.height+node.width) > minSize) {
+      // First we create the leaves for this node
+      createLeaves(node);
+      // Find where the body in the actual node will go
+      findQuadrant(node.localBody, node);
+      // Add the body to this node
+      node.insertBodyAndUpdateNode(body);
+      // Find where this body needs to go
+      findQuadrant(body, node);
+    } else {
+
+      #ifdef DEBUG
+        cout << "Two bodies are colliding!" << endl;
+        cout << "  Body being inserted. " << body;
+        cout << "  Body in the node.    " << node.localBody;
+      #endif
+
+      // We will collide the two bodies.
+      node.localBody.collide(body);
+
+      #ifdef DEBUG
+        cout << "  Result:              " << node.localBody << endl;
+      #endif
+
+      // All the parents node had +1 on their number of body, we need to remove it
+      node.parent->removeBody();
+    }
   } else if(node.isLeaf && !node.containsBody) {
     // In this case, we can just add the body to the leaf
     node.addFirstBody(body);

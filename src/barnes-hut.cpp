@@ -42,9 +42,11 @@ int main(int argc, char* argv[])
   #endif
   string initialFile = conf.get<string>("initialFile");
   string outputFileName = conf.get<string>("outputFile");
-  double maxSize = conf.get<double>("size");
+  double maxSize = conf.get<double>("maxSize");
+  double minSize = conf.get<double>("minSize");
   double theta = conf.get<double>("theta");
   int iteration = 0;
+
   #ifdef WRITE_TIME
     clock_t startTotal;
     clock_t startSimulation;
@@ -74,6 +76,7 @@ int main(int argc, char* argv[])
   vector<double> mass = conf.getInitialMass();
   vector<double> positions = conf.getInitialPositions();
   vector<double> velocities = conf.getInitialVelocities();
+  vector<int> ids;
 
   #ifdef DEBUG
     cout << "Number of bodies: " << nbrBodies << endl;
@@ -84,10 +87,18 @@ int main(int argc, char* argv[])
   #endif
 
   // Create the Quadtree
-  Quadtree qtree(0.0, 0.0, 2.0*maxSize*AU, 2.0*maxSize*AU, day*dt, theta);
+  Quadtree qtree(0.0, 0.0, maxSize*AU, minSize*AU, day*dt, theta);
   for(int i=0; i<nbrBodies; i++) {
+    ids.push_back(i);
     Body body(mass[i], positions[2*i], positions[2*i+1], velocities[2*i], velocities[2*i+1], i);
-    qtree.insertBody(body, qtree.root);
+    cout << body << endl;
+    if (qtree.checkIfBodyIsLost(body)) {
+      #ifdef DEBUG
+      cout << "Body " << i << " is lost in the space! (" << positions[2*i]/AU << ", " << positions[2*i+1]/AU << ")" << endl;
+      #endif
+    } else {
+      qtree.insertBody(body, qtree.root);
+    }
   }
 
   #ifdef WRITE_TIME
@@ -145,8 +156,15 @@ int main(int argc, char* argv[])
       }
     #endif
 
+    // Check the data we received
+    mass.resize(nbrBodies);
+    positions.resize(2*nbrBodies);
+    velocities.resize(2*nbrBodies);
+    ids.resize(nbrBodies);
+
     // Create the Quadtree
     for(int i=0; i<data.size()/6; i++) {
+      cout << data[6*i+5] << endl;
       Body body(data[6*i], data[6*i+1], data[6*i+2], data[6*i+3], data[6*i+4], data[6*i+5]);
       if (qtree.checkIfBodyIsLost(body)) {
         #ifdef DEBUG

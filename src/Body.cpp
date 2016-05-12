@@ -54,6 +54,27 @@ void Body::update(double &dt) {
   yAcc = 0.0;
 }
 
+// Collide the body in the parameter into this body
+void Body::collide(Body &body) {
+  // Update the velocity with an inelastic collision
+  this->xVel = (this->mass*this->xVel + body.mass*body.xVel)/(this->mass+body.mass);
+  this->yVel = (this->mass*this->yVel + body.mass*body.yVel)/(this->mass+body.mass);
+  // Update the position (We use a weighted average on the mass)
+  this->xPos = (this->mass*this->xPos + body.mass*body.xPos)/(this->mass+body.mass);
+  this->yPos = (this->mass*this->yPos + body.mass*body.yPos)/(this->mass+body.mass);
+  // We don't update the acceleration since the bodies are collided during their
+  // insertion into the tree
+
+  // Update the Index if the mass of the body in parameter is bigger than the
+  // mass of this body. Otherwise, we keep the index
+  if(this->mass < body.mass) {
+    this->id = body.id;
+  }
+
+  // Sum the mass
+  this->mass += body.mass;
+}
+
 // Print the body
 void Body::print(ostream &os) {
   os << this->mass << ", " << this->xPos << ", " << this->yPos;
@@ -67,7 +88,7 @@ void Body::print(ostream &os, double const& scale) {
 // Overloading the << operator
 ostream& operator<< (ostream & out, Body const& body)
 {
-  out << "Body: Mass = " << body.mass << ", ";
+  out << "Body " << body.id << ": Mass = " << body.mass << ", ";
   out << "Positions = (" <<  body.xPos << ", " <<  body.yPos << "), ";
   out << "Velocities = (" <<  body.xVel << ", " <<  body.yVel << "), ";
   out << "Acceleration = (" <<  body.xAcc << ", " <<  body.yAcc << ")" << endl;

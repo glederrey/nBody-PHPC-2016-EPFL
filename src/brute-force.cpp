@@ -38,7 +38,7 @@ int main(int argc, char* argv[])
   #endif
   string initialFile = conf.get<string>("initialFile");
   string outputFileName = conf.get<string>("outputFile");
-  double maxSize = conf.get<double>("size");
+  double maxSize = conf.get<double>("maxSize");
   double dvx = 0.0;
   double dvy = 0.0;
   int iteration = 0;

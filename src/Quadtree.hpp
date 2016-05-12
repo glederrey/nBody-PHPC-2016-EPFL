@@ -11,9 +11,7 @@ public:
   // Empty Constructor
   Quadtree();
   // Constructor with position, size and time step
-  Quadtree(double x, double y, double w, double h, double timeStep, double precision);
-  // Constructor with position, size, time step, number of process and precision (theta)
-  Quadtree(double x, double y, double w, double h, double timeStep, int numberProcs, double precision);
+  Quadtree(double x, double y, double max, double min, double timeStep, double precision);
   // Destructor
   ~Quadtree();
 
@@ -60,6 +58,7 @@ public:
   double dt;        // Time step
   double theta;     // Precision parameter
   int nbrProcs;     // Number of process
+  double minSize;   // Minimum size of a node
   Node root;        // Root of the Quadtree
 };
 

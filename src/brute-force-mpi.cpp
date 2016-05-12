@@ -81,7 +81,7 @@ int main(int argc, char* argv[])
     cout << samplingFreq << endl;
     initialFile = conf.get<string>("initialFile");
     outputFileName = conf.get<string>("outputFile");
-    maxSize = conf.get<double>("size");
+    maxSize = conf.get<double>("maxSize");
 
     #ifdef WRITE_TIME
       size_t pos = outputFileName.rfind(".");

@@ -70,7 +70,7 @@ template<typename T> T Configuration::get(const std::string& key) const{
  }
 
 void Configuration::prepareInitialValues(const string& fileName) {
-  #ifdef VERBOSE
+  #ifdef DEBUG
     cout << "Please wait while the mass, positions and velocity are loaded." << endl;
   #endif
 
@@ -100,7 +100,7 @@ void Configuration::prepareInitialValues(const string& fileName) {
   }
 
   file.close();
-  #ifdef VERBOSE
+  #ifdef DEBUG
     cout << "The file with the initial values has been loaded. The different vectors will now be created." << endl;
   #endif
   nbrBodies = values.size() / 5;
@@ -118,7 +118,7 @@ void Configuration::prepareInitialValues(const string& fileName) {
     initialVelocities.push_back(values[i*5+4]);
   }
 
-  #ifdef VERBOSE
+  #ifdef DEBUG
     cout << "Loading the initial values is finished." << endl;
   #endif
  }

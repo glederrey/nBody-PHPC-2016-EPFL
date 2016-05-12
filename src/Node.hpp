@@ -32,6 +32,9 @@ public:
   // Function that will apply "its" forces to the body in parameter
   void applyForcesOnBody(Body &body);
 
+  // Remove 1 body from the number of body recursively
+  void removeBody();
+
   // Printing function
   void print(std::ostream & os);
 
@@ -65,6 +68,7 @@ public:
   Node* southWest;    // Node in the South-West direction
   bool isLeaf;        // Say if the tree is a leaf
   int depth;          // Depth of the node in the Quadtree
+  bool root;          // Tells if the node is the root in the Quadtree
 
 
 };
