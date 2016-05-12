@@ -11,7 +11,7 @@ close all;
 filename = '../results/bh.dat';
 solarSystem = true;
 movie = false;
-fullScreen = false;
+fullScreen = true;
 size = 50;
 
 if solarSystem

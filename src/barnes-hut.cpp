@@ -51,6 +51,9 @@ int main(int argc, char* argv[])
     clock_t startTotal;
     clock_t startSimulation;
     clock_t startBuildTree;
+    clock_t startTimeIteration;
+    double buildingTime;
+    double iterationTime;
   #endif
 
   #ifdef WRITE_TIME
@@ -99,7 +102,7 @@ int main(int argc, char* argv[])
   }
 
   #ifdef WRITE_TIME
-    double buildingTime = (clock() - startBuildTree) / (double) CLOCKS_PER_SEC;
+    buildingTime = (clock() - startBuildTree) / (double) CLOCKS_PER_SEC;
     outputTimeFile << "Building tree, " << buildingTime  << std::endl;
   #endif
 
@@ -138,7 +141,9 @@ int main(int argc, char* argv[])
     #endif
 
     #ifdef WRITE_TIME
-      clock_t startTimeIteration = clock();
+      if((iteration+1)%samplingFreq == 0) {
+        startTimeIteration = clock();
+      }
     #endif
 
     qtree.calculateAllAccelerationsFromNode(qtree.root);
@@ -148,7 +153,7 @@ int main(int argc, char* argv[])
 
     // Rebuild the Quadtree
     #ifdef WRITE_TIME
-      if(iteration%samplingFreq == 0) {
+      if((iteration+1)%samplingFreq == 0) {
         startBuildTree = clock();
       }
     #endif
@@ -172,15 +177,10 @@ int main(int argc, char* argv[])
 
     #ifdef WRITE_TIME
       if(iteration%samplingFreq == 0) {
+        iterationTime = (clock() - startTimeIteration) / (double) CLOCKS_PER_SEC;
+        outputTimeFile << "Iteration " << t+dt << ", " << iterationTime << endl;
         buildingTime = (clock() - startBuildTree) / (double) CLOCKS_PER_SEC;
         outputTimeFile << "Iteration " << t+dt << " Building Tree, " << buildingTime << endl;
-      }
-    #endif
-
-    #ifdef WRITE_TIME
-      if(iteration%samplingFreq == 0) {
-        double iterationTime = (clock() - startTimeIteration) / (double) CLOCKS_PER_SEC;
-        outputTimeFile << "Iteration " << t+dt << ", " << iterationTime << endl;
       }
     #endif
 
