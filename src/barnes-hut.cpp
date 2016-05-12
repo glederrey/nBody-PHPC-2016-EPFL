@@ -76,7 +76,6 @@ int main(int argc, char* argv[])
   vector<double> mass = conf.getInitialMass();
   vector<double> positions = conf.getInitialPositions();
   vector<double> velocities = conf.getInitialVelocities();
-  vector<int> ids;
 
   #ifdef DEBUG
     cout << "Number of bodies: " << nbrBodies << endl;
@@ -89,12 +88,10 @@ int main(int argc, char* argv[])
   // Create the Quadtree
   Quadtree qtree(0.0, 0.0, maxSize*AU, minSize*AU, day*dt, theta);
   for(int i=0; i<nbrBodies; i++) {
-    ids.push_back(i);
     Body body(mass[i], positions[2*i], positions[2*i+1], velocities[2*i], velocities[2*i+1], i);
-    cout << body << endl;
     if (qtree.checkIfBodyIsLost(body)) {
       #ifdef DEBUG
-      cout << "Body " << i << " is lost in the space! (" << positions[2*i]/AU << ", " << positions[2*i+1]/AU << ")" << endl;
+        cout << "Body " << i << " is lost in the space! (" << positions[2*i]/AU << ", " << positions[2*i+1]/AU << ")" << endl;
       #endif
     } else {
       qtree.insertBody(body, qtree.root);
@@ -156,19 +153,15 @@ int main(int argc, char* argv[])
       }
     #endif
 
-    // Check the data we received
-    mass.resize(nbrBodies);
-    positions.resize(2*nbrBodies);
-    velocities.resize(2*nbrBodies);
-    ids.resize(nbrBodies);
+    // Update the number of bodies
+    nbrBodies = data.size()/6;
 
     // Create the Quadtree
-    for(int i=0; i<data.size()/6; i++) {
-      cout << data[6*i+5] << endl;
+    for(int i=0; i<nbrBodies; i++) {
       Body body(data[6*i], data[6*i+1], data[6*i+2], data[6*i+3], data[6*i+4], data[6*i+5]);
       if (qtree.checkIfBodyIsLost(body)) {
         #ifdef DEBUG
-        cout << "Body " << i << " is lost in the space! (" << data[6*i+1]/AU << ", " << data[6*i+2]/AU << ")" << endl;
+          cout << "Body " << i << " is lost in the space! (" << data[6*i+1]/AU << ", " << data[6*i+2]/AU << ")" << endl;
         #endif
       } else {
         qtree.insertBody(body, qtree.root);

@@ -24,8 +24,8 @@ public:
   // Update the Body with the acceleration and dt
   void update(double &dt);
 
-  // Collide the body in the parameter into this body
-  void collide(Body &body);
+  // Collide the body in the parameter into this body and return the id that will disappear
+  int collide(Body &body);
 
   // Printing function to get the information (Used to print in file)
   void print(std::ostream & os);

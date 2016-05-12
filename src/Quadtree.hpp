@@ -55,11 +55,12 @@ public:
   void print(std::ostream & os, double const& scale, double const& size);
 
   // Variables
-  double dt;        // Time step
-  double theta;     // Precision parameter
-  int nbrProcs;     // Number of process
-  double minSize;   // Minimum size of a node
-  Node root;        // Root of the Quadtree
+  double dt;                        // Time step
+  double theta;                     // Precision parameter
+  int nbrProcs;                     // Number of process
+  double minSize;                   // Minimum size of a node
+  Node root;                        // Root of the Quadtree
+  std::vector<int> idCollision;     // Ids of the bodies that collided
 };
 
 // Overloading the << operator

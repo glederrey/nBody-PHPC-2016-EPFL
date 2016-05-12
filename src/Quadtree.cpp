@@ -33,6 +33,7 @@ void Quadtree::cleanQuadtree(){
   root.nbrBodies = 0;
   root.depth = 0;
   root.containsBody = false;
+  idCollision.clear();
 }
 
 // Find in which quadrant of a node the body should go. Then it inserts it.
@@ -81,11 +82,13 @@ void Quadtree::insertBody(Body &body, Node &node) {
       #endif
 
       // We will collide the two bodies.
-      node.localBody.collide(body);
+      int idx = node.localBody.collide(body);
 
       #ifdef DEBUG
         cout << "  Result:              " << node.localBody << endl;
       #endif
+
+      idCollision.push_back(idx);
 
       // All the parents node had +1 on their number of body, we need to remove it
       node.parent->removeBody();
@@ -173,7 +176,15 @@ void Quadtree::collect(vector<double>& data, Node &node) {
     data.push_back(node.localBody.yPos);
     data.push_back(node.localBody.xVel);
     data.push_back(node.localBody.yVel);
-    data.push_back(node.localBody.id);
+
+    int nbrIdSmaller = 0;
+    for(unsigned int i=0; i<idCollision.size(); i++) {
+      if(idCollision[i] < node.localBody.id) {
+        nbrIdSmaller++;
+      }
+    }
+
+    data.push_back(node.localBody.id-nbrIdSmaller);
   } else if(!node.isLeaf && node.containsBody) {
     collect(data, *node.northEast);
     collect(data, *node.northWest);

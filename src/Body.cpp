@@ -54,8 +54,9 @@ void Body::update(double &dt) {
   yAcc = 0.0;
 }
 
-// Collide the body in the parameter into this body
-void Body::collide(Body &body) {
+// Collide the body in the parameter into this body and return the id that will disappear
+int Body::collide(Body &body) {
+  int idx;
   // Update the velocity with an inelastic collision
   this->xVel = (this->mass*this->xVel + body.mass*body.xVel)/(this->mass+body.mass);
   this->yVel = (this->mass*this->yVel + body.mass*body.yVel)/(this->mass+body.mass);
@@ -68,11 +69,16 @@ void Body::collide(Body &body) {
   // Update the Index if the mass of the body in parameter is bigger than the
   // mass of this body. Otherwise, we keep the index
   if(this->mass < body.mass) {
+    idx = this->id;
     this->id = body.id;
+  } else {
+    idx = body.id;
   }
 
   // Sum the mass
   this->mass += body.mass;
+
+  return idx;
 }
 
 // Print the body
