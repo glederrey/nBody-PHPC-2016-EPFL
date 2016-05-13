@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
 
   double dt = conf.get<double>("dt");
   double finalTime = conf.get<double>("finalTime");
-  #ifdef WRITE_OUTPUT
+  #if WRITE_OUTPUT || WRITE_TIME || WRITE_QUADTREE
     int samplingFreq = conf.get<int>("samplingFreq");
   #endif
   string initialFile = conf.get<string>("initialFile");
@@ -85,6 +85,12 @@ int main(int argc, char* argv[])
   #endif
 
   #ifdef WRITE_TIME
+    double loadingTime = (clock() - startTotal) / (double) CLOCKS_PER_SEC;
+    outputTimeFile << "Loading data, " << loadingTime  << std::endl;
+    startSimulation = clock();
+  #endif
+
+  #ifdef WRITE_TIME
     startBuildTree = clock();
   #endif
 
@@ -126,12 +132,6 @@ int main(int argc, char* argv[])
     qtree.print(outputQTFile, AU, 0.1*AU);
     outputQTFile << endl;
     outputQTFile.flush();
-  #endif
-
-  #ifdef WRITE_TIME
-    double loadingTime = (clock() - startTotal) / (double) CLOCKS_PER_SEC;
-    outputTimeFile << "Loading data, " << loadingTime  << std::endl;
-    startSimulation = clock();
   #endif
 
   vector<double> data;

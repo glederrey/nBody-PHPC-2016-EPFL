@@ -1,2 +1,10 @@
-exec/*
+exec/*.o
+exec/brute-force
+exec/brute-force-opt
+exec/brute-force-mpi
+exec/brute-force-mpi-opt
+exec/barnes-hut
+exec/barnes-hut-opt
+exec/barnes-hut-mpi
+exec/barnes-hut-mpi-opt
 results/*

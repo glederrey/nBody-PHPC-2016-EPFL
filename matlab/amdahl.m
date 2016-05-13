@@ -8,15 +8,13 @@ clc;
 clear all;
 close all;
 
-frac_bf = 
-
-frac_bf = 1.33e-6;
-frac_bh = 6e-4;
+frac_bf = 0.00058;
+frac_bh = 4.66e-3;
 
 
 speedup = @(alpha, p) 1/(alpha + (1-alpha)/p);
 
-k=1
+k=1;
 for i=1:5:1000
     nodes(k) = i;
     sp_bf(k) = speedup(frac_bf, i);

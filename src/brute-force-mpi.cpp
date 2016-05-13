@@ -77,8 +77,9 @@ int main(int argc, char* argv[])
 
     dt = conf.get<double>("dt");
     finalTime = conf.get<double>("finalTime");
-    samplingFreq = conf.get<int>("samplingFreq");
-    cout << samplingFreq << endl;
+    #if WRITE_OUTPUT || WRITE_TIME
+      samplingFreq = conf.get<int>("samplingFreq");
+    #endif
     initialFile = conf.get<string>("initialFile");
     outputFileName = conf.get<string>("outputFile");
     maxSize = conf.get<double>("maxSize");

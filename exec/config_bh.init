@@ -1,0 +1,8 @@
+dt=1
+finalTime=5000
+samplingFreq=5
+maxSize=100
+minSize=0.0001
+theta=2
+initialFile=../init/test_ss.dat
+outputFile=../results/bh.dat

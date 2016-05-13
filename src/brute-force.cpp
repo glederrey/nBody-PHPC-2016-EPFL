@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
 
   double dt = conf.get<double>("dt");
   double finalTime = conf.get<double>("finalTime");
-  #ifdef WRITE_OUTPUT
+  #if WRITE_OUTPUT || WRITE_TIME
     int samplingFreq = conf.get<int>("samplingFreq");
   #endif
   string initialFile = conf.get<string>("initialFile");
