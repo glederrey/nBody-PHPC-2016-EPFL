@@ -8,3 +8,7 @@ exec/barnes-hut-opt
 exec/barnes-hut-mpi
 exec/barnes-hut-mpi-opt
 results/*
+Latex/*/*.aux
+Latex/*/*.log
+Latex/*/*.out
+Latex/*/*.synctex.gz

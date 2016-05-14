@@ -9,6 +9,10 @@
 \usepackage[noend]{algpseudocode}
 \usepackage{hyperref}
 \usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+\renewcommand{\arraystretch}{1.2}
 
 \definecolor{links}{HTML}{2A1B81}
 \hypersetup{colorlinks,linkcolor=,urlcolor=links}
@@ -16,6 +20,8 @@
 \makeatletter
 \def\BState{\State\hskip-\ALG@thistlm}
 \makeatother
+
+\setlength{\parindent}{0pt}
 
 
 \begin{document}
@@ -25,7 +31,7 @@
 \ppintro{Gael Lederrey}{EPFL-CSE}{/}{Only PI}{\today}{June 15, 2016}{Deneb}{NBODY-BHVSBF}
 
 
-\ppabstract{}
+\ppabstract{The nBody problem has been well studied by many scientists in many different fields such as atomistic simulation or astrophysics. In this project, we present the implementation of the Barnes-Hut algorithm. A shared memory version using the MPI library will also be presented. A benchmark comparison is done with the Brute-Force algorithm, serial and parallel versions.}
 
 \section{Scientific Background}
 \subsection{Algorithms}
@@ -83,15 +89,6 @@ In order to take a real test case for the nBody problem, we choose the Gravitati
 \end{equation}
 where $G$ is the gravitational constant and is equal to $6.674 \cdot 10^{-11}~[Nm^2kg^{-2}]$. As we can see with this equation, the forces decreases proportionally to $1/r^2$, $r$ being the distance between two bodies. This allows the center of the mass approximation in the Barnes-Hut algorithm. Indeed, if two bodies are close to each other and far away from a third body. The two forces of these bodies on the third one will be almost the same as the force of the center of the mass of the two far bodies.
 
-\subsection{Too close and too far?} 
-Two problems occur with the nBody problem:
-\begin{itemize}
-\item What do we do when a body is moving too far form the other bodies?
-\item What do we do when two bodies are really close? 
-\end{itemize} 
-
-We decided to address these two problems in a very simple manner. First, we define a maximum and minimum distance. If a body is outside of the square with maximum distance as the edge, then we delete it from the list of bodies. And if two bodies have a distance smaller than the minimum distance, we do a perfect inelastic collision between these two bodies.
-
 \section{Project Description}
 
 In this project we want to implement a high performance version of the Barnes-Hut algorithm in C++. A simple version of the Brute-Force algorithm will also be implemented in order to be used as a benchmark for the Barnes-Hut algorithm. At the end, four different codes will be produced:
@@ -127,10 +124,53 @@ The Amdahl's law is given by:
 \begin{equation}
 S_{p} = \frac{1}{\alpha + \frac{1-\alpha}{p}}
 \end{equation}
-where $S_{p}$ is the theoretical speedup, $1-\alpha$ is the parallelizable part of the code and $p$ is the number of processors. Ideally, we should have $S_p = p$. But this rarely happens.
+where $S_{p}$ is the theoretical speedup, $1-\alpha$ is the parallelizable part of the code and $p$ is the number of processors. Ideally, we should have $S_p = p$. But this does not happen in reality.
 
 \subsection{Brute-Force}
 
+In the Brute-Force algorithm, everything can be parallelized except the loading of the data at the beginning and the communication between the process. Since this algorithm is in $\mathcal{O}(n^2)$, the loading time at the beginning will be negligible compared to the time taken for the calculation of the forces. Therefore, the speedup will be really close to the perfect speedup, {\it i.e.} $S_p = p$.
+
+\subsection{Barnes-Hut}
+
+In the Barnes-Hut algorithm, we can also parallelize everything except the loading of the data and the communication. But since this algorithm is in $\mathcal{O}(n\log n)$, the fraction of serial code will be much higher compared to the Brute-Force algorithm. Therefore, we can except a smaller speedup.
+
+\subsection{Results}
+
+Table \ref{tab:amdahl} presents different times taken by the code for the Brute-Force and the Barnes-Hut algorithms. $t_L$ corresponds to the loading time, $\overline{t}_{it}$ is the mean iteration time and  $\overline{t}_{com}$ is the mean communication time. The total time taken by the algorithm will be:
+\begin{equation}
+t_{tot,q} = t_L + q\cdot(\overline{t}_{it} + \overline{t}_{com})
+\end{equation}
+where $q$ is the number of iterations. Therefore, we can calculate the fraction of serial code for a given number of iterations:
+\begin{equation}
+\alpha_q = \frac{t_L + q\cdot \overline{t}_{com}}{t_{tot,q}}
+\end{equation}
+The fraction $\alpha_q$ for $q=100$ and $q=1000$ is given in the table \ref{tab:amdahl}. For the moment, the communication time is not taken into account because the MPI code for the Barnes-Hut algorithm has not been done. Therefore, we can only take into account the loading time. This table will be done again and the Amdahl's law will be corrected after the implementation of the MPI for the Barnes-Hut algorithm.
+\\
+Finally, with this fraction $\alpha_q$, we can plot the Amdahl's law as it is given in the figure \ref{fig:amdahl}. We can clearly see that the theoretical speedup for the Barnes-Hut algorithm is much lower than for the Brute-Force algorithm. 
+
+\newpage
+\begin{table}[h]
+\centering
+\begin{tabular}{|c||c|c|c|c||c|c|}
+\hline
+Algorithm & $n$ & $t_L~[s]$ & $\overline{t}_{it}~[s]$ & $\overline{t}_{com}~[s]$ & $\alpha_{100}$ & $\alpha_{1000}$ \\
+\hline \hline
+\multirow{3}{*}{Brute-Force} & $10^4$ & 0.0588 & 1.300 & / & $4.52\cdot10^{-4}$ & $4.52\cdot10^{-5}$ \\ \cline{2-7}
+& $10^5$ & 0.554 & 130.1 & / & $4.26\cdot10^{-5}$ & $4.26\cdot10^{-6}$ \\ \cline{2-7}
+& $10^6$ & 4.709 & 13234.7 & / & $3.56\cdot10^{-6}$ & $3.56\cdot10^{-7}$ \\ \hline
+\multirow{3}{*}{Barnes-Hut} & $10^4$ & 0.121 & 0.0361 & / & $3.34\cdot10^{-2}$ & $3.34\cdot10^{-3}$ \\ \cline{2-7}
+& $10^5$ & 0.498 & 0.539 & / & $9.23\cdot10^{-3}$ & $9.23\cdot10^{-4}$ \\ \cline{2-7}
+& $10^6$ & 4.730 & 5.921 & / & $7.99\cdot10^{-3}$ & $7.99\cdot10^{-4}$ \\ \hline
+\end{tabular}
+   \caption{Times used to calculate the serial part of the code for the Amdahl's law.}
+   \label{tab:amdahl}  
+\end{table}
+
+\begin{figure}[H]
+\centering
+\input{./figures/amdahl}
+\caption{\label{fig:amdahl} Result of the Amdahl's law prediction of the theoretical speedup for the Brute-Force and the Barnes-Hut algorithm. This graph is computed with $\alpha_{100}$.}
+\end{figure}
 
 
 \begin{thebibliography}{1}
@@ -139,7 +179,7 @@ where $S_{p}$ is the theoretical speedup, $1-\alpha$ is the parallelizable part 
 
 \bibitem{grav} \href{https://en.wikipedia.org/wiki/Newton's\_law\_of\_universal\_gravitation}{Wikip\'edia - Newton's law of universal gravitation}
 
-\bibitem{c++} Stroustrup B.,{\em TProgramming -- Principles and Practice Using C++}, Addison-Wesley, May 2014
+\bibitem{c++} Stroustrup B.,{\em Programming -- Principles and Practice Using C++}, Addison-Wesley, May 2014
 
 \bibitem{mpi} The MPI Forum, {\em MPI: A Message-Passing Interface Standard}, Technical Report, 1994
 
