@@ -53,6 +53,7 @@ int main(int argc, char* argv[])
     size_t pos = outputFileName.rfind(".");
     string outputTimeFileName = outputFileName.substr(0,pos) + "_time" + outputFileName.substr(pos);
     outputTimeFile.open(outputTimeFileName.c_str());
+    outputTimeFile.precision(12);
     outputTimeFile << "# Info, Time [s]" << endl;
   #endif
 
@@ -85,7 +86,7 @@ int main(int argc, char* argv[])
     startSimulation = std::clock();
   #endif
 
-  for(double t=0; t<finalTime; t+=dt) {
+  for(double t=0; t+dt<finalTime; t+=dt) {
     #ifdef DEBUG
       cout << "Start loops for time " << t+dt << endl;
     #endif

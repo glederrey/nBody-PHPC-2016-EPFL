@@ -1,0 +1,212 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{a4wide}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{pcptex}
+\usepackage{xspace}
+\usepackage[toc,page]{appendix}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+\renewcommand{\arraystretch}{1.2}
+
+\definecolor{links}{HTML}{2A1B81}
+\hypersetup{colorlinks,linkcolor=,urlcolor=links}
+
+\makeatletter
+\def\BState{\State\hskip-\ALG@thistlm}
+\makeatother
+
+\setlength{\parindent}{0pt}
+
+
+\begin{document}
+
+\pptitle{A High Performance Implementation of the 2D nBody Gravitational problem: Benchmark of the Barnes-Hut algorithm compared to the Brute-Force algorithm.}
+
+\ppintro{Gael Lederrey}{EPFL-CSE}{/}{Only PI}{\today}{June 15, 2016}{Deneb}{NBODY-BHVSBF}
+
+
+\ppabstract{The nBody problem has been well studied by many scientists in many different fields such as atoms simulation or astrophysics. In this project, we present the implementation of the Barnes-Hut algorithm. A distributed memory version using the MPI library will also be presented. A benchmark comparison is done with the Brute-Force algorithm, serial and parallel versions. The whole project can be found at this url: \href{https://github.com/glederrey/nBody-PHPC-2016-EPFL}{https://github.com/glederrey/nBody-PHPC-2016-EPFL}}
+
+\section{Scientific Background}
+\subsection{Algorithms}
+
+The nBody problem covers the whole scale of science from the subatomic particles to the gigantic galaxies. It is a problem that has been studied a lot and new papers are still being published about this problem nowadays. In order to solve this problem, it exists a really simple algorithm called Brute-Force. It consists in looping on all the bodies and inside this loop, it loops again on all the bodies:
+\begin{algorithm}
+\caption{Brute-Force}\label{bf}
+\begin{algorithmic}[1]
+\State $n$ = Number of bodies
+\State Initialize $n$ bodies
+\While {$t < t_{end}$}
+\For {$i = 1 \textit{ to } n$} 
+\For {$j = 1 \textit{ to } n$}
+\State Apply forces from body $j$ on body $i$
+\EndFor
+\EndFor
+\For {$k = 1 \textit{ to } n$}
+\State Update the body $k$
+\EndFor
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+
+We can clearly see that the loop to calculate all the forces is in $\mathcal{O}(n^2)$. Updating the bodies will take only $\mathcal{O}(n)$ time. But most of the time will be spent in the calculation of the forces. For a very large number of bodies this algorithm will be very slow. Therefore another algorithm can be used: Barnes-Hut.
+
+The Barnes-Hut algorithm is easy to understand. First, it consists in building a quadtree and place each body in the leaves of this tree. Each parent node will store the center of mass of its leaves. Then, we can apply the forces for each body. Instead of calculating all the forces between the current body and all the other bodies, it uses the center of the mass of multiple bodies if there are far away from the current body. The pseudo-code is given below:
+\begin{algorithm}
+\caption{Barnes-Hut}\label{bh}
+\begin{algorithmic}[1]
+\State $n$ = Number of bodies
+\State Initialize $n$ bodies
+\While {$t < t_{end}$}
+\For {$i = 1 \textit{ to } n$} 
+\State	Add body $i$ in the tree
+\EndFor
+\For {$j = 1 \textit{ to } n$} 
+\State	Calculate all the forces applied to body $j$.
+\EndFor	
+\For {$k = 1 \textit{ to } n$}
+\State Update the body $k$
+\EndFor
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+
+Adding a body in the tree takes $\mathcal{O}(\log n)$ time (height of the tree). Therefore, adding all the bodies will take $\mathcal{O}(n\log n)$ time. The calculation of the forces will take $\mathcal{O}(n) \times \mathcal{O}(\log n) = \mathcal{O}(n\log n)$ time. And finally, updating the bodies will take $\mathcal{O}(n)$ time. Therefore, this algorithm will take $\mathcal{O}(n\log n)$ time which is much faster than the Brute-Force algorithm for a high number of bodies.
+\\\\
+For both algorithms, the communication between the process is proportional to the number of bodies. Therefore, we can say that communication is in $\mathcal{O}(n)$ time.
+
+\subsection{Gravitation} 
+
+In order to take a real test case for the nBody problem, we choose the Gravitational nBody problems. The forces are given by:
+\begin{equation}
+\vec{F}_{1\rightarrow 2} = G\cdot\frac{m_1m_2(\vec{x}_2-\vec{x}_1)}{\Vert \vec{x}_2-\vec{x}_1\Vert^3}
+\end{equation}
+where $G$ is the gravitational constant and is equal to $6.674 \cdot 10^{-11}~[Nm^2kg^{-2}]$. As we can see with this equation, the forces decreases proportionally to $1/r^2$, $r$ being the distance between two bodies. This allows the center of the mass approximation in the Barnes-Hut algorithm. Indeed, if two bodies are close to each other and far away from a third body. The two forces of these bodies on the third one will be almost the same as the force of the center of the mass of the two far bodies.
+
+\subsection{Too close and too far?} 
+Two problems occur with the nBody problem:
+\begin{itemize}
+\item What do we do when a body is moving too far form the other bodies?
+\item What do we do when two bodies are really close? 
+\end{itemize} 
+
+We decided to address these two problems in a very simple manner. First, we define a maximum and minimum distance. If a body is outside of the square with maximum distance as the edge length, then we delete it from the list of bodies. And if two bodies have a distance smaller than the minimum distance, we do a perfect inelastic collision between them.
+
+\section{Project Description}
+
+In this project we want to implement a high performance version of the Barnes-Hut algorithm in C++~\cite{c++}. A simple version of the Brute-Force algorithm will also be implemented in order to be used as a benchmark for the Barnes-Hut algorithm. At the end, four different codes will be produced:
+\begin{itemize}
+\item Serial version of the Brute-Force algorithm
+\item Distributed memory version, using MPI~\cite{mpi}, of the Brute-Force algorithm
+\item Serial version of the Barnes-Hut algorithm
+\item Distributed memory version, using MPI~\cite{mpi}, of the Barnes-Hut algorithm
+\end{itemize}
+The three first codes will be used as benchmark for the distributed memory version of the Barnes-Hut algorithm. Indeed, to prove that this version is the fastest, we need to make sure it overcomes the Brute-Force algorithm. 
+\\\\
+For the two distributed memory codes, we determine the Amdahl's law. We will then compare the strong scaling and the weak scaling. For the distributed memory version of the Barnes-Hut algorithm, we will study the effect on the Load-Balancing on the processors. 
+
+\section{Implementations}
+
+These four applications are implemented in C++~\cite{c++}. As it was said in the previous section, the distributed memory versions are using the MPI library~\cite{mpi}. Everything has been compiled using \verb+gcc+ version 4.8.4. The code have been debugged using the general debugger \verb+gdb+. And \verb+valgrind+ has been used to remove all the memory leaks. 
+
+\subsection{Optimization}
+
+For each of the codes, we compile it once without using any optimization flags and once with the following two flags: \verb+-Ofast+ and \verb+-ftree-vectorize+. The non-optimized version will not be used. It was just for testing purpose.
+
+\subsubsection{Brute-Force}
+
+Not much efforts were put onto the optimization of the Brute-Force algorithm since it exists only for a benchmark purpose. For the MPI version of the code, the first (outer) loop is divided into the number of processes. The second (inner) loop is still on the $n$ bodies. After the update of the local bodies, everything is sent back to the master process to update the vector of all the bodies. It also redistribute equally the number of local bodies to all the processes to keep a good load-balancing.
+
+\subsubsection{Barnes-Hut}
+
+For the Barnes-Hut algorithm, loop reordering and vectorization is not useful since it only uses pointers. The following is only a supposition since the code has not been written yet. We will try to do the construction of the tree in parallel on all the processes. We will also try to make the calculation of the forces parallel. After the update of all the bodies, everything will be send to the master process in order to recreate the vector of all the bodies. We will also try to find a metric to tell when it is good to recreate the quadtree. Indeed, the creation of the tree can take some time, so it is good if it does not have to be recreated at each iteration.
+
+\section{Algorithms' time}
+
+In this section, we want to prove that the Brute-Force algorithm is in $\mathcal{O}(n^2)$ and that the Barnes-Hut algorithm is in $\mathcal{O}(n\log n)$. In the figure \ref{fig:algo_time}, the times taken by the two algorithms are shown for different number of bodies. Different values for the precision parameter $\theta$ were used. We can clearly see that the Brute-Force algorithm has the same slope as the red line for $\mathcal{O}(n^2)$. We can also see that the Barnes-Hut algorithm with $\theta=0$ has a the same slope. This is normal since it doesn't aggregate the far bodies. But if $\theta>0$, we can see that the slope becomes the same as the red dotted line for $\mathcal{O}(n\log n)$, especially with a high number of bodies. Therefore, the theoretical times for the two algorithms are validated.
+
+\begin{figure}[H]
+\centering
+\input{./figures/algo_time}
+\caption{\label{fig:algo_time} Time of the main iteration for the Brute-Force and the Barnes-Hut algorithms. Different values for the precision, $\theta$, have been used. The theoretical times are given in red.}
+\end{figure}
+
+An interesting fact is to see that for a small number of bodies, the Brute-Force algorithm is faster than the Barnes-Hut algorithm. This may be due to the optimization made by the compiler and the implementation of the Barnes-Hut algorithm. However, with $10^5$ bodies, we see that the Barnes-Hut algorithm, $\theta=1$, is around $300$ times faster than the Brute-Force algorithm.
+
+\section{Amdahl's law}
+
+The Amdahl's law is given by:
+\begin{equation}
+S_{p} = \frac{1}{\alpha + \frac{1-\alpha}{p}}
+\end{equation}
+where $S_{p}$ is the theoretical speedup, $1-\alpha$ is the parallelizable part of the code and $p$ is the number of processors. Ideally, we should have $S_p = p$. But this does not happen in reality.
+
+\subsection{Brute-Force}
+
+In the Brute-Force algorithm, everything can be parallelized except the loading of the data at the beginning and the communication between the process. Since this algorithm is in $\mathcal{O}(n^2)$, the loading time at the beginning will be negligible compared to the time taken for the calculation of the forces. Therefore, the speedup will be really close to the perfect speedup, {\it i.e.} $S_p = p$.
+
+\subsection{Barnes-Hut}
+
+In the Barnes-Hut algorithm, we can also parallelize everything except the loading of the data and the communication. But since this algorithm is in $\mathcal{O}(n\log n)$, the fraction of serial code will be much higher compared to the Brute-Force algorithm. Therefore, we can except a smaller speedup.
+
+\subsection{Results}
+
+Table \ref{tab:amdahl} presents different times taken by the code for the Brute-Force and the Barnes-Hut algorithms. $t_L$ corresponds to the loading time, $\overline{t}_{it}$ is the mean iteration time and  $\overline{t}_{com}$ is the mean communication time. The total time taken by the algorithm will be:
+\begin{equation}
+t_{tot,q} = t_L + q\cdot(\overline{t}_{it} + \overline{t}_{com})
+\end{equation}
+where $q$ is the number of iterations. Therefore, we can calculate the fraction of serial code for a given number of iterations:
+\begin{equation}
+\alpha_q = \frac{t_L + q\cdot \overline{t}_{com}}{t_{tot,q}}
+\end{equation}
+The fraction $\alpha_q$ for $q=100$ and $q=1000$ is given in the table \ref{tab:amdahl}. For the moment, the communication time is not taken into account because the MPI code for the Barnes-Hut algorithm has not been done. Therefore, we can only take into account the loading time. This table will be done again and the Amdahl's law will be corrected after the implementation of the MPI for the Barnes-Hut algorithm.
+\\
+Finally, with this fraction $\alpha_q$, we can plot the Amdahl's law as it is given in the figure \ref{fig:amdahl}. We can clearly see that the theoretical speedup for the Barnes-Hut algorithm is much lower than for the Brute-Force algorithm. 
+
+\begin{table}[h]
+\centering
+\begin{tabular}{|c||c|c|c|c||c|c|}
+\hline
+Algorithm & $n$ & $t_L~[s]$ & $\overline{t}_{it}~[s]$ & $\overline{t}_{com}~[s]$ & $\alpha_{100}$ & $\alpha_{1000}$ \\
+\hline \hline
+\multirow{3}{*}{Brute-Force} & $10^4$ & 0.0588 & 1.300 & / & $4.52\cdot10^{-4}$ & $4.52\cdot10^{-5}$ \\ \cline{2-7}
+& $10^5$ & 0.554 & 130.1 & / & $4.26\cdot10^{-5}$ & $4.26\cdot10^{-6}$ \\ \cline{2-7}
+& $10^6$ & 4.709 & 13234.7 & / & $3.56\cdot10^{-6}$ & $3.56\cdot10^{-7}$ \\ \hline
+\multirow{3}{*}{Barnes-Hut} & $10^4$ & 0.121 & 0.0361 & / & $3.34\cdot10^{-2}$ & $3.34\cdot10^{-3}$ \\ \cline{2-7}
+& $10^5$ & 0.498 & 0.539 & / & $9.23\cdot10^{-3}$ & $9.23\cdot10^{-4}$ \\ \cline{2-7}
+& $10^6$ & 4.730 & 5.921 & / & $7.99\cdot10^{-3}$ & $7.99\cdot10^{-4}$ \\ \hline
+\end{tabular}
+   \caption{Times used to calculate the serial part of the code for the Amdahl's law.}
+   \label{tab:amdahl}  
+\end{table}
+
+\begin{figure}[H]
+\centering
+\input{./figures/amdahl}
+\caption{\label{fig:amdahl} Result of the Amdahl's law prediction of the theoretical speedup for the Brute-Force and the Barnes-Hut algorithm. This graph is computed with $\alpha_{100}$.}
+\end{figure}
+
+
+\begin{thebibliography}{1}
+
+\bibitem{bh} \href{http://http.cs.berkeley.edu/~demmel/cs267/lecture26/lecture26.html}{Berkley - CS267: Lecture 24, Apr 11 1996: Fast Hierarchical Methods for the N-body Problem, Part 1}
+
+\bibitem{grav} \href{https://en.wikipedia.org/wiki/Newton's\_law\_of\_universal\_gravitation}{Wikip\'edia - Newton's law of universal gravitation}
+
+\bibitem{c++} Stroustrup B.,{\em Programming -- Principles and Practice Using C++}, Addison-Wesley, May 2014
+
+\bibitem{mpi} The MPI Forum, {\em MPI: A Message-Passing Interface Standard}, Technical Report, 1994
+
+\end{thebibliography}
+
+
+
+
+
+\end{document}

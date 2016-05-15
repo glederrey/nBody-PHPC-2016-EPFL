@@ -8,14 +8,101 @@ clc;
 clear all;
 close all;
 
-bf_1e4 = 4.52e-4;
-bf_1e5 = 4.26e-5;
-bf_1e6 = 3.56e-6;
+filename = '../results/bf_1e4_time.dat';
+parallel = false;
+algo = 'brute-force';
 
-bh_1e4 = 3.34e-2;
-bh_1e5 = 9.23e-3;
-bh_1e6 = 7.99e-3;
+[total, simulation, loading, iteration, building, communication] = time(filename, algo, parallel);
 
+display('Brute-Force - 1e4 bodies');
+
+display(['Total time: ', num2str(total), ' [s]']);
+display(['Loading time: ', num2str(loading), ' [s]']);
+display(['Mean iteration time: ', num2str(mean(iteration)), ' [s]']);
+display(['Max iteration time: ', num2str(max(iteration)), ' [s]']);
+display(['Min iteration time: ', num2str(min(iteration)), ' [s]']);
+bf_1e4 = loading/(100*mean(iteration));
+display(['Proportion of serial time on 100 iterations: ', num2str(bf_1e4)]);
+display(['Proportion of serial time on 1000 iterations: ', num2str(loading/(1000*mean(iteration)))]);
+display('\n');
+
+filename = '../results/bf_1e5_time.dat';
+[total, simulation, loading, iteration, building, communication] = time(filename, algo, parallel);
+
+display('Brute-Force - 1e5 bodies');
+
+display(['Total time: ', num2str(total), ' [s]']);
+display(['Loading time: ', num2str(loading), ' [s]']);
+display(['Mean iteration time: ', num2str(mean(iteration)), ' [s]']);
+display(['Max iteration time: ', num2str(max(iteration)), ' [s]']);
+display(['Min iteration time: ', num2str(min(iteration)), ' [s]']);
+bf_1e5 = loading/(100*mean(iteration));
+display(['Proportion of serial time on 100 iterations: ', num2str(bf_1e5)]);
+display(['Proportion of serial time on 1000 iterations: ', num2str(loading/(1000*mean(iteration)))]);
+display('\n');
+
+filename = '../results/bf_1e6_time.dat';
+[total, simulation, loading, iteration, building, communication] = time(filename, algo, parallel);
+
+display('Brute-Force - 1e6 bodies');
+
+display(['Total time: ', num2str(total), ' [s]']);
+display(['Loading time: ', num2str(loading), ' [s]']);
+display(['Mean iteration time: ', num2str(mean(iteration)), ' [s]']);
+display(['Max iteration time: ', num2str(max(iteration)), ' [s]']);
+display(['Min iteration time: ', num2str(min(iteration)), ' [s]']);
+bf_1e6 = loading/(100*mean(iteration));
+display(['Proportion of serial time on 100 iterations: ', num2str(bf_1e6)]);
+display(['Proportion of serial time on 1000 iterations: ', num2str(loading/(1000*mean(iteration)))]);
+display('\n');
+
+filename = '../results/bh_1e4_time.dat';
+parallel = false;
+algo = 'barnes-hut';
+
+[total, simulation, loading, iteration, building, communication] = time(filename, algo, parallel);
+
+display('Barnes-Hut - 1e4 bodies');
+
+display(['Total time: ', num2str(total), ' [s]']);
+display(['Loading time: ', num2str(loading), ' [s]']);
+display(['Mean iteration time: ', num2str(mean(iteration)), ' [s]']);
+display(['Max iteration time: ', num2str(max(iteration)), ' [s]']);
+display(['Min iteration time: ', num2str(min(iteration)), ' [s]']);
+bh_1e4 = loading/(100*mean(iteration));
+display(['Proportion of serial time on 100 iterations: ', num2str(bh_1e4)]);
+display(['Proportion of serial time on 1000 iterations: ', num2str(loading/(1000*mean(iteration)))]);
+display('\n');
+
+filename = '../results/bh_1e5_time.dat';
+[total, simulation, loading, iteration, building, communication] = time(filename, algo, parallel);
+
+display('Barnes-Hut - 1e5 bodies');
+
+display(['Total time: ', num2str(total), ' [s]']);
+display(['Loading time: ', num2str(loading), ' [s]']);
+display(['Mean iteration time: ', num2str(mean(iteration)), ' [s]']);
+display(['Max iteration time: ', num2str(max(iteration)), ' [s]']);
+display(['Min iteration time: ', num2str(min(iteration)), ' [s]']);
+bh_1e5 = loading/(100*mean(iteration));
+display(['Proportion of serial time on 100 iterations: ', num2str(bh_1e5)]);
+display(['Proportion of serial time on 1000 iterations: ', num2str(loading/(1000*mean(iteration)))]);
+display('\n');
+
+filename = '../results/bh_1e6_time.dat';
+[total, simulation, loading, iteration, building, communication] = time(filename, algo, parallel);
+
+display('Barnes-Hut - 1e6 bodies');
+
+display(['Total time: ', num2str(total), ' [s]']);
+display(['Loading time: ', num2str(loading), ' [s]']);
+display(['Mean iteration time: ', num2str(mean(iteration)), ' [s]']);
+display(['Max iteration time: ', num2str(max(iteration)), ' [s]']);
+display(['Min iteration time: ', num2str(min(iteration)), ' [s]']);
+bh_1e6 = loading/(100*mean(iteration));
+display(['Proportion of serial time on 100 iterations: ', num2str(bh_1e6)]);
+display(['Proportion of serial time on 1000 iterations: ', num2str(loading/(1000*mean(iteration)))]);
+display('\n');
 
 speedup = @(alpha, p) 1/(alpha + (1-alpha)/p);
 
