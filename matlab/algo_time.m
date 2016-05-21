@@ -1,8 +1,8 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                                                                         %
-%Process the times of the Algo to see if their theoretical time is correct%
-%                                                                         %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                              %
+%  Process the times of the Algo to see if their theoretical time is correct   %
+%                                                                              %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 clear all;
 close all;
@@ -17,12 +17,12 @@ nbrStr = {'1e1', '2e1', '5e1', '1e2', '2e2', '5e2', '1e3', '2e3', '5e3', '1e4', 
 algo = 'brute-force';
 parallel = false;
 for i=1:length(nbr)
-   
+
     filename = ['../results/bf_', nbrStr{i}, '_time.dat'];
-    
+
     [total, simulation, loading, iteration, building, communication] = time(filename, algo, parallel);
-    
-    bf_time(i) = mean(iteration);    
+
+    bf_time(i) = mean(iteration);
 end
 
 loglog(nbr, bf_time, 'k', 'LineWidth', 1.1);
@@ -31,74 +31,74 @@ hold on;
 algo = 'barnes-hut';
 
 for i=1:length(nbr)-1
-   
+
     filename = ['../results/bh_', nbrStr{i}, '_0_time.dat'];
-    
+
     [total, simulation, loading, iteration, building, communication] = time(filename, algo, parallel);
-    
-    bh_0_time(i) = mean(iteration(2:end));    
+
+    bh_0_time(i) = mean(iteration(2:end));
 end
 
 loglog(nbr(1:end-1), bh_0_time, 'b', 'LineWidth', 1.1);
 hold on;
 
 for i=1:length(nbr)
-   
+
     filename = ['../results/bh_', nbrStr{i}, '_05_time.dat'];
-    
+
     [total, simulation, loading, iteration, building, communication] = time(filename, algo, parallel);
-    
-    bh_05_time(i) = mean(iteration(2:end));    
+
+    bh_05_time(i) = mean(iteration(2:end));
 end
 
 loglog(nbr, bh_05_time, 'b--', 'LineWidth', 1.1);
 hold on;
 
 for i=1:length(nbr)
-   
+
     filename = ['../results/bh_', nbrStr{i}, '_1_time.dat'];
-    
+
     [total, simulation, loading, iteration, building, communication] = time(filename, algo, parallel);
-    
-    bh_1_time(i) = mean(iteration(2:end));    
+
+    bh_1_time(i) = mean(iteration(2:end));
 end
 
 loglog(nbr, bh_1_time, 'b:', 'LineWidth', 1.5);
 hold on;
 
 % for i=1:length(nbr)
-%    
+%
 %     filename = ['../results/bh_', nbrStr{i}, '_2_time.dat'];
-%     
+%
 %     [total, simulation, loading, iteration, building, communication] = time(filename, algo, parallel);
-%     
-%     bh_2_time(i) = mean(iteration(2:end));    
+%
+%     bh_2_time(i) = mean(iteration(2:end));
 % end
-% 
+%
 % loglog(nbr, bh_2_time);
 % hold on;
 
 for i=1:length(nbr)
-   
+
     filename = ['../results/bh_', nbrStr{i}, '_5_time.dat'];
-    
+
     [total, simulation, loading, iteration, building, communication] = time(filename, algo, parallel);
-    
-    bh_5_time(i) = mean(iteration(2:end));    
+
+    bh_5_time(i) = mean(iteration(2:end));
 end
 
 loglog(nbr, bh_5_time, 'b-.', 'LineWidth', 1.1);
 hold on;
 
 % for i=1:length(nbr)
-%    
+%
 %     filename = ['../results/bh_', nbrStr{i}, '_10_time.dat'];
-%     
+%
 %     [total, simulation, loading, iteration, building, communication] = time(filename, algo, parallel);
-%     
-%     bh_10_time(i) = mean(iteration(2:end));    
+%
+%     bh_10_time(i) = mean(iteration(2:end));
 % end
-% 
+%
 % loglog(nbr, bh_10_time);
 % hold on;
 

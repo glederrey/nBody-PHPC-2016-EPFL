@@ -1,5 +1,10 @@
 function [total, simulation, loading, iteration, building, communication] = time(filename, algo, parallel)
-% Function that processes the times. And send them back
+% Function that processes the times in a file. And send them back
+%
+% INPUT:
+%   - filename [String]: Name of the file created after the simulation
+%   - algo [String]: Can either be 'barnes-hut' or 'brute-force'
+%   - parallel [Bool]: True if a parallel version was used
 
 delimiterIn = ',';
 headerlinesIn = 1;
@@ -11,31 +16,31 @@ if parallel == false
         total = data(numel(data));
         simulation = data(numel(data)-1);
         loading = data(1);
-        
+
         k=1;
         for i=2:1:numel(data)-2
             iteration(k) = data(i);
             k = k+1;
-        end 
-        
+        end
+
         building = 0;
         communication = 0;
-        
+
     elseif strcmp(algo,'barnes-hut')
         total = data(numel(data));
         simulation = data(numel(data)-1);
         loading = data(1);
         building(1) = data(2);
-        
+
         k=1;
         for i=3:2:numel(data)-5
             iteration(k) = data(i);
             building(k+1) = data(i+1);
             k = k+1;
-        end  
-        
+        end
+
         communication = 0;
-        
+
     end
 else
     if strcmp(algo,'brute-force')
@@ -51,9 +56,8 @@ else
         loading = 0;
         iteration = 0;
         building = 0;
-        communication = 0;        
+        communication = 0;
     end
 end
 
 end
-

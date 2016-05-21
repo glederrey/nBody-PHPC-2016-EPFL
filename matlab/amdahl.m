@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                         %
-%                            Plot Amdahl's law                            %
+%                                 Amdahl                                  %
 %                                                                         %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -131,4 +131,3 @@ legend('Brute-force - 10^4 bodies', 'Brute-force - 10^5 bodies', 'Brute-force - 
 xlabel('Number of nodes');
 ylabel('Theoretical speedup');
 grid on;
-    

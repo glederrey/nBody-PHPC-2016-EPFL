@@ -129,12 +129,12 @@ For the Barnes-Hut algorithm, loop reordering and vectorization is not useful si
 
 \section{Algorithms' time}
 
-In this section, we want to prove that the Brute-Force algorithm is in $\mathcal{O}(n^2)$ and that the Barnes-Hut algorithm is in $\mathcal{O}(n\log n)$. In the figure \ref{fig:algo_time}, the times taken by the two algorithms are shown for different number of bodies. Different values for the precision parameter $\theta$ were used. We can clearly see that the Brute-Force algorithm has the same slope as the red line for $\mathcal{O}(n^2)$. We can also see that the Barnes-Hut algorithm with $\theta=0$ has a the same slope. This is normal since it doesn't aggregate the far bodies. But if $\theta>0$, we can see that the slope becomes the same as the red dotted line for $\mathcal{O}(n\log n)$, especially with a high number of bodies. Therefore, the theoretical times for the two algorithms are validated.
+In this section, we want to prove that the Brute-Force algorithm is in $\mathcal{O}(n^2)$ and that the Barnes-Hut algorithm is in $\mathcal{O}(n\log n)$. In the figure \ref{fig:algo_time}, the average iteration time taken by the two algorithms are shown for different number of bodies. Different values for the precision parameter $\theta$ were used. We can clearly see that the Brute-Force algorithm has the same slope as the red line for $\mathcal{O}(n^2)$. We can also see that the Barnes-Hut algorithm with $\theta=0$ has a the same slope. This is normal since it doesn't aggregate the far bodies. But if $\theta>0$, we can see that the slope becomes the same as the red dotted line for $\mathcal{O}(n\log n)$, especially with a high number of bodies. Therefore, the theoretical times for the two algorithms are validated.
 
 \begin{figure}[H]
 \centering
 \input{./figures/algo_time}
-\caption{\label{fig:algo_time} Time of the main iteration for the Brute-Force and the Barnes-Hut algorithms. Different values for the precision, $\theta$, have been used. The theoretical times are given in red.}
+\caption{\label{fig:algo_time} Average time of the main iteration for the Brute-Force and the Barnes-Hut algorithms. Different values for the precision, $\theta$, have been used. The theoretical times are given in red.}
 \end{figure}
 
 An interesting fact is to see that for a small number of bodies, the Brute-Force algorithm is faster than the Barnes-Hut algorithm. This may be due to the optimization made by the compiler and the implementation of the Barnes-Hut algorithm. However, with $10^5$ bodies, we see that the Barnes-Hut algorithm, $\theta=1$, is around $300$ times faster than the Brute-Force algorithm.
