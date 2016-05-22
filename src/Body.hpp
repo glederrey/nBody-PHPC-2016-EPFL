@@ -41,8 +41,10 @@ public:
   double yVel;  // Y Velocity of the body
   double xAcc;  // X Acceleration of the body
   double yAcc;  // Y Acceleration of the body
-  int process;  // Process in which the object is
   int id;       // ID of the body (Useful when we try to distinguish two bodies)
+  // Only used by the Barnes-Hut parallel
+  int process;  // Process in which the object is
+
 };
 
 // Overloading the << operator (Used to print in file)

@@ -11,13 +11,13 @@ Body::Body()
 // Contructor with mass, positions and velocities
 Body::Body(double m, double x, double y, double vx, double vy)
 : mass(m), xPos(x), yPos(y), xVel(vx), yVel(vy),
-xAcc(0.0), yAcc(0.0), process(0), id(0)
+xAcc(0.0), yAcc(0.0), id(0), process(0)
 {};
 
 // Contructor with mass, positions, velocities and id
 Body::Body(double m, double x, double y, double vx, double vy, int idBody)
 : mass(m), xPos(x), yPos(y), xVel(vx), yVel(vy),
-xAcc(0.0), yAcc(0.0), process(0), id(idBody)
+xAcc(0.0), yAcc(0.0), id(idBody), process(0)
 {};
 
 // Destructor

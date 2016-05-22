@@ -36,17 +36,21 @@ public:
   void removeBody();
 
   // Printing function
-  void print(std::ostream & os);
+  void print(std::ostream & os, bool parallel);
 
   // Printing function with a scaling
-  void print(std::ostream & os, double const& scale);
+  void print(std::ostream & os, double const& scale, bool parallel);
 
   // Printing function with a scaling
   // Don't print if 0.5*(height+width) < size
-  void print(std::ostream & os, double const& scale, double const& size);
+  void print(std::ostream & os, double const& scale, double const& size, bool parallel);
 
   // Test if the size is big enough for printing
   bool testSize(double size);
+
+  // Function specific to the ParallelQuadtree. It adds the process in which
+  // the node is located
+  void setProcess(int proc);
 
   // Variables for the node
   double xCenter;     // X position of the center of the node
@@ -56,8 +60,8 @@ public:
   // Variables for the center of mass
   Body localBody;     // Local body
   double mass;        // Total mass inside the node
-  double xPosCM;        // X position of the center of mass
-  double yPosCM;        // Y position of the center of mass
+  double xPosCM;      // X position of the center of mass
+  double yPosCM;      // Y position of the center of mass
   int nbrBodies;      // Number of bodies inside the node
   bool containsBody;  // Say if the Node contains a body
   // Variables for the Quadtree
@@ -69,6 +73,9 @@ public:
   bool isLeaf;        // Say if the tree is a leaf
   int depth;          // Depth of the node in the Quadtree
   bool root;          // Tells if the node is the root in the Quadtree
+  // Variable specific for ParallelQuadtree
+  int process;        // Process in which the node is located.
+
 
 
 };

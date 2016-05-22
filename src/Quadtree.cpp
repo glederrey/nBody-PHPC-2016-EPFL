@@ -205,17 +205,20 @@ bool Quadtree::checkIfBodyIsLost(Body &body) {
 
 // Printing function
 void Quadtree::print(ostream &os) {
-  this->root.print(os);
+  // Print serial
+  this->root.print(os, false);
 }
 
 // Printing function
 void Quadtree::print(ostream &os, double const& scale) {
-  this->root.print(os, scale);
+  // Print serial
+  this->root.print(os, scale, false);
 }
 
 // Printing function
 void Quadtree::print(ostream &os, double const& scale, double const& size) {
-  this->root.print(os, scale, size);
+  // Print Serial
+  this->root.print(os, scale, size, false);
 }
 
 // Overloading the << operator

@@ -13,7 +13,8 @@ Node::Node(double x, double y, double w, double h)
 :xCenter(x), yCenter(y), width(w), height(h),
 mass(0.0), xPosCM(0.0), yPosCM(0.0),
 nbrBodies(0), containsBody(false),
-isLeaf(true), depth(0), root(true)
+isLeaf(true), depth(0), root(true),
+process(0)
 {};
 
 // Constructor with parent, position and size
@@ -21,7 +22,8 @@ Node::Node(Node *ptr, double x, double y, double w, double h)
 :xCenter(x), yCenter(y), width(w), height(h),
 mass(0.0), xPosCM(0.0), yPosCM(0.0),
 nbrBodies(0), containsBody(false),
-parent(ptr), isLeaf(true), depth(ptr->depth+1), root(false)
+parent(ptr), isLeaf(true), depth(ptr->depth+1), root(false),
+process(0)
 {};
 
 // Destructor
@@ -93,55 +95,67 @@ void Node::removeBody() {
 }
 
 // Printing function
-void Node::print(ostream &os) {
+void Node::print(ostream &os, bool parallel) {
+
+  if(parallel) {
+    os << this->process << ", ";
+  }
 
   os << this->xCenter << ", " << this->yCenter << ", " << this->width << ", " << this->height;
 
   // Print the leafs
   if(!this->isLeaf) {
     os << ", ";
-    this->northEast->print(os);
+    this->northEast->print(os, parallel);
     os << ", ";
-    this->northWest->print(os);
+    this->northWest->print(os, parallel);
     os << ", ";
-    this->southEast->print(os);
+    this->southEast->print(os, parallel);
     os << ", ";
-    this->southWest->print(os);
+    this->southWest->print(os, parallel);
   }
 }
 
 // Printing function
-void Node::print(ostream &os, double const& scale) {
+void Node::print(ostream &os, double const& scale, bool parallel) {
+
+  if(parallel) {
+    os << this->process << ", ";
+  }
 
   os << this->xCenter/scale << ", " << this->yCenter/scale << ", " << this->width/scale << ", " << this->height/scale;
 
   if(!this->isLeaf) {
     os << ", ";
-    this->northEast->print(os, scale);
+    this->northEast->print(os, scale, parallel);
     os << ", ";
-    this->northWest->print(os, scale);
+    this->northWest->print(os, scale, parallel);
     os << ", ";
-    this->southEast->print(os, scale);
+    this->southEast->print(os, scale, parallel);
     os << ", ";
-    this->southWest->print(os, scale);
+    this->southWest->print(os, scale, parallel);
   }
 }
 
 // Printing function
-void Node::print(ostream &os, double const& scale, double const& size) {
+void Node::print(ostream &os, double const& scale, double const& size, bool parallel) {
+
+  if(parallel) {
+    os << this->process << ", ";
+  }
 
   os << this->xCenter/scale << ", " << this->yCenter/scale << ", " << this->width/scale << ", " << this->height/scale;
 
   // Print the leafs
   if(!this->isLeaf && this->northEast->testSize(size)) {
     os << ", ";
-    this->northEast->print(os, scale, size);
+    this->northEast->print(os, scale, size, parallel);
     os << ", ";
-    this->northWest->print(os, scale, size);
+    this->northWest->print(os, scale, size, parallel);
     os << ", ";
-    this->southEast->print(os, scale, size);
+    this->southEast->print(os, scale, size, parallel);
     os << ", ";
-    this->southWest->print(os, scale, size);
+    this->southWest->print(os, scale, size, parallel);
   }
 }
 
@@ -152,6 +166,12 @@ bool Node::testSize(double size) {
   } else {
     return false;
   }
+}
+
+// Function specific to the ParallelQuadtree. It adds the process in which
+// the node is located
+void Node::setProcess(int proc) {
+  process = proc;
 }
 
 // Overloading the << operator

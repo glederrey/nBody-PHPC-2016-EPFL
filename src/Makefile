@@ -2,8 +2,8 @@ CC = g++
 MPI = mpic++
 CFLAGS+=-Wall -g -Ofast -ftree-vectorize -DDEBUG -DWRITE_TIME #-DWRITE_OUTPUT  -DWRITE_QUADTREE
 LIBS+=-lm
-OBJ=Configuration.o brute-force.o brute-force-mpi.o Body.o Node.o Quadtree.o barnes-hut.o
-EXEC=brute-force brute-force-mpi barnes-hut
+OBJ=Configuration.o brute-force.o brute-force-mpi.o Body.o Node.o Quadtree.o barnes-hut.o ParallelQuadtree.o barnes-hut-mpi.o
+EXEC=brute-force brute-force-mpi barnes-hut barnes-hut-mpi
 OUT=../exec/
 RESULTS=../results/
 create_exec := $(shell mkdir -p $(OUT))
@@ -47,6 +47,17 @@ barnes-hut.o: barnes-hut.cpp
 
 barnes-hut: barnes-hut.o Configuration.o Body.o Node.o Quadtree.o
 	$(CC) -o $(OUT)$@ $(OUT)$< $(LIBS)
+
+# Creation of Object files for class ParallelQuadtree
+ParallelQuadtree.o: ParallelQuadtree.cpp
+	$(CC) $(CFLAGS) -o $(OUT)$@ -c $<
+
+# Compile barnes-hut unoptimized
+barnes-hut-mpi.o: barnes-hut-mpi.cpp
+	$(MPI) $(CFLAGS) -o $(OUT)$@ -c $<
+
+barnes-hut-mpi: barnes-hut-mpi.o Configuration.o Body.o Node.o Quadtree.o ParallelQuadtree.o
+	$(MPI) -o $(OUT)$@ $(OUT)$< $(LIBS)
 
 
 clean :

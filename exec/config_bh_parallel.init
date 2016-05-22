@@ -1,0 +1,8 @@
+dt=0.1
+finalTime=1
+samplingFreq=1
+maxSize=1000
+minSize=0.00001
+theta=10
+initialFile=../init/ss_1e1.dat
+outputFile=../results/test_bh_parallel.dat
