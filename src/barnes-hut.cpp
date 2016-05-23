@@ -236,7 +236,5 @@ int main(int argc, char* argv[])
     outputQTFile.close();
   #endif
 
-
-  exit(0);
-
+  return 0;
 }

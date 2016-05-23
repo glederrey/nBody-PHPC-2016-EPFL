@@ -55,7 +55,13 @@ void ParallelQuadtree::assignNodes(int *nbrBodiesPerNode, vector< vector< Node* 
     int process = 0;
     while( (node.nbrBodies + nbrBodiesPerNode[process]) > maxNbrBodiesPerNode && process < nbrProcs ) {
       process++;
+      if(process == nbrProcs) {
+        break;
+      }
     }
+
+    cout << "process = " << process << endl;
+    cout << "nbrProcs = " << nbrProcs << endl;
 
     // If we went up to the the number of procs (last process), we assign the
     // children
@@ -67,7 +73,7 @@ void ParallelQuadtree::assignNodes(int *nbrBodiesPerNode, vector< vector< Node* 
     } else {
       // If the process is not the last one, we can add the node to this process
       assignedNodes[process].push_back(&node);
-      nbrBodiesPerNode[process] += node.nbrBodies;
+      nbrBodiesPerNode[process] = nbrBodiesPerNode[process] + node.nbrBodies;
     }
   } else if (node.isLeaf && node.containsBody) {
     // If the current node is a leaf and contains a body, we add it to the last proces

@@ -192,6 +192,6 @@ int main(int argc, char* argv[])
     outputFile.close();
   #endif
 
-  exit(0);
+  return 0;
 
 }

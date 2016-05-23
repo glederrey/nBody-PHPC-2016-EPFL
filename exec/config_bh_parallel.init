@@ -1,5 +1,5 @@
 dt=1
-finalTime=500
+finalTime=50
 samplingFreq=5
 maxSize=1000000
 minSize=1e-9

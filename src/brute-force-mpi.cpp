@@ -38,7 +38,6 @@ int main(int argc, char* argv[])
   string fileName;
   double dt;
   double finalTime;
-  int samplingFreq = 0;
   string initialFile;
   string outputFileName;
   double maxSize;
@@ -51,6 +50,10 @@ int main(int argc, char* argv[])
   vector<double> fixedPositions;
   vector<double> fixedVelocities;
   vector<double> fixedMass;
+
+  #if WRITE_TIME || WRITE_OUTPUT
+    int samplingFreq = 0;
+  #endif
 
   #ifdef WRITE_TIME
     // Time variables
@@ -384,6 +387,5 @@ int main(int argc, char* argv[])
   #endif
 
   MPI_Finalize();
-  exit(0);
-
+  return 0;
 }
