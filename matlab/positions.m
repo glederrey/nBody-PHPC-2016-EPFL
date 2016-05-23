@@ -8,7 +8,7 @@ clc;
 clear all;
 close all;
 
-filename = '../results/bh.dat';
+filename = '../results/bh_ss.dat';
 solarSystem = true;
 movie = false;
 fullScreen = true;
@@ -50,7 +50,8 @@ if movie == true
 end
 
 while idx < length
-%while iterations < 200
+%while iterations < 1
+    iterations
     id = [];
     mass = [];
     x = [];
@@ -110,7 +111,7 @@ while idx < length
     end
 end
 
-close(f);
+%close(f);
 if movie == true
     close(mov);
 end

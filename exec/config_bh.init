@@ -1,8 +1,8 @@
-dt=0.1
-finalTime=1
+dt=1
+finalTime=20
 samplingFreq=1
-maxSize=1000
+maxSize=1000000
 minSize=0.00001
-theta=10
-initialFile=../init/ss_1e5.dat
-outputFile=../results/bh_1e5_10.dat
+theta=1
+initialFile=../init/init_1e6.dat
+outputFile=../results/test_bh_serial.dat

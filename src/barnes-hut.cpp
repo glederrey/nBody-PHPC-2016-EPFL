@@ -167,7 +167,7 @@ int main(int argc, char* argv[])
       Body body(data[6*i], data[6*i+1], data[6*i+2], data[6*i+3], data[6*i+4], data[6*i+5]);
       if (qtree.checkIfBodyIsLost(body)) {
         #ifdef DEBUG
-          cout << "Body " << i << " is lost in the space! (" << data[6*i+1]/AU << ", " << data[6*i+2]/AU << ")" << endl;
+          cout << "Body " << data[6*i+5] << " is lost in the space! (" << data[6*i+1]/AU << ", " << data[6*i+2]/AU << ")" << endl;
         #endif
       } else {
         qtree.insertBody(body, qtree.root);

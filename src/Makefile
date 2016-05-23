@@ -1,6 +1,6 @@
 CC = g++
 MPI = mpic++
-CFLAGS+=-Wall -g -Ofast -ftree-vectorize -DDEBUG -DWRITE_TIME #-DWRITE_OUTPUT  -DWRITE_QUADTREE
+CFLAGS+=-Wall -g -Ofast -ftree-vectorize -DDEBUG -DWRITE_TIME -DWRITE_OUTPUT #-DWRITE_QUADTREE
 LIBS+=-lm
 OBJ=Configuration.o brute-force.o brute-force-mpi.o Body.o Node.o Quadtree.o barnes-hut.o ParallelQuadtree.o barnes-hut-mpi.o
 EXEC=brute-force brute-force-mpi barnes-hut barnes-hut-mpi

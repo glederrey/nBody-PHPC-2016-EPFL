@@ -123,9 +123,9 @@ int main(int argc, char* argv[]) {
       outputFile.precision(12);
       outputFile << "# Time, Mass, X position, Y position" << endl;
       for (int i=0; i<nbrBodies; i++) {
-        outputFile << 0 << ", " << fixedMass[i] << ", " << fixedPositions[2*i]/AU << ", " << fixedPositions[2*i+1]/AU << endl;
+        outputFile << 0 << ", " << mass[i] << ", " << positions[2*i]/AU << ", " << positions[2*i+1]/AU << endl;
       }
-      outputFile.close();
+      outputFile.flush();
     #endif
 
     #ifdef WRITE_TIME
@@ -153,10 +153,6 @@ int main(int argc, char* argv[]) {
   MPI_Bcast(&mass[0], nbrBodies, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   MPI_Bcast(&positions[0], 2*nbrBodies, MPI_DOUBLE, 0, MPI_COMM_WORLD);
   MPI_Bcast(&velocities[0], 2*nbrBodies, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-
-  #ifdef DEBUG
-    cout << "Process " << myRank << " on " << nbrProcs << " says RECEIVEDBCAST." << endl;
-  #endif
 
   if(myRank == 0) {
     #ifdef WRITE_TIME
@@ -213,14 +209,6 @@ int main(int argc, char* argv[]) {
     vector< vector< Node *> > assignedNodes(nbrProcs);
     assignedNodes = pqtree.localNodes(nbrBodiesPerNode);
 
-    #ifdef DEBUG
-      if(myRank == 0) {
-        for(int i=0; i<nbrProcs; i++) {
-          cout << "Rank " << i << ", nbrBodiesPerNode = " << nbrBodiesPerNode[i] << ", assignedNodes.size = " << assignedNodes[i].size() << endl;
-        }
-      }
-    #endif
-
     // Fill the startIndex and recvCounts
     // 7 is because the collectBodies function is collection 7 info per body
     // Mass, positions (2), velocities (2), index and process
@@ -246,7 +234,7 @@ int main(int argc, char* argv[]) {
     }
 
     globalData.clear();
-    globalData.resize(nbrBodies);
+    globalData.resize(7*nbrBodies);
 
     if(myRank == 0) {
       #ifdef WRITE_TIME
@@ -256,18 +244,10 @@ int main(int argc, char* argv[]) {
       #endif
     }
 
-    #ifdef DEBUG
-      cout << "Process " << myRank << " on " << nbrProcs << " says SENDING." << endl;
-    #endif
-
     MPI_Bcast(&nbrBodies, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
     // Send the data and gather them into the globalData vector
     MPI_Allgatherv(&localData[0], recvCounts[myRank], MPI_DOUBLE, &globalData[0], recvCounts, startIndex, MPI_DOUBLE, MPI_COMM_WORLD);
-
-    #ifdef DEBUG
-      cout << "Process " << myRank << " on " << nbrProcs << " says RECEIVED." << endl;
-    #endif
 
 
     if(myRank == 0) {
@@ -287,7 +267,7 @@ int main(int argc, char* argv[]) {
       if (pqtree.checkIfBodyIsLost(body)) {
         #ifdef DEBUG
           if(myRank == 0) {
-            cout << "Body " << i << " is lost in the space! (" << positions[2*i]/AU << ", " << positions[2*i+1]/AU << ")" << endl;
+            cout << "Body " << globalData[7*i+5] << " is lost in the space! (" <<  globalData[7*i+1]/AU << ", " << globalData[7*i+2]/AU << ")" << endl;
           }
         #endif
       } else {
@@ -308,13 +288,39 @@ int main(int argc, char* argv[]) {
           outputTimeFile << "Iteration " << t+dt << " Building Tree, " << buildingTime << endl;
         }
       #endif
+
+      #ifdef WRITE_OUTPUT
+        if(iteration%samplingFreq == 0) {
+          mass.resize(nbrBodies);
+          positions.resize(2*nbrBodies);
+          velocities.resize(2*nbrBodies);
+
+          for(int j=0; j<nbrBodies; j++) {
+            mass[globalData[7*j+5]] = globalData[7*j];
+            positions[2*globalData[7*j+5]] = globalData[7*j+1];
+            positions[2*globalData[7*j+5]+1] = globalData[7*j+2];
+            velocities[2*globalData[7*j+5]] = globalData[7*j+3];
+            velocities[2*globalData[7*j+5]+1] = globalData[7*j+4];
+          }
+          for (int k = 0; k < nbrBodies;k++) {
+            outputFile << t+dt << ", " << mass[k] << ", " << positions[2*k]/AU << ", " <<  positions[2*k+1]/AU << endl;
+          }
+          outputFile.flush();
+        }
+      #endif
+
+      #ifdef WRITE_QUADTREE
+        if(iteration%samplingFreq == 0) {
+          outputQTFile << t+dt << ", ";
+          qtree.print(outputQTFile, AU, 0.1*AU);
+          outputQTFile << endl;
+          outputQTFile.flush();
+        }
+      #endif
+
     }
 
   }
-
-  #ifdef DEBUG
-    cout << "Process " << myRank << " on " << nbrProcs << " says GOODBYE." << endl;
-  #endif
 
   pqtree.cleanQuadtree();
   delete[] nbrBodiesPerNode;

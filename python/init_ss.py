@@ -25,7 +25,7 @@ def main(number, file):
     mass_SS = [1.989*math.pow(10,30), 3.3011*math.pow(10,23), 4.8675*math.pow(10,24), 5.972*math.pow(10,24), 6.4171*math.pow(10,23), 1.8986*math.pow(10,27), 5.6836*math.pow(10,26), 8.6810*math.pow(10,25) , 1.0243*math.pow(10,26)];
     dist_SS = [0, 0.387*AU, 0.723*AU, AU, 1.523679*AU, 5.454*AU, 10.086*AU, 20.11*AU, 30.33*AU];
     size_SS = [50*AU, 0.05*AU, 0.1*AU, 0.2*AU, 0.3*AU, AU, 2*AU, 4*AU, 6*AU];
-    #size_SS = [50*AU, 1e-6*AU, 2e-6*AU, 3e-6*AU, 4e-6*AU, 1e-5*AU, 2e-5*AU, 4e-5*AU, 1e-4*AU];
+    #size_SS = [50*AU, 1e-3*AU, 2e-3*AU, 3e-3*AU, 4e-3*AU, 1e-2*AU, 2e-5*AU, 4e-2*AU, 1e-1*AU];
 
     # First set up the Solar System
     for i in range(len(mass_SS)):
@@ -70,10 +70,16 @@ def main(number, file):
 
             perp_x_loc = -y_loc/r
             perp_y_loc = x_loc/r
+
             speed_loc = math.sqrt(G*(mass[idx]+mass[i])/r)
-            
-            vx.append(speed_loc*perp_x_loc + vx[idx])
-            vy.append(speed_loc*perp_y_loc + vy[idx])
+
+            perp_x_glob = -y[i]/dist[i]
+            perp_y_glob = x[i]/dist[i]
+
+            speed_glob = math.sqrt(G*(mass[0]+mass[i])/dist[i])
+
+            vx.append(speed_loc*perp_x_loc + speed_glob*perp_x_glob)
+            vy.append(speed_loc*perp_y_loc + speed_glob*perp_y_glob)
         else:
 
             perp_x_glob = -y[i]/dist[i]

@@ -37,7 +37,7 @@ vector< vector< Node* > > ParallelQuadtree::localNodes(int *nbrBodiesPerNode) {
 // Assign a node to a process
 void ParallelQuadtree::assignNodes(int *nbrBodiesPerNode, vector< vector< Node* > > &assignedNodes, Node &node) {
 
-  maxNbrBodiesPerNode = int(root.nbrBodies/nbrProcs);
+  maxNbrBodiesPerNode = ceil(root.nbrBodies/nbrProcs);
 
   // First, we check if the number of bodies in the current node is bigger than
   // the maximum number of bodies per node. If it's the case and the node isn't
