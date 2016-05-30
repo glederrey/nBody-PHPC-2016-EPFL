@@ -9,10 +9,8 @@ mpiexec -n 10 ./exec/barnes-hut-mpi ./config/bh_1e4_10.init &
 mpiexec -n 14 ./exec/barnes-hut-mpi ./config/bh_1e4_14.init &
 mpiexec -n 1 ./exec/barnes-hut-mpi ./config/bh_1e4_1.init
 
-mpiexec -n 20 ./exec/barnes-hut-mpi ./config/bh_1e4_20.init &
+mpiexec -n 24 ./exec/barnes-hut-mpi ./config/bh_1e4_24.init &
 mpiexec -n 18 ./exec/barnes-hut-mpi ./config/bh_1e4_18.init
-
-mpiexec -n 24 ./exec/barnes-hut-mpi ./config/bh_1e4_24.init
 
 mpiexec -n 30 ./exec/barnes-hut-mpi ./config/bh_1e4_30.init
 
@@ -31,10 +29,8 @@ mpiexec -n 10 ./exec/brute-force-mpi ./config/bf_1e4_10.init &
 mpiexec -n 14 ./exec/brute-force-mpi ./config/bf_1e4_14.init &
 mpiexec -n 1 ./exec/brute-force-mpi ./config/bf_1e4_1.init
 
-mpiexec -n 20 ./exec/brute-force-mpi ./config/bf_1e4_20.init &
+mpiexec -n 20 ./exec/brute-force-mpi ./config/bf_1e4_24.init &
 mpiexec -n 18 ./exec/brute-force-mpi ./config/bf_1e4_18.init
-
-mpiexec -n 24 ./exec/brute-force-mpi ./config/bf_1e4_24.init
 
 mpiexec -n 30 ./exec/brute-force-mpi ./config/bf_1e4_30.init
 
@@ -53,10 +49,8 @@ mpiexec -n 10 ./exec/barnes-hut-mpi ./config/bh_1e5_10.init &
 mpiexec -n 14 ./exec/barnes-hut-mpi ./config/bh_1e5_14.init &
 mpiexec -n 1 ./exec/barnes-hut-mpi ./config/bh_1e5_1.init
 
-mpiexec -n 20 ./exec/barnes-hut-mpi ./config/bh_1e5_20.init &
+mpiexec -n 20 ./exec/barnes-hut-mpi ./config/bh_1e5_24.init &
 mpiexec -n 18 ./exec/barnes-hut-mpi ./config/bh_1e5_18.init
-
-mpiexec -n 24 ./exec/barnes-hut-mpi ./config/bh_1e5_24.init
 
 mpiexec -n 30 ./exec/barnes-hut-mpi ./config/bh_1e5_30.init
 
@@ -75,10 +69,8 @@ mpiexec -n 10 ./exec/brute-force-mpi ./config/bf_1e5_10.init &
 mpiexec -n 14 ./exec/brute-force-mpi ./config/bf_1e5_14.init &
 mpiexec -n 1 ./exec/brute-force-mpi ./config/bf_1e5_1.init
 
-mpiexec -n 20 ./exec/brute-force-mpi ./config/bf_1e5_20.init &
+mpiexec -n 20 ./exec/brute-force-mpi ./config/bf_1e5_24.init &
 mpiexec -n 18 ./exec/brute-force-mpi ./config/bf_1e5_18.init
-
-mpiexec -n 24 ./exec/brute-force-mpi ./config/bf_1e5_24.init
 
 mpiexec -n 30 ./exec/brute-force-mpi ./config/bf_1e5_30.init
 
@@ -97,10 +89,8 @@ mpiexec -n 10 ./exec/barnes-hut-mpi ./config/bh_1e6_10.init &
 mpiexec -n 14 ./exec/barnes-hut-mpi ./config/bh_1e6_14.init &
 mpiexec -n 1 ./exec/barnes-hut-mpi ./config/bh_1e6_1.init
 
-mpiexec -n 20 ./exec/barnes-hut-mpi ./config/bh_1e6_20.init &
+mpiexec -n 20 ./exec/barnes-hut-mpi ./config/bh_1e6_24.init &
 mpiexec -n 18 ./exec/barnes-hut-mpi ./config/bh_1e6_18.init
-
-mpiexec -n 24 ./exec/barnes-hut-mpi ./config/bh_1e6_24.init
 
 mpiexec -n 30 ./exec/barnes-hut-mpi ./config/bh_1e6_30.init
 
@@ -119,10 +109,8 @@ mpiexec -n 10 ./exec/brute-force-mpi ./config/bf_1e6_10.init &
 mpiexec -n 14 ./exec/brute-force-mpi ./config/bf_1e6_14.init &
 mpiexec -n 1 ./exec/brute-force-mpi ./config/bf_1e6_1.init
 
-mpiexec -n 20 ./exec/brute-force-mpi ./config/bf_1e6_20.init &
+mpiexec -n 20 ./exec/brute-force-mpi ./config/bf_1e6_24.init &
 mpiexec -n 18 ./exec/brute-force-mpi ./config/bf_1e6_18.init
-
-mpiexec -n 24 ./exec/brute-force-mpi ./config/bf_1e6_24.init
 
 mpiexec -n 30 ./exec/brute-force-mpi ./config/bf_1e6_30.init
 
