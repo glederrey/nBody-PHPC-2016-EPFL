@@ -1,8 +1,8 @@
-#exec/*.o
-#exec/brute-force
-#exec/brute-force-mpi
-#exec/barnes-hut
-#exec/barnes-hut-mpi
+exec/*.o
+exec/brute-force
+exec/brute-force-mpi
+exec/barnes-hut
+exec/barnes-hut-mpi
 results/*
 Latex/*/*.aux
 Latex/*/*.log
