@@ -5,4 +5,4 @@ maxSize=1000000
 minSize=0.00001
 theta=1
 initialFile=./init/init_1e6.dat
-outputFile=./results/bh_1e6_12.dat
+outputFile=./results/bh_1e6_42.dat

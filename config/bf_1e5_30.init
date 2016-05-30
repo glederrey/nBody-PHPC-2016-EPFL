@@ -4,4 +4,4 @@ samplingFreq=1
 maxSize=1000000
 minSize=0.00001
 initialFile=./init/init_1e5.dat
-outputFile=./results/bf_1e5_12.dat
+outputFile=./results/bf_1e5_30.dat

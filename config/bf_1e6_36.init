@@ -1,8 +1,7 @@
 dt=0.1
-finalTime=1
+finalTime=0.2
 samplingFreq=1
 maxSize=1000000
 minSize=0.00001
-theta=1
 initialFile=./init/init_1e6.dat
-outputFile=./results/bh_1e6_20.dat
+outputFile=./results/bf_1e6_36.dat
