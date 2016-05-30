@@ -1,6 +1,7 @@
-dt=1
-finalTime=5000
-samplingFreq=5
-maxSize=100
-initialFile=../init/test_ss.dat
-outputFile=../results/bf_mpi.dat
+dt=0.1
+finalTime=10
+samplingFreq=1
+maxSize=1000000
+minSize=1e-9
+initialFile=../init/init_1e4.dat
+outputFile=../results/zz_bf.dat

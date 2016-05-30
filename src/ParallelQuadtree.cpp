@@ -60,9 +60,6 @@ void ParallelQuadtree::assignNodes(int *nbrBodiesPerNode, vector< vector< Node* 
       }
     }
 
-    cout << "process = " << process << endl;
-    cout << "nbrProcs = " << nbrProcs << endl;
-
     // If we went up to the the number of procs (last process), we assign the
     // children
     if(process==nbrProcs) {

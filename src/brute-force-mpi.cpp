@@ -226,7 +226,7 @@ int main(int argc, char* argv[])
             // First we check if the distance between two bodies is not smaller than an arbitrary distance.
             // It this distance is too small, we collapse the two bodies
             // WARNING: If two bodies collapse together, we don't update its velocity with the forces
-            if(distance < 100000) { // Arbitrary distance
+            /*if(distance < 100000) { // Arbitrary distance
               #ifdef DEBUG
                 cout << "Process " << myRank << endl;
                 cout << "Planet " << i << " (in process " << myRank << ") and Planet " << j << " are collapsing! Distance between them: " << distance << endl;
@@ -256,10 +256,10 @@ int main(int argc, char* argv[])
 
               // Get out of the for loop
               break;
-            } else {
-              dvx += day*dt * (fixedPositions[2*j] - localPositions[2*i]) * G*fixedMass[j]/(distance*distance*distance);
-              dvy += day*dt * (fixedPositions[2*j+1] - localPositions[2*i+1]) * G*fixedMass[j]/(distance*distance*distance);
-            }
+            } else {*/
+            dvx += day*dt * (fixedPositions[2*j] - localPositions[2*i]) * G*fixedMass[j]/(distance*distance*distance);
+            dvy += day*dt * (fixedPositions[2*j+1] - localPositions[2*i+1]) * G*fixedMass[j]/(distance*distance*distance);
+            //}
           }
         }
 
