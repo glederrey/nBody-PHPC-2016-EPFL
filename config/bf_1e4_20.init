@@ -1,0 +1,7 @@
+dt=0.1
+finalTime=10
+samplingFreq=1
+maxSize=1000000
+minSize=0.00001
+initialFile=./init/init_1e4.dat
+outputFile=./results/bf_1e4_20.dat

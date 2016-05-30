@@ -70,6 +70,7 @@ int main(int argc, char* argv[]) {
     double startBuilding = 0.0;
     double iterationTime = 0.0;
     double buildingTime = 0.0;
+    double assignTime = 0.0;
   #endif
 
   // Streams
@@ -82,7 +83,7 @@ int main(int argc, char* argv[]) {
     if(argc > 1) {
       fileName.append(argv[1]);
     } else {
-      fileName = "config_bh_parallel.init";
+      fileName = "../config/bh_parallel.init";
     }
 
     Configuration conf(fileName);
@@ -223,6 +224,15 @@ int main(int argc, char* argv[]) {
       recvCounts[i] = nbrBodiesPerNode[i]*7;
     }
 
+    if(myRank == 0) {
+      #ifdef WRITE_TIME
+        if((iteration+1)%samplingFreq == 0) {
+          assignTime = (MPI_Wtime() - startTimeIteration);
+          outputTimeFile << "Iteration " << t+dt << " Assign time, " << assignTime << endl;
+        }
+      #endif
+    }
+
     // Here, in the serial version, we would use the function calculateAllAccelerationsFromNode
     // But we only want to calcule the forces on the local bodies
     for(unsigned int i=0; i<assignedNodes[myRank].size(); i++) {
@@ -256,9 +266,9 @@ int main(int argc, char* argv[]) {
     if(myRank == 0) {
       #ifdef WRITE_TIME
         if((iteration+1)%samplingFreq == 0) {
-          startBuilding = MPI_Wtime();
           double sendTime = (MPI_Wtime() - startSend);
           outputTimeFile << "Iteration " << t+dt << " Send time, " << sendTime << endl;
+          startBuilding = MPI_Wtime();
         }
       #endif
     }
@@ -285,10 +295,10 @@ int main(int argc, char* argv[]) {
     if(myRank == 0) {
       #ifdef WRITE_TIME
         if(iteration%samplingFreq == 0) {
+          buildingTime = (MPI_Wtime() - startBuilding);
+          outputTimeFile << "Iteration " << t+dt << " Building Tree, " << buildingTime << endl;          
           iterationTime = (MPI_Wtime() - startTimeIteration);
           outputTimeFile << "Iteration " << t+dt << ", " << iterationTime << endl;
-          buildingTime = (MPI_Wtime() - startBuilding);
-          outputTimeFile << "Iteration " << t+dt << " Building Tree, " << buildingTime << endl;
         }
       #endif
 

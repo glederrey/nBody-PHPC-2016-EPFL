@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
   if(argc > 1) {
     fileName.append(argv[1]);
   } else {
-    fileName = "config_bh.init";
+    fileName = "../config/bh.init";
   }
 
   Configuration conf(fileName);
