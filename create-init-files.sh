@@ -1,5 +1,7 @@
 #! /bin/bash
 
+mkdir -p ./init
+
 echo "Creating files for 10^1"
 python ./python/init.py -n 10 -s 100 -f ./init/init_1e1.dat
 python ./python/init.py -n 20 -s 100 -f ./init/init_2e1.dat
