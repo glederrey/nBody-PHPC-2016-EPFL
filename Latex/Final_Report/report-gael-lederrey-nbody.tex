@@ -40,11 +40,11 @@ The n-Body problem covers the whole scale of science from the subatomic particle
 \begin{equation}
 \vec{F}_{1\rightarrow 2} = G\cdot\frac{m_1m_2(\vec{x}_2-\vec{x}_1)}{\Vert \vec{x}_2-\vec{x}_1\Vert^3}
 \end{equation}
-where $G$ is the gravitational constant and is equal to $6.674 \cdot 10^{-11}~[Nm^2kg^{-2}]$, $m_i$ are the masses of two bodies and $\vec{x}_i$ are their positions. As we can see with this equation, the forces decreases proportionally to $1/r^2$, $r$ being the distance between two bodies. Therefore, the forces between two far bodies is small.
+where $G$ is the gravitational constant and is equal to $6.674 \cdot 10^{-11}~[Nm^2kg^{-2}]$, $m_i$ are their masses and $\vec{x}_i$ their positions. As we can see with this equation, the force decreases proportionally to $1/r^2$, $r$ being the distance between the two bodies. Therefore, the force between two far bodies is small.
 
 \subsection{Algorithms}
 
-In order to solve the n-Body Gravitational problem, there exists a really simple algorithm called Brute-Force. It consists in looping over all bodies and inside this loop, a second traverses all bodies.
+In order to solve the n-Body Gravitational problem, there exists a really simple algorithm called Brute-Force. It consists in looping over all bodies and inside this loop, a second traverses all bodies again.
 
 \begin{algorithm}
 \caption{Brute-Force}\label{bf}
