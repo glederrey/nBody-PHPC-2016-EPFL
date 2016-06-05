@@ -59,6 +59,8 @@ For the fun, I created a script that create the initial positions of the solar s
 
 ### Recreate the figures in the Final Report
 
+First, if you want to recreate the initial files for the figures, you can use the script **create-init-files.sh**. In this repository, the initial files are already here. But you can always recreate them.
+
 In order to recreate the figures that are in the report, you need to run the following three bash script: **computational_time.sh**, **amdahl.sh**, **strong_scaling.sh** and **weak_scaling.sh**. And then you can use the different Matlab scripts that are in the *matlab* folder. The list below gives you the scripts you need to run to recreate each of the figures:
 - Figure 1 (Computational times): Run the script **computational_time.sh** and then run the matlab script **computational_time.m**
 - Table 1 & Figure 2 (Amdahl's law): Run the script **amdahl.sh** and then run the matlab script **amdahl.m**
