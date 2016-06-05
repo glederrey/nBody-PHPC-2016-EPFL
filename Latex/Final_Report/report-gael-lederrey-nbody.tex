@@ -36,11 +36,11 @@
 
 \subsection{Gravitation} 
 
-The n-Body problem covers the whole scale of science from the subatomic particles to the gigantic galaxies. In this project, we decided to take the Gravitional n-Body problem as a real case study. The forces\cite{grav} are given by:
+The n-Body problem covers the whole scale of science from the subatomic particles to the gigantic galaxies. In this project, we decided to take the Gravitional n-Body problem as a real case study. The force\cite{grav} of a body 1 on a body 2 is given by:
 \begin{equation}
 \vec{F}_{1\rightarrow 2} = G\cdot\frac{m_1m_2(\vec{x}_2-\vec{x}_1)}{\Vert \vec{x}_2-\vec{x}_1\Vert^3}
 \end{equation}
-where $G$ is the gravitational constant and is equal to $6.674 \cdot 10^{-11}~[Nm^2kg^{-2}]$, $m_i$ are the masses of two bodies and $\vec{x}_i$ are their positions. As we can see with this equation, the forces decreases proportionally to $1/r^2$, $r$ being the distance between two bodies. 
+where $G$ is the gravitational constant and is equal to $6.674 \cdot 10^{-11}~[Nm^2kg^{-2}]$, $m_i$ are the masses of two bodies and $\vec{x}_i$ are their positions. As we can see with this equation, the forces decreases proportionally to $1/r^2$, $r$ being the distance between two bodies. Therefore, the forces between two far bodies is small.
 
 \subsection{Algorithms}
 
@@ -133,7 +133,7 @@ For the Barnes-Hut algorithm, we first assign each node to a process in order to
 
 \section{Computational time}
 
-In this section, we want to show that the Brute-Force algorithm is in $\mathcal{O}(n^2)$ and that the Barnes-Hut algorithm is in $\mathcal{O}(n\log n)$. In Figure \ref{fig:algo_time}, the average iteration time taken by the two algorithms are shown for different number of bodies. Different values for the precision parameter $\theta$ were used. We can clearly see that the Brute-Force algorithm has the same slope as the red line. We can also see that the Barnes-Hut algorithm with $\theta=0$ has the same slope. This is normal since it doesn't aggregate any bodies. But if $\theta>0$, we can see that the slope becomes the same as the red dotted line for $\mathcal{O}(n\log n)$, especially with a large number of bodies. Therefore, the theoretical computation for both algorithms are validated.
+In this section, we want to show that the Brute-Force algorithm is in $\mathcal{O}(n^2)$ and that the Barnes-Hut algorithm is in $\mathcal{O}(n\log n)$. In Figure \ref{fig:algo_time}, the average iteration time taken by the two algorithms are shown for different number of bodies. Different values for the precision parameter $\theta$ were used. We can clearly see that the Brute-Force algorithm has the same slope as the red line. We can also see that the Barnes-Hut algorithm with $\theta=0$ has the same slope. This is normal since it doesn't aggregate any bodies. But if $\theta>0$, we can see that the slope becomes the same as the red dotted line for $\mathcal{O}(n\log n)$, especially with a large number of bodies. Therefore, the experimental computation times correspond to the theoretical ones.
 
 \begin{figure}[H]
 \centering
@@ -190,6 +190,8 @@ Finally, given the serial fraction of the code $\alpha$, we can plot Amdahl's la
 \input{./figures/amdahl}
 \caption{\label{fig:amdahl} Result of the  prediction from Amdahl's law of the theoretical speedup for the Brute-Force and the Barnes-Hut algorithm.}
 \end{figure}
+
+As we can see in Figure \ref{fig:amdahl}, the Brute-Force algorithms will scale almost perfectly. Therefore, we can imagine that with a very high number of processes, it will be able to surpass the Barnes-Hut algorithm. It is possible, but this will cost a lot of energy and it is expensive. So, it is better to use the Barnes-Hut algorithm. We will still have a look at the scaling of the Brute-Force algorithm to validate the theory.
 
 \section{Strong scaling}
 
@@ -318,9 +320,5 @@ The RAM has also been tested. For $10^6$ bodies, it takes around $600~[MB]$. The
 \bibitem{mpi} The MPI Forum, {\em MPI: A Message-Passing Interface Standard}, Technical Report, 1994
 
 \end{thebibliography}
-
-
-
-
 
 \end{document}
