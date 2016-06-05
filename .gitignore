@@ -1,6 +1,10 @@
 exec
-results/*
+results
+results-strong-scaling
+results-weak-scaling
+results-computational-time
 Latex/*/*.aux
 Latex/*/*.log
 Latex/*/*.out
 Latex/*/*.synctex.gz
+matlab/matlab2tikz

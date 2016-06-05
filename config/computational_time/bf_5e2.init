@@ -1,0 +1,7 @@
+dt=0.1
+finalTime=3
+samplingFreq=1
+maxSize=1000000
+minSize=0.00001
+initialFile=./init/init_5e2.dat
+outputFile=./results-computational-time/bf_5e2.dat

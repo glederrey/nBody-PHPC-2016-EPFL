@@ -1,0 +1,8 @@
+dt=0.1
+finalTime=3
+samplingFreq=1
+maxSize=1000000
+minSize=0.00001
+theta=1
+initialFile=./init/init_1e1.dat
+outputFile=./results-computational-time/bh_1e1_1.dat
