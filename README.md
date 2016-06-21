@@ -12,9 +12,11 @@ In this project, I created 4 different codes:
 
 The purpose of this project was to test these two algorithms (Brute-Force and Barnes-Hut) and then test their parallel version.
 
+You can find the video showing some results for a simulation with 1 million bodies here: https://www.youtube.com/watch?v=h0nFjeHjKYs. The video was done for the presentation.
+
 ### Report and Slides
 
-You can find the Proposal of the project, the Final Report and the Slides for the presentation in the folder *Latex*. This slides are not done yet.
+You can find the Proposal of the project, the Final Report and the Slides for the presentation in the folder *Latex*. 
 
 ### Compiling the C++ code
 
