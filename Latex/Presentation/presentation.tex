@@ -1,0 +1,433 @@
+\documentclass[10pt]{beamer}
+
+\usetheme{metropolis}
+\usepackage{tikz}
+\usepackage{appendixnumberbeamer}
+
+\usepackage{booktabs}
+\usepackage[scale=2]{ccicons}
+
+\usepackage{pgfplots}
+\usepgfplotslibrary{dateplot}
+
+\usepackage{xspace}
+\newcommand{\themename}{\textbf{\textsc{metropolis}}\xspace}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{multimedia}
+
+\makeatletter
+\def\BState{\State\hskip-\ALG@thistlm}
+\makeatother
+
+\renewcommand{\thealgorithm}{}
+
+ \newcommand{\grille}{
+ \begin{tikzpicture}[overlay,remember picture]
+   \begin{scope}[shift={(current page.south west)}]
+     \draw[gray!50] (0,0) grid[step=2mm] (current page.north east);
+     \draw[red!50] (0,0) grid[step=1cm] (current page.north east);
+     \draw (0.2,1) node {1};
+     \draw (0.2,2) node {2};
+     \draw (0.2,3) node {3};
+     \draw (0.2,4) node {4};
+     \draw (0.2,5) node {5};
+     \draw (0.2,6) node {6};
+     \draw (0.2,7) node {7};
+     \draw (0.2,8) node {8};
+     \draw (0.2,9) node {9};
+     \draw (1,0.5) node {1};
+     \draw (2,0.5) node {2};
+     \draw (3,0.5) node {3};
+     \draw (4,0.5) node {4};
+     \draw (5,0.5) node {5};
+     \draw (6,0.5) node {6};
+     \draw (7,0.5) node {7};
+     \draw (8,0.5) node {8};
+     \draw (9,0.5) node {9};
+     \draw (10,0.5) node {10};
+     \draw (11,0.5) node {11};
+     \draw (12,0.5) node {12};
+   \end{scope}
+ \end{tikzpicture}
+ }
+
+\definecolor{mygreen}{RGB}{28,172,0}
+
+\title{\vspace{1cm} A High Performance Implementation of the 2D N-Body Gravitational Problem}
+\subtitle{Benchmark of the Barnes-Hut algorithm compared to the Brute-Force algorithm}
+\date{June 23, 2016}
+\author{Gael Lederrey}
+\institute{Parallel and High-Performance Computing - Spring Semester 2016 \\ EPFL-CSE}
+\titlegraphic{\includegraphics[height=1.2cm]{./images/EPFL-Logo-CMJN.eps}\hfill\includegraphics[height=1.2cm]{./images/scitas.png}}
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}{Table of contents}
+  \setbeamertemplate{section in toc}[sections numbered]
+  \tableofcontents[hideallsubsections]
+\end{frame}
+
+\section{Project Description}
+
+\begin{frame}{Introduction}
+
+Purpose of this project:
+\begin{itemize}
+\item Write a fast program to solve a problem
+\item Use the knowledge of optimization learned during the course
+\item Use MPI to implement a parallel version
+\item Compare the theory with the numerical results
+\end{itemize}
+\onslide<2->
+\vspace{0.5cm}
+Use-case: 2D N-Body Gravitational problem
+
+\end{frame}
+
+\begin{frame}{N-Body Gravitational problem - Theory}
+Gravitational force of body $i$ on body $j$:
+\[
+\vec{F}_{i\rightarrow j} = G\cdot\frac{m_im_j(\vec{x}_j-\vec{x}_i)}{\Vert \vec{x}_j-\vec{x}_i\Vert^3}
+\]
+where $G$ is the gravitational constant, $m_i,\,m_j$ are the masses and $\vec{x}_i,\,\vec{x}_j$ are the positions.
+
+\onslide<2->
+At each iteration, we will have for body $j$:
+\[
+\vec{F}_j = \sum_{i=1}^n \vec{F}_{i\rightarrow j}
+\]
+We can then update it:
+\[
+\vec{v}_j = \vec{v}_j + \dfrac{dt}{m_j}\cdot \vec{F}_j \qquad \qquad \vec{x}_j = \vec{x}_j + dt\cdot\vec{v}_j
+\]
+
+\onslide<3->
+\begin{center}
+{\bf  How can we compute all the interactions between all the bodies?}
+\end{center}
+
+\end{frame}
+
+\begin{frame}{Algorithms}
+
+\begin{itemize}
+\onslide<1->
+\item {\bf Brute-Force}
+\begin{itemize}
+\item Compute all the interactions between all the bodies
+\item Straight-Forward and easy to implement
+\item Complexity: $\mathcal{O}(n^2)$
+\end{itemize}
+\vspace{0.5cm}
+\onslide<2->
+\item {\bf Barnes-Hut}
+\begin{itemize}
+\item Approximation of the far bodies to compute all the forces on a body
+\item Not that difficult to implement. (Require more lines of code)
+\item Complexity: $\mathcal{O}(n\log n)$
+\end{itemize}
+\end{itemize}
+
+\end{frame}
+
+\section{Barnes-Hut algorithm in details}
+
+\begin{frame}{General idea}
+
+Idea of this algorithm:
+\begin{itemize}
+\item Use a precision parameter $\theta$ to approximate the forces of the far bodies using the center of mass
+\end{itemize}
+\begin{figure}
+\centering
+\includegraphics[width=0.6\textwidth]{./images/bh.png}
+\end{figure}
+{\bf How can we do this?} \onslide<2-> $\Rightarrow$ Use a quadtree and the CM of the nodes.
+\end{frame}
+
+\begin{frame}{Quadtree}
+\only<1>{
+\begin{itemize}
+\item A quadtree is a tree with four children \\(for the four directions NE, NW, SE and SW)
+\item In each leaf, there's a maximum of 1 body. 
+\item If a body is added in a leaf with a body, we split the leaf in 4 parts. And we add the two bodies to its children. 
+\end{itemize}
+}
+\only<2-8>{
+\begin{tikzpicture}[overlay,remember picture,shift={(current page.south west)}]
+%\grille
+\draw[line width=1.2] (1,2.3) -- (1,6.3) -- (5,6.3) -- (5,2.3) -- cycle;
+\onslide<3->
+\draw[fill=black,draw=black] (4.8,2.7) circle (0.1cm);
+\node[circle, draw=black, fill=black, scale=0.6]  at (9.4, 7) (A) {};
+\only<3-4>{
+\node[anchor=east] at (9.3, 7) {1 body};
+}
+\onslide<4->
+\only<4>{
+\draw[fill=red,draw=red] (1.7,5.5) circle (0.1cm);
+}
+\onslide<5->
+\only<5-6>{
+\node[anchor=east] at (9.3, 7) {2 bodies};
+\node[anchor=east] at (7.8, 5) {1 body};
+}
+\draw[fill=black,draw=black] (1.7,5.5) circle (0.1cm);
+\draw[blue] (1,4.3) -- (5,4.3);
+\draw[blue] (3,2.3) -- (3,6.3);
+\node[circle, draw=black, fill=black, scale=0.6]  at (7.9, 5) (B) {};
+\node[circle, draw=black, fill=white, scale=0.6]  at (8.9, 5) (C) {};
+\node[circle, draw=black, fill=white, scale=0.6]  at (9.9, 5) (D) {};
+\node[circle, draw=black, fill=black, scale=0.6]  at (10.9, 5) (E) {};
+\draw[blue] (A)--(B);
+\draw[blue] (A)--(C);
+\draw[blue] (A)--(D);
+\draw[blue] (A)--(E);
+\only<6>{
+\draw[fill=red,draw=red] (2.5,4.6) circle (0.1cm);
+}
+\only<7>{
+\node[anchor=east] at (9.3, 7) {3 bodies};
+\node[anchor=east] at (7.8, 5) {2 bodies};
+}
+\onslide<7->
+\draw[fill=black,draw=black] (2.5,4.6) circle (0.1cm);
+\draw[mygreen] (2,4.3) -- (2,6.3);
+\draw[mygreen] (1,5.3) -- (3,5.3);
+\node[circle, draw=black, fill=black, scale=0.6]  at (7.2, 3) (F) {};
+\node[circle, draw=black, fill=white, scale=0.6]  at (7.7, 3) (G) {};
+\node[circle, draw=black, fill=white, scale=0.6]  at (8.1, 3) (H) {};
+\node[circle, draw=black, fill=black, scale=0.6]  at (8.5, 3) (I) {};
+\draw[mygreen] (B)--(F);
+\draw[mygreen] (B)--(G);
+\draw[mygreen] (B)--(H);
+\draw[mygreen] (B)--(I);
+\onslide<8->
+\only<8>{
+\node[anchor=east] at (9.3, 7) {4 bodies};
+\node[anchor=east] at (7.8, 5) {2 bodies};
+}
+\draw[fill=black,draw=black] (4,5) circle (0.1cm);
+\draw[fill=black,draw=black] (8.9, 5) circle (0.1cm);
+\end{tikzpicture}
+}
+\only<9>{
+\begin{tikzpicture}[overlay,remember picture,shift={(current page.south west)}]
+%\grille
+\node[anchor=south] at (6,0) {\input{./figures/qtree.tex}};
+\draw[white] (0,0) -- (12.8,0);
+\end{tikzpicture}
+}
+\end{frame}
+
+
+\begin{frame}[fragile]{Pseudo-code (with MPI)}
+\begin{algorithm}[H]
+\caption{Barnes-Hut}\label{bh}
+\begin{algorithmic}[1]
+\State Read {\it config} file
+\State Broadcast information to all processes
+\only<1>{
+\State Build Quadtree
+}
+\only<2>{
+\State {\color{red} Build Quadtree}
+}
+\While {$t < t_{end}$}
+\only<1>{
+\State Assign nodes to process
+}
+\only<2>{
+\State {\color{mygreen} Assign nodes to process}
+}
+\only<1>{
+\State Compute forces for the bodies in the corresponding nodes
+}
+\only<2> {
+\State {\color{blue} Compute forces for the bodies in the corresponding nodes}
+}
+\State Update the bodies
+\State Gather all the bodies
+\only<1>{
+\State Rebuild Quadtree
+}
+\only<2>{
+\State {\color{red} Rebuild Quadtree}
+}
+\State Write some information in files
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+\onslide<2->
+\begin{enumerate}
+\item {\color{red} Lost bodies and collisions?}
+\item {\color{mygreen} Load-Balancing?}
+\item {\color{blue} Computing the forces?} 
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Lost bodies and collisions}
+\only<1-3>{
+\onslide<1-3>
+Define maximum distance maximum distance $d_{max}$ such that:
+\vspace{6cm}
+\begin{tikzpicture}[overlay,remember picture,shift={(current page.south west)}]
+%\grille
+\draw[line width=1.2] (4.4,6) -- (8.4,6) -- (8.4,2) -- (4.4,2) -- cycle;
+\draw[line width=1] (4.4,4) -- (8.4,4);
+\draw[line width=1] (6.4,2) -- (6.4,6);
+\node[anchor=south west] at (6.4, 4) {(0,0)};
+\draw[thin] (4.4, 2) -- (4.4,1.8);
+\draw[thin] (8.4, 2) -- (8.4,1.8);
+\draw[thin,dashed, <->] (4.4,1.9)--(8.4,1.9);
+\node[anchor = north] at (6.4, 1.9) {$2\cdot d_{max}$};
+\draw[thin] (4.4, 2) -- (4.2,2);
+\draw[thin] (4.4, 6) -- (4.2,6);
+\draw[thin,dashed, <->] (4.3,2)--(4.3,6);
+\node[anchor = east] at (4.3,4) {$2\cdot d_{max}$};
+\onslide<2-3>
+\draw[fill=mygreen,draw=mygreen] (4.8,2.7) circle (0.1cm);
+\draw[fill=mygreen,draw=mygreen] (5.7,5.8) circle (0.1cm);
+\draw[fill=mygreen,draw=mygreen] (7.3, 3) circle (0.1cm);
+\onslide<3-3>
+\draw[fill=red,draw=red] (8.8, 5.4) circle (0.1cm);
+\node[anchor = west] at (9, 5.4) {Too far!};
+\end{tikzpicture}
+}
+\only<4->{
+\onslide<4->
+Normally, the mass is defined by the {\bf radius} and the {\bf density}. In this case, we only use the mass.
+
+\onslide<5->
+Therefore, we define a distance $d_{min}$. The conditions to do a collision are:
+\vspace{-0.5cm}
+\begin{enumerate}
+\item We insert a body $i$ in a node containing a body $j$
+\item \texttt{0.5*(node.width+node.height)} $< d_{min}$
+\end{enumerate}
+This is not perfect. But the depth of the tree will always stay finite.
+
+\onslide<6->
+The new body is defined by:
+\[
+\vec{x}_{new} = \dfrac{m_i\vec{x}_i + m_j\vec{x}_j}{m_i+m_j}
+\]
+\[
+\vec{v}_{new} = \dfrac{m_i\vec{v}_i + m_j\vec{v}_j}{m_i+m_j}
+\]
+\[
+m_{new} = m_i+m_j
+\]
+}
+\end{frame}
+
+\begin{frame}{Load-Balancing}
+If we put 75\% of the bodies in one node and 25\% in all the other nodes, what happens? \onslide<2-> \quad $\Rightarrow$ The algorithm will slow down.
+
+\onslide<3-> Therefore, we need to put approximately the same number of bodies in each process.
+
+\onslide<4-> To achieve that, we can walk in the tree and assign nodes to the processes. Each process can contain $n_{max}$ bodies. If we assign a node to a process, then all the bodies in the children nodes will be assigned to the process. 
+
+For maximizing the performance, the nodes assigned to a process should be as close as possible. 
+\end{frame}
+
+\begin{frame}[fragile]{Computing the forces}
+\onslide<1-> How can we use the precision parameter $\theta$ in order to approximate the forces far from a body?
+
+\onslide<2->
+\begin{algorithm}[H]
+\caption{Approximation of the force}
+\begin{algorithmic}[1]
+\State \texttt{dist = node.distance(body)};
+\If{\texttt{!node.isLeaf}}
+	\If{\texttt{0.5*(node.width+node.height)/dist <= theta}}
+		\State \texttt{node.applyForcesOnBody(body);}
+	\Else
+		\State Continue recursion with the children
+	\EndIf
+\Else
+	\If{\texttt{node.containsBody}}
+		\State \texttt{node.localBody.applyForcesOnBody(body);}
+	\EndIf
+\EndIf
+\end{algorithmic}
+\end{algorithm}
+\end{frame}
+
+
+
+\section{Results}
+
+\begin{frame}{Complexity}
+\begin{tikzpicture}[overlay,remember picture,shift={(current page.south west)}]
+\node[anchor=south west] at (0,0) {\input{./figures/algo_time.tex}};
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Strong Scaling}
+\begin{tikzpicture}[overlay,remember picture,shift={(current page.south west)}]
+%\grille
+\only<1>{
+\node[anchor=south west] at (0,0) {\input{./figures/bf_strong.tex}};
+\node[draw=black,fill=white, anchor=west] at (2,7.2) {Brute-Force};
+}
+\only<2>{
+\node[anchor=south west] at (0,0) {\input{./figures/bh_strong.tex}};
+\node[draw=black,fill=white, anchor=west] at (2,7.2) {Barnes-Hut};
+}
+\end{tikzpicture}
+\end{frame}
+
+\begin{frame}{Weak Scaling}
+\begin{tikzpicture}[overlay,remember picture,shift={(current page.south west)}]
+%\grille
+\only<1>{
+\node[anchor=south west] at (0,0) {\input{./figures/bf_weak.tex}};
+}
+\only<2>{
+\node[anchor=south west] at (0,0) {\input{./figures/bh_weak.tex}};
+}
+\end{tikzpicture}
+
+\end{frame}
+
+\section{Conclusion}
+
+\begin{frame}{Conclusion}
+\onslide<1->
+\bf How can we make it better?
+\normalfont
+\begin{itemize}
+\item Use MPI I/O to write the positions of the bodies
+\item Implement a heuristic for the construction of the tree \\(don't rebuild it at each iteration)
+\item Use a sorting algorithm for the bodies to build the tree in parallel
+\item Use RK4 (or another schema) to update the bodies
+\end{itemize}
+\onslide<2->
+\bf What did we learn? 
+\normalfont
+\begin{itemize}
+\item A clever algorithm in serial can be better (and more ecological) than an easy parallel algorithm.
+\item Complex serial algorithm can be "easily" updated to a parallel version
+\item We can always make an algorithm faster. But is it worth it?
+\end{itemize}
+\end{frame}
+
+\begin{frame}[standout]
+\only<1>{
+{\Huge
+Thank you
+}
+}
+\only<2>{
+\begin{tikzpicture}[overlay,remember picture,shift={(current page.south west)}]
+%\grille
+\node at (6.4, 4.5) {\href{https://www.youtube.com/embed/h0nFjeHjKYs}{\includegraphics[width=12cm,height=6.75cm]{images/title.png}}};
+\end{tikzpicture}
+}
+\end{frame}
+
+\end{document}
