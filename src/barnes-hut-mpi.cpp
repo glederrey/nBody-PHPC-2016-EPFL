@@ -5,6 +5,9 @@
 #include <math.h>
 #include <ctime>
 #include <mpi.h>
+#include <string>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "Configuration.cpp"
 #include "Body.cpp"
@@ -73,6 +76,16 @@ int main(int argc, char* argv[]) {
     double assignTime = 0.0;
   #endif
 
+  #ifdef WRITE_QUADTREE
+    ofstream outputQTFile;
+  #endif
+
+  #ifdef WRITE_OUTPUT
+    int iter;
+    size_t pos3;
+    ostringstream convert;
+  #endif
+
   // Streams
   ofstream outputTimeFile;
   ofstream outputFile;
@@ -106,6 +119,12 @@ int main(int argc, char* argv[]) {
       outputTimeFile << "# Info, Time [s]" << endl;
     #endif
 
+    #ifdef WRITE_QUADTREE
+      size_t pos2 = outputFileName.rfind(".");
+      string outputQTFileName = outputFileName.substr(0,pos2) + "_quadtree" + outputFileName.substr(pos2);
+      outputQTFile.open(outputQTFileName.c_str());
+    #endif
+
     conf.prepareInitialValues(initialFile);
     // Get the masses, positions and velocities for each object.
     nbrBodies = conf.getNbrBodies();
@@ -123,13 +142,18 @@ int main(int argc, char* argv[]) {
     #endif
 
     #ifdef WRITE_OUTPUT
-      outputFile.open(outputFileName.c_str());
-      outputFile.precision(12);
+      iter = 0;
+      pos3 = outputFileName.rfind(".");
+      convert << iter;
+      string outputPosFileName = outputFileName.substr(0,pos3) + "_" + convert.str() + outputFileName.substr(pos3);
+      outputFile.open(outputPosFileName.c_str());
+      outputFile.precision(5);
+      convert.str("");
       outputFile << "# Time, Mass, X position, Y position" << endl;
       for (int i=0; i<nbrBodies; i++) {
         outputFile << 0 << ", " << mass[i] << ", " << positions[2*i]/AU << ", " << positions[2*i+1]/AU << endl;
       }
-      outputFile.flush();
+      outputFile.close();
     #endif
 
     #ifdef WRITE_TIME
@@ -178,6 +202,15 @@ int main(int argc, char* argv[]) {
     } else {
       pqtree.insertBody(body, pqtree.root);
     }
+  }
+
+  if(myRank == 0) {
+    #ifdef WRITE_QUADTREE
+        outputQTFile << 0 << ", ";
+        pqtree.print(outputQTFile, AU, 0.1*AU);
+        outputQTFile << endl;
+        outputQTFile.flush();
+    #endif
   }
 
   // Update the number of bodies
@@ -296,7 +329,7 @@ int main(int argc, char* argv[]) {
       #ifdef WRITE_TIME
         if(iteration%samplingFreq == 0) {
           buildingTime = (MPI_Wtime() - startBuilding);
-          outputTimeFile << "Iteration " << t+dt << " Building Tree, " << buildingTime << endl;          
+          outputTimeFile << "Iteration " << t+dt << " Building Tree, " << buildingTime << endl;
           iterationTime = (MPI_Wtime() - startTimeIteration);
           outputTimeFile << "Iteration " << t+dt << ", " << iterationTime << endl;
         }
@@ -304,6 +337,7 @@ int main(int argc, char* argv[]) {
 
       #ifdef WRITE_OUTPUT
         if(iteration%samplingFreq == 0) {
+          iter++;
           mass.resize(nbrBodies);
           positions.resize(2*nbrBodies);
           velocities.resize(2*nbrBodies);
@@ -315,17 +349,23 @@ int main(int argc, char* argv[]) {
             velocities[2*globalData[7*j+5]] = globalData[7*j+3];
             velocities[2*globalData[7*j+5]+1] = globalData[7*j+4];
           }
+
+          convert << iter;
+          string outputPosFileName = outputFileName.substr(0,pos3) + "_" + convert.str() + outputFileName.substr(pos3);
+          outputFile.open(outputPosFileName.c_str());
+          outputFile.precision(5);
+          convert.str("");
           for (int k = 0; k < nbrBodies;k++) {
             outputFile << t+dt << ", " << mass[k] << ", " << positions[2*k]/AU << ", " <<  positions[2*k+1]/AU << endl;
           }
-          outputFile.flush();
+          outputFile.close();
         }
       #endif
 
       #ifdef WRITE_QUADTREE
         if(iteration%samplingFreq == 0) {
           outputQTFile << t+dt << ", ";
-          qtree.print(outputQTFile, AU, 0.1*AU);
+          pqtree.print(outputQTFile, AU, 0.1*AU);
           outputQTFile << endl;
           outputQTFile.flush();
         }

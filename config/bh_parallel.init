@@ -1,8 +1,8 @@
-dt=0.1
-finalTime=10
-samplingFreq=1
-maxSize=1000000
-minSize=1e-9
+dt=1
+finalTime=10000
+samplingFreq=5
+maxSize=2000
+minSize=1e-6
 theta=1
-initialFile=../init/init_1e5.dat
-outputFile=../results/zz_bh.dat
+initialFile=../init/SS_1e6.dat
+outputFile=../results/ss_1e6.dat

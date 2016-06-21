@@ -2,7 +2,7 @@ clear all;
 close all;
 clc;
 
-filename = '../results/bh_quadtree.dat';
+filename = '../results/bh_1e2_quadtree.dat';
 
 delimiterIn = ',';
 headerlinesIn = 0;
@@ -49,6 +49,9 @@ for j=1:length(data(:,1))
     
     i = 0;
     while true
+        if 4*i+2 > length(data(j,:))
+            break;
+        end
         x = data(j,4*i+2);
         y = data(j,4*i+3);
         w = data(j,4*i+4);
@@ -75,3 +78,28 @@ for j=1:length(data(:,1))
     toc
     break;
 end
+
+% Add the positions
+filename = '../results/bh_1e2.dat';
+delimiterIn = ',';
+headerlinesIn = 1;
+data = importdata(filename,delimiterIn,headerlinesIn);
+data = data.data;
+idx = 1;
+length = length(data);
+iterations = 0;
+id = [];
+mass = [];
+x = [];
+y = [];
+time = data(idx, 1);
+while data(idx, 1) == time && idx < length
+   mass = [mass;  data(idx, 2)];
+   x = [x;  data(idx, 3)];
+   y = [y;  data(idx, 4)];
+   idx = idx +1;  
+end
+scatter(x,y, 10, 'k', 'filled');
+
+xlabel('x [AU]');
+ylabel('y [AU]');

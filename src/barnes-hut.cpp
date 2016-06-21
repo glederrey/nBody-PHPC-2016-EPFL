@@ -73,7 +73,6 @@ int main(int argc, char* argv[])
     outputQTFile.open(outputQTFileName.c_str());
   #endif
 
-
   conf.prepareInitialValues(initialFile);
   // Get the masses, positions and velocities for each object.
   int nbrBodies = conf.getNbrBodies();

@@ -8,11 +8,15 @@ clc;
 clear all;
 close all;
 
-filename = '../results/bh_ss.dat';
+files = '../results2/ss_1e6';
+startTime=0;
+endTime=1999;
 solarSystem = true;
-movie = false;
+movie = true;
+movieName = 'SS_1e6_5AU.avi';
 fullScreen = true;
-size = 50;
+center = 'sun';
+size = 5;
 
 if solarSystem
     sun = [198, 81, 4]./255;
@@ -28,11 +32,6 @@ end
 
 gray = [100, 100, 100]./255;
 
-delimiterIn = ',';
-headerlinesIn = 1;
-data = importdata(filename,delimiterIn,headerlinesIn);
-data = data.data;
-
 if fullScreen == true
     scrsz = get(0,'ScreenSize');
     f = figure('units','pixels','Position',[1 scrsz(4) scrsz(3) scrsz(4)]);
@@ -40,69 +39,76 @@ else
     f = figure();
 end
 hold all;
-idx = 1;
-length = length(data);
-iterations = 0;
 
 if movie == true
-    mov = VideoWriter('Gravitation.avi','Motion JPEG AVI');
+    mov = VideoWriter(movieName,'Motion JPEG AVI');
     open(mov);
 end
 
-while idx < length
-%while iterations < 1
-    iterations
-    id = [];
-    mass = [];
-    x = [];
-    y = [];
-    time = data(idx, 1);
-    while data(idx, 1) == time && idx < length
-       mass = [mass;  data(idx, 2)];
-       x = [x;  data(idx, 3)];
-       y = [y;  data(idx, 4)];
-       idx = idx +1;  
+nbrBodiesStart = 0;
+nbrBodiesEnd = 0;
+
+for iter=startTime:endTime
+    
+    display(['Iteration ', num2str(iter)]); 
+    
+    filename = [files, '_', num2str(iter), '.dat'];
+    delimiterIn = ',';
+    if iter==startTime
+        data = importdata(filename,delimiterIn,1);
+        data = data.data;
+    else
+       data = importdata(filename,delimiterIn, 0);
     end
     
-    if time == 0
-        nbr_bodies_start = numel(mass);
+    nbrBodies = length(data);
+    
+    if iter==startTime
+        nbrBodiesStart=nbrBodies;
     end
     
-    if idx >= length
-        nbr_bodies_end = numel(mass);
+    if iter==endTime
+        nbrBodiesEnd=nbrBodies;
     end
     
     subplot(1,1,1,'replace');
     hold all;
-    
+
     if solarSystem
-       scatter(x(10:end),y(10:end), 3, gray, 'filled');
+       scatter(data(10:end,3),data(10:end,4), 1, gray, 'filled');
        
        % Uncomment this to check the distance Eart-Sun (should be around 1)
        %sqrt((x(4)-x(1))^2 + (y(4)-y(1))^2)
        
-       plot(x(1),y(1),'Color', sun, 'Marker','.','Markersize',40);
-       plot(x(2),y(2),'Color', mercury, 'Marker','.','Markersize',20);
-       plot(x(3),y(3),'Color', venus, 'Marker','.','Markersize',20);
-       plot(x(4),y(4),'Color', earth, 'Marker','.','Markersize',20);
-       plot(x(5),y(5),'Color', mars, 'Marker','.','Markersize',20);
-       plot(x(6),y(6),'Color', jupiter, 'Marker','.','Markersize',20);
-       plot(x(7),y(7),'Color', saturn, 'Marker','.','Markersize',20);
-       plot(x(8),y(8),'Color', uranus, 'Marker','.','Markersize',20);
-       plot(x(9),y(9),'Color', neptune, 'Marker','.','Markersize',20);       
+       plot(data(1,3),data(1,4),'Color', sun, 'Marker','.','Markersize',40);
+       plot(data(2,3),data(2,4),'Color', mercury, 'Marker','.','Markersize',20);
+       plot(data(3,3),data(3,4),'Color', venus, 'Marker','.','Markersize',20);
+       if strcmp(center,'earth')
+           plot(data(4,3),data(4,4),'Color', earth, 'Marker','.','Markersize',40);
+       else
+           plot(data(4,3),data(4,4),'Color', earth, 'Marker','.','Markersize',20);
+       end
+       plot(data(5,3),data(5,4),'Color', mars, 'Marker','.','Markersize',20);
+       plot(data(6,3),data(6,4),'Color', jupiter, 'Marker','.','Markersize',20);
+       plot(data(7,3),data(7,4),'Color', saturn, 'Marker','.','Markersize',20);
+       plot(data(8,3),data(8,4),'Color', uranus, 'Marker','.','Markersize',20);
+       plot(data(9,3),data(9,4),'Color', neptune, 'Marker','.','Markersize',20);       
         
     end
     
     set(gcf, 'color', [0 0 0])
     set(gca, 'color', [0 0 0])
     set(gca,'visible','off');
-    axis([-size size -size size]);
+    if strcmp(center,'earth')
+        axis([data(4,3)-size data(4,3)+size data(4,4)-size data(4,4)+size]);
+    else
+        axis([-size size -size size]);
+    end
+        
     
     axis('square');
     
     drawnow;
-    
-    iterations = iterations + 1;
     
     if movie == true
         F = getframe(gcf);
@@ -116,6 +122,6 @@ if movie == true
     close(mov);
 end
 
-disp(['Number of bodies at the beginning of the simulation: ', num2str(nbr_bodies_start)]);
-disp(['Number of bodies at the end of the simulation: ', num2str(nbr_bodies_end)]);
-disp(['Percentage of bodies lost: ', num2str((nbr_bodies_start-nbr_bodies_end)/nbr_bodies_start*100), '%']);
+disp(['Number of bodies at the beginning of the simulation: ', num2str(nbrBodiesStart)]);
+disp(['Number of bodies at the end of the simulation: ', num2str(nbrBodiesEnd)]);
+disp(['Percentage of bodies lost: ', num2str((nbrBodiesStart-nbrBodiesEnd)/nbrBodiesStart*100), '%']);
